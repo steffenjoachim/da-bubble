@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     .da-bubble{
-        margin-top: 48px;
+        margin-top: 32px;
         margin-left: 12px;
         font-size: 28px;
     }
@@ -33,7 +33,7 @@
     }
     mat-card{
         width: 90%;
-        height: 65vh;
+        height: 62vh;
         border-radius: 25px;
         margin-bottom: 16px;
     }
@@ -103,7 +103,7 @@
         justify-content: space-around;
         border: none;
         border-radius: 25px;
-        width: 90%;
+        width: 92%;
         background: rgb(236, 238, 254);
         padding: 8px;
         margin-bottom: 16px;
@@ -123,7 +123,7 @@
     }
 
     .guest-login, .login{
-        width: 40%;
+        width: 37%;
         border-radius: 25px;
         display: flex;
         justify-content: center;
