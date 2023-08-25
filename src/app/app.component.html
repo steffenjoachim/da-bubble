@@ -2,12 +2,15 @@
   <img src="./assets/img/Logo.png" alt="DA-Bubble logo">
 </div> -->
 <div class="login-frame">
+  <div class="da-bubble-container">
   <img src="./assets/img/Logo.png" alt="DA-Bubble logo">
+  <h1 class="da-bubble">DABUBBLE</h1>
+</div>
   <mat-card>
     <mat-card-content>
       <h1 class="c-blue">Anmeldung</h1>
       <div class="login-head">
-        <span class="recommendation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
+        <span class="recommendation fw-400">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
         <div class="input-frame">
           <mat-icon fontIcon="email"></mat-icon>
           <input type="text" placeholder="beispielname@email.com">
@@ -16,24 +19,24 @@
           <mat-icon  fontIcon="lock"></mat-icon>
           <input type="text" placeholder="Passwort">
         </div>
-        <span class="forgot-password">Passwort vergessen?</span>
+        <span class="forgot-password fw-400">Passwort vergessen?</span>
       </div>
       <div class="or-container">
         <div class="line"></div>
-        <p>ODER</p>
+        <p class="fw-400">ODER</p>
         <div class="line"></div>
       </div>
       <div class="button-container">
-        <button class="google-btn c-blue"> <img class="google-logo" src="./assets/img/Google.png" alt="Google logo"> Anmelden mit Google</button>
+        <a class="google-btn c-blue"> <img class="google-logo" src="./assets/img/Google.png" alt="Google logo"> Anmelden mit Google</a>
         <div class="login-btn">
-          <button class="login bg-blue fz-16-fw-700">Anmelden</button>
-          <button class="guest-login c-blue fz-16-fw-700"> Gäste-Login</button>
+          <a class="login bg-blue fz-16-fw-700">Anmelden</a>
+          <a class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
         </div>
       </div>
     </mat-card-content>
   </mat-card>
-  <span>Neu bei DABubble?</span>
-  <button class="create-account c-blue fz-16-fw-700">Konto erstellen</button>
+  <span class="fw-400">Neu bei DABubble?</span>
+  <a class="create-account c-blue fz-16-fw-700">Konto erstellen</a>
   <button class="login-nav">
     < >
   </button>

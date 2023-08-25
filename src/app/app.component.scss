@@ -1,3 +1,13 @@
+.da-bubble-container{
+    display: flex;
+    align-items: center;
+    .da-bubble{
+        margin-top: 48px;
+        margin-left: 12px;
+        font-size: 28px;
+    }
+}
+
 .main-div{
     height: 100vh;
     width: 100%;
@@ -19,7 +29,7 @@
     img{
         margin-top: 48px;
         margin-bottom: 16px;
-        height: 64px;
+        height: 48px;
     }
     mat-card{
         width: 90%;
@@ -93,7 +103,7 @@
         justify-content: space-around;
         border: none;
         border-radius: 25px;
-        width: 100%;
+        width: 90%;
         background: rgb(236, 238, 254);
         padding: 8px;
         margin-bottom: 16px;
@@ -113,8 +123,10 @@
     }
 
     .guest-login, .login{
-        width: 45%;
+        width: 40%;
         border-radius: 25px;
+        display: flex;
+        justify-content: center;
     }
 
     .login{
@@ -146,4 +158,8 @@
     border: none;
     border-radius: 25px;
     width: 20%;
+}
+
+a{
+    font-family: Nunito, "Helvetica Neue", sans-serif;
 }
