@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+
+@font-face{
+    font-family: Nunito;
+    src: url('./assets/fonts/Nunito-Regular.ttf');
+}
+
+body { 
+    margin: 0; 
+    font-family: Nunito, "Helvetica Neue", sans-serif; 
+}
+
+.bg-blue{
+    background: rgb(68, 77, 242);
+}
+
+.c-blue{
+    color: rgb(68, 77, 242);
+}
+
+.fz-16-fw-700{
+    font-size: 16px;
+    font-weight: 700;
+}
