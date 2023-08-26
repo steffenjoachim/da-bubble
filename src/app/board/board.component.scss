@@ -1,7 +1,30 @@
-.da-bubble-container{
-    display: none;
+.main-container{
+    height: 90vh;
+    background: rgb(236, 238, 254);
+    display: flex;
 }
 
-.example-container{
+.side-bar{
+    width: 25%;
     height: 90vh;
+    background: white;
+    border-radius: 25px;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.content-box{
+    width: 50%;
+    height: 90vh;
+    background: white;
+    border-radius: 25px;
+}
+
+.thread{
+    width: 25%;
+    height: 90vh;
+    background: white;
+    border-radius: 25px;
+    margin-left: 16px;
+    margin-right: 16px;
 }
