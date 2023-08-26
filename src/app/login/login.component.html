@@ -1,7 +1,7 @@
 <div class="login-frame">
   <mat-card>
       <mat-card-content>
-          <h1 class="c-blue">Anmeldung</h1>
+          <h1 class="c-blue login-h1">Anmeldung</h1>
           <div class="login-head">
               <span class="recommendation fw-400">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
               <div class="input-frame">
@@ -27,16 +27,16 @@
               &scope=email%20profile
               &access_type=offline" class="google-btn c-blue">
                   <img class="google-logo" src="./assets/img/Google.png" alt="Google logo">
-                  Anmelden mit Google
+                  <p class="login-with-google">Anmelden mit Google</p>
               </a>
               <div class="login-btn">
                   <a class="login bg-blue fz-16-fw-700">Anmelden</a>
-                  <a class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
+                  <a routerLink="/board" class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
               </div>
           </div>
       </mat-card-content>
   </mat-card>
-  <span class="fw-400">Neu bei DABubble?</span>
+  <span class=" new fw-400">Neu bei DABubble?</span>
   <a routerLink="/registration" class="create-account c-blue fz-16-fw-700">Konto erstellen</a>
 </div>
 

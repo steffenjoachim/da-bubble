@@ -161,3 +161,111 @@ a {
   font-family: Nunito, "Helvetica Neue", sans-serif;
   z-index: 9;
 }
+
+
+@media (min-height:800px) {
+
+  .login-frame{
+
+    mat-card{
+      margin-top: 36px;
+      height: 65vh;
+    }
+    
+  }
+
+  .login-head {
+
+    .input-frame{
+      margin-bottom: 24px;
+    }
+  
+    input {
+      margin-top: 6px;
+      margin-left: 16px;
+      height: 40px;
+      &::placeholder{
+        font-size: 20px;
+      }
+    }
+
+    .forgot-password{
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+  }  
+
+  .or-container{
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .material-icons {
+    font-size: 28px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .button-container{
+  
+    .google-btn{
+      margin-top: 6px;
+      margin-left: 16px;
+      height: 40px;}
+  
+      .google-logo{
+        height: 40px;
+      }
+
+      .login-with-google{
+        margin-top: 14px;
+        margin-right: 16px;
+        font-size: 20px;
+      }
+
+      .login-btn{
+        margin-top: 16px;
+      }
+
+      .login{
+        padding: 16px;
+        font-size: 20px;
+      }
+
+      .guest-login{
+        padding: 14px;
+        font-size: 20px;
+      }
+    }
+
+    .new{
+      margin-top: 16px;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .create-account{
+      font-size: 20px;
+      padding: 16px;
+    }
+  }
+    
+
+@media (min-width:500px) {
+
+  .login-head{
+    .recommendation{
+      font-size: 18px;
+      margin-bottom: 24px
+    }
+  }
+
+  .login-frame{
+    h1{
+      font-size: 40px;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    
+  }
+}

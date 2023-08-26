@@ -16,6 +16,7 @@ import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import { BoardComponent } from './board/board.component';
 
 
 
@@ -23,7 +24,8 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    BoardComponent
   ],
   imports: [
     BrowserModule,

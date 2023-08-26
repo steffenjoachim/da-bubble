@@ -77,3 +77,13 @@
     z-index: 99;
   }
 }
+
+@media (min-height:800px) {
+
+    .da-bubble-frame{
+    img {
+        margin-top: 64px;
+        height: 64px;
+      }
+    }
+}

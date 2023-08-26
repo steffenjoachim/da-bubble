@@ -72,3 +72,62 @@ h1 {
   font-weight: 700;
   text-align: center;
 }
+
+
+@media (min-height:800px) {
+
+  .main-div{
+
+    mat-card{
+      margin-top: 36px;
+      height: 65vh;
+    }
+  }
+
+  .login{
+    padding: 16px;
+    font-size: 20px;
+   }
+
+   .login-head{
+
+    input {
+      margin-top: 8px;
+      margin-left: 16px;
+      height: 40px;
+      &::placeholder{
+        font-size: 20px;
+      }
+    }
+
+    .input-frame{
+      margin-bottom: 32px;
+    }
+
+    .material-icons {
+      font-size: 28px;
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+
+   }
+}
+    
+
+@media (min-width:500px) {
+
+  .main-div{
+    h1{
+      font-size: 40px;
+      margin-top: 32px;
+      margin-bottom: 48px;
+    }
+  }
+}
+
+@media (min-width:769px) {
+
+  mat-card{
+    max-width: 700px;
+  }
+}
