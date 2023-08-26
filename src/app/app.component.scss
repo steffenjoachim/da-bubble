@@ -60,7 +60,7 @@
     margin-top: 48px;
     margin-bottom: 16px;
     height: 48px;
-    transform: translateX(60px);
+    transform: translateX(80px);
     animation: logo-slide 1s 0.5s forwards;
   }
 }
@@ -151,6 +151,7 @@
 .or-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   .line {
     width: 40%;
     height: 2px;
@@ -164,6 +165,9 @@
 }
 
 .button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .google-btn {
     display: flex;
     align-items: center;
@@ -176,6 +180,7 @@
     margin-bottom: 16px;
     font-size: 18px;
     font-weight: 400;
+    max-width: 300px;
   }
 
   .google-logo {
@@ -187,6 +192,7 @@
   .login-btn {
     display: flex;
     justify-content: space-around;
+    width: 100%;
   }
 
   .guest-login,
