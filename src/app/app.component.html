@@ -1,49 +1,9 @@
 <div class="da-bubble-container">
   <div class="da-bubble-frame">
-    <div class="logo-container">
-      <img src="./assets/img/Logo.png" alt="DA-Bubble logo">
-    </div>
+      <div class="logo-container">
+          <img routerLink="/" src="./assets/img/Logo.png" alt="DA-Bubble logo">
+      </div>
       <h1>DABubble</h1>
   </div>
 </div>
-<div class="login-frame">
-    <mat-card>
-        <mat-card-content>
-            <h1 class="c-blue">Anmeldung</h1>
-            <div class="login-head">
-                <span class="recommendation fw-400">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
-                <div class="input-frame">
-                    <mat-icon fontIcon="email"></mat-icon>
-                    <input [(ngModel)]="users.email" type="text" placeholder="beispielname@email.com">
-                </div>
-                <div class="input-frame">
-                    <mat-icon fontIcon="lock"></mat-icon>
-                    <input [(ngModel)]="users.password" type="text" placeholder="Passwort">
-                </div>
-                <span class="forgot-password fw-400">Passwort vergessen?</span>
-            </div>
-            <div class="or-container">
-                <div class="line"></div>
-                <p class="fw-400">ODER</p>
-                <div class="line"></div>
-            </div>
-            <div id="google-login" class="button-container">
-                <a href="https://accounts.google.com/o/oauth2/auth
-                ?response_type=code
-                &client_id=dabubble
-                &redirect_uri=690905915291
-                &scope=email%20profile
-                &access_type=offline" class="google-btn c-blue">
-                    <img class="google-logo" src="./assets/img/Google.png" alt="Google logo">
-                    Anmelden mit Google
-                </a>
-                <div class="login-btn">
-                    <a (click)="addUser()" class="login bg-blue fz-16-fw-700">Anmelden</a>
-                    <a class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-    <span class="fw-400">Neu bei DABubble?</span>
-    <a class="create-account c-blue fz-16-fw-700">Konto erstellen</a>
-    </div>
+<router-outlet></router-outlet>

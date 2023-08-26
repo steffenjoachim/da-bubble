@@ -1,0 +1,163 @@
+
+.main-div {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(98, 105, 239);
+  img {
+    height: 72px;
+  }
+}
+
+.login-frame {
+  padding-top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgb(236, 238, 254);
+  height: calc(100vh - 120px);
+
+  mat-card {
+    width: 90%;
+    max-width: 500px;
+    height: 62vh;
+    border-radius: 25px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 32px;
+    font-family: Nunito, sans-serif;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.login-head {
+  display: flex;
+  flex-direction: column;
+
+  .recommendation {
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  input {
+    border: none;
+    border-radius: 25px;
+    background: rgb(236, 238, 254);
+    margin-left: 8px;
+    width: 100%;
+    height: 28px;
+  }
+
+  .input-frame {
+    display: flex;
+    align-items: center;
+    background: rgb(236, 238, 254);
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 25px;
+  }
+
+  mat-icon {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .forgot-password {
+    text-align: center;
+    margin-top: 16px;
+  }
+}
+
+.or-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .line {
+    width: 40%;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  p {
+    margin-top: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: none;
+    border-radius: 25px;
+    width: 92%;
+    background: rgb(236, 238, 254);
+    padding: 8px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 400;
+    max-width: 300px;
+  }
+
+  .google-logo {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 32px;
+  }
+
+  .login-btn {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .guest-login,
+  .login {
+    width: 37%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .login {
+    color: white;
+    border: none;
+    padding: 8px;
+  }
+
+  .guest-login {
+    border: 1px solid rgb(68, 77, 242);
+    background: white;
+    padding: 6px;
+  }
+}
+
+.create-account {
+  border: 1px solid rgb(68, 77, 242);
+  background: rgb(236, 238, 254);
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 25px;
+}
+
+.login-nav {
+  background: black;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 25px;
+  width: 20%;
+}
+
+a {
+  font-family: Nunito, "Helvetica Neue", sans-serif;
+  z-index: 9;
+}

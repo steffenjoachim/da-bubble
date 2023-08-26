@@ -8,18 +8,6 @@ import { FirebaseService } from './services/firebase.service';
 })
 
 export class AppComponent {
-
-  constructor(public firebaseService: FirebaseService) {}
-
   title = 'da-bubble';
-
-  users:any = {
-    email: '',
-    password: ''
-  }
-
-addUser() {
-  this.firebaseService.addUser(this.users);
-}
-
+  constructor(public firebaseService: FirebaseService) { }
 }

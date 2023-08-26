@@ -1,0 +1,26 @@
+<div class="card"></div>
+<div class="main-div">
+  <mat-card class="mat-card-100vh">
+    <mat-card-content>
+        <h1 class="c-blue">Registrieren</h1>
+        <div class="login-head">
+            <div class="input-frame">
+                <mat-icon fontIcon="email"></mat-icon>
+                <input [(ngModel)]="users.email" required type="text" placeholder="beispielname@email.com">
+            </div>
+            <div class="input-frame">
+                <mat-icon fontIcon="lock"></mat-icon>
+                <input [(ngModel)]="users.password" required type="password" placeholder="Passwort">
+            </div>
+            <div class="input-frame">
+              <mat-icon fontIcon="lock"></mat-icon>
+              <input type="password" required placeholder="Passwort Wiederholen">
+          </div>
+        </div>
+            <div class="login-btn">
+                <a (click)="addUser()" class="login bg-blue fz-16-fw-700">Registrieren</a>
+            </div>
+    </mat-card-content>
+</mat-card>
+</div>
+
