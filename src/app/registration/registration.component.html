@@ -2,24 +2,27 @@
 <div class="main-div">
   <mat-card class="mat-card-100vh">
     <mat-card-content>
+      <form (submit)="addUser()" ngNativeValidate #myForm>
         <h1 class="c-blue">Registrieren</h1>
         <div class="login-head">
             <div class="input-frame">
+
                 <mat-icon fontIcon="email"></mat-icon>
-                <input [(ngModel)]="users.email" required type="text" placeholder="beispielname@email.com">
+                <input [(ngModel)]="users.email" name="email" required type="email" #emailField placeholder="beispielname@email.com">
             </div>
             <div class="input-frame">
                 <mat-icon fontIcon="lock"></mat-icon>
-                <input [(ngModel)]="users.password" required type="password" placeholder="Passwort">
+                <input [(ngModel)]="users.password" required type="password" name="password" #passwordField placeholder="Passwort">
             </div>
             <div class="input-frame">
               <mat-icon fontIcon="lock"></mat-icon>
-              <input type="password" required placeholder="Passwort Wiederholen">
+              <input type="password" #passwordField2 name="password2" required placeholder="Passwort Wiederholen">
           </div>
         </div>
             <div class="login-btn">
-                <a (click)="addUser()" class="login bg-blue fz-16-fw-700">Registrieren</a>
+                <button class="login bg-blue fz-16-fw-700">Registrieren</button>
             </div>
+          </form>
     </mat-card-content>
 </mat-card>
 </div>

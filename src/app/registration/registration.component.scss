@@ -1,5 +1,5 @@
 .card {
-  padding-top: 100px;
+  padding-top: 120px;
   background: rgb(236, 238, 254);
 }
 .login-head {
@@ -39,13 +39,11 @@
   }
 }
 
-
 .login-btn {
   display: flex;
   justify-content: space-around;
   width: 100%;
   margin-top: 60px;
-
 }
 
 .login {
@@ -65,5 +63,12 @@
   display: flex;
   justify-content: center;
   background: rgb(236, 238, 254);
-  height: 100vh;
+  height: calc(100vh - 120px);
+}
+
+h1 {
+  font-size: 32px;
+  font-family: Nunito, sans-serif;
+  font-weight: 700;
+  text-align: center;
 }
