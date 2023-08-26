@@ -14,11 +14,11 @@
                 <span class="recommendation fw-400">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
                 <div class="input-frame">
                     <mat-icon fontIcon="email"></mat-icon>
-                    <input type="text" placeholder="beispielname@email.com">
+                    <input [(ngModel)]="users.email" type="text" placeholder="beispielname@email.com">
                 </div>
                 <div class="input-frame">
                     <mat-icon fontIcon="lock"></mat-icon>
-                    <input type="text" placeholder="Passwort">
+                    <input [(ngModel)]="users.password" type="text" placeholder="Passwort">
                 </div>
                 <span class="forgot-password fw-400">Passwort vergessen?</span>
             </div>
@@ -38,7 +38,7 @@
                     Anmelden mit Google
                 </a>
                 <div class="login-btn">
-                    <a class="login bg-blue fz-16-fw-700">Anmelden</a>
+                    <a (click)="addUser()" class="login bg-blue fz-16-fw-700">Anmelden</a>
                     <a class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
                 </div>
             </div>
