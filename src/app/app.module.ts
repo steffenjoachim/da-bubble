@@ -17,6 +17,9 @@ import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { BoardComponent } from './board/board.component';
+import { HeaderComponent } from './header/header.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 
 
@@ -25,7 +28,8 @@ import { BoardComponent } from './board/board.component';
     AppComponent,
     RegistrationComponent,
     LoginComponent,
-    BoardComponent
+    BoardComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +38,7 @@ import { BoardComponent } from './board/board.component';
     MatCardModule,
     MatIconModule,
     FormsModule,
+    MatSidenavModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
