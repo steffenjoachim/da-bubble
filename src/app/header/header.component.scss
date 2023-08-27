@@ -11,8 +11,10 @@
   input {
     border: none;
     border-radius: 25px;
-    width: 48%;
-    margin-left: -80px;
+    width: 90%;
+    height: 100%;
+    
+    cursor: pointer;
     &::placeholder{
       font-size: 20px;
       padding-left: 32px;
@@ -20,5 +22,21 @@
   }
   img {
     height: 65px;
+    margin-left: 16px;
   }
+}
+
+.search-frame{
+    display: flex;
+    justify-content: space-between;
+    width: 48%;
+    background: white;
+    border-radius: 25px;
+    margin-left: -80px;
+
+    mat-icon{
+        margin-right: 16px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 28px;
+    }
 }
