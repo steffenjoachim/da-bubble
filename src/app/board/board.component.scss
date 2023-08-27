@@ -15,28 +15,22 @@
 .content-box {
     position: relative;
     flex: 1;
-    min-height: 87vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 1000px;
     background: white;
     border-radius: 25px;
     margin-left: 16px;
     margin-right: 16px;
-    overflow: hidden; /* Prevent content from overflowing beneath the textarea */
-
-    textarea {
-        position: fixed;
-        bottom: 0 !important;
-        width: 100%;
-        padding: 10px; /* Add padding for better appearance */
-        // border: none; /* Optional: Remove borders to match the design */
-        resize: none; /* Optional: Prevent resizing of the textarea */
-        z-index: 1; /* Ensure the textarea is above the content */
-        background-color: white; /* Optional: Match the background color */
-    }
+    overflow: hidden; 
 }
 
 
 .content-head{
     height: 72px;
+    width: 100%;
     display: flex;
     align-items: center;
     border-radius: 25px 25px 0 0;
@@ -68,6 +62,37 @@
         }
     }
 
+}
+
+.message-frame {
+    height: 20vh;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1; 
+    position: fixed;
+    bottom: 0 !important;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 25px;
+    .input-frame{
+        display: flex;
+        justify-content: center;
+        
+        input{
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: 25px;
+            height: 100px;
+            width: 90%;
+            border: none;
+            background-color: white; 
+        }
+        .icon-container{
+            height: 30px;
+            width: 40%;
+        }
+    }
+    
 }
 
 .thread{
