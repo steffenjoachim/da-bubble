@@ -1,28 +1,79 @@
 .main-container{
     background: rgb(236, 238, 254);
     display: flex;
+    min-zoom: 87vh;
 }
 
 .side-bar{
     width: 25%;
-    height: 90vh;
+    height: 87vh;
+    background: white;
+    border-radius: 25px;
+    margin-left: 16px;
+}
+
+.content-box {
+    position: relative;
+    flex: 1;
+    min-height: 87vh;
     background: white;
     border-radius: 25px;
     margin-left: 16px;
     margin-right: 16px;
+    overflow: hidden; /* Prevent content from overflowing beneath the textarea */
+
+    textarea {
+        position: fixed;
+        bottom: 0 !important;
+        width: 100%;
+        padding: 10px; /* Add padding for better appearance */
+        // border: none; /* Optional: Remove borders to match the design */
+        resize: none; /* Optional: Prevent resizing of the textarea */
+        z-index: 1; /* Ensure the textarea is above the content */
+        background-color: white; /* Optional: Match the background color */
+    }
 }
 
-.content-box{
-    width: 50%;
-    height: 90vh;
-    background: white;
-    border-radius: 25px;
+
+.content-head{
+    height: 72px;
+    display: flex;
+    align-items: center;
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 7px 5px -4px rgba(0, 0, 0, .2);
+    p{
+        margin-left: 12px;
+        margin-right: 16px;
+        margin-top: 12px;
+    }
+    button{
+        height: 70%;
+        width: 40%;
+        border: none;
+        border-radius: 25px;
+        background: white;
+        font-size: 20px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        margin-left: 48px;
+        cursor: pointer;
+        &:hover{
+            background: rgb(236, 238, 254);
+            color: rgb(68, 77, 242);
+        }
+
+        mat-icon{
+            margin-left: 16px;
+        }
+    }
+
 }
 
 .thread{
     width: 25%;
+    min-height: 87vh;
     background: white;
     border-radius: 25px;
-    margin-left: 16px;
     margin-right: 16px;
 }
