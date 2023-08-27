@@ -1,12 +1,19 @@
 <div class="card"></div>
 <div class="main-div">
   <mat-card class="mat-card-100vh">
-    <mat-card-content>
-      <form (submit)="addUser()" ngNativeValidate #myForm>
-        <h1 class="c-blue">Registrieren</h1>
+    <mat-card-content *ngIf="close">
+      <form (submit)="closeRegistration()" ngNativeValidate #myForm>
+        <div class="headline">
+          <img routerLink="/" src="./assets/img/arrow_back.png" alt="arrow-back">
+          <h1 class="c-blue">Konto erstellen</h1>
+        </div>
+        <p>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DABubble Konto</p>
         <div class="login-head">
           <div class="input-frame">
-
+            <mat-icon fontIcon="person"></mat-icon>
+            <input [(ngModel)]="users.name" type="text" #passwordField2 name="name" required placeholder="Name und Nachname" #nameField>
+          </div>
+          <div class="input-frame">
             <mat-icon fontIcon="email"></mat-icon>
             <input [(ngModel)]="users.email" name="email" required type="email" #emailField
               placeholder="beispielname@email.com">
@@ -16,15 +23,32 @@
             <input [(ngModel)]="users.password" required type="password" name="password" #passwordField
               placeholder="Passwort">
           </div>
-          <div class="input-frame">
-            <mat-icon fontIcon="lock"></mat-icon>
-            <input type="password" #passwordField2 name="password2" required placeholder="Passwort Wiederholen">
-          </div>
         </div>
+        <div class="private">
+        <input type="checkbox" name="checkbox" required>
+        <span>Ich stimme der <a href="#">Datenschutzerklärung</a> zu</span>
+      </div>
         <div class="login-btn">
-          <button class="login bg-blue fz-16-fw-700">Registrieren</button>
+          <button class="login bg-blue fz-16-fw-700">Weiter</button>
         </div>
       </form>
     </mat-card-content>
+    <div class="chooseAvatar" *ngIf="chooseAvatar">
+      <div class="headline-avatar">
+    <img src="./assets/img/arrow_back.png" alt="">
+    <h1>Wähle deinen Avatar</h1>
+  </div>
+    <div class="avatar">
+      <img src="{{ users.avatar }}" alt="">
+    </div>
+    <h2>{{ users.name }}</h2>
+    <p>Wähle deinen Avatar...</p>
+    <div class="avatars">
+<img *ngFor="let image of avatarUrls;" (click)="selectedAvatar(image)" [src]="image" alt="">
+    </div>
+    <div class="login-btn">
+      <button (click)="addUser2()" class="login mr-16 bg-blue fz-16-fw-700">Weiter</button>
+    </div>
+  </div>
   </mat-card>
 </div>

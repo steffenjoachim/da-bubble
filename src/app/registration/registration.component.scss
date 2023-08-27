@@ -5,6 +5,7 @@
 .login-head {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 
   .recommendation {
     font-size: 12px;
@@ -39,24 +40,44 @@
   }
 }
 
+form {
+  img {
+    cursor: pointer;
+  }
+  p {
+    text-align: center;
+  }
+}
+
 .login-btn {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   width: 100%;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 .login {
   color: white;
   border: none;
-  padding: 8px;
+  padding: 12px;
   border-radius: 25px;
+  cursor: pointer;
 }
 
 .mat-card-100vh {
   width: 90%;
   border-radius: 25px;
-  height: 350px;
+  height: 450px;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  height: 80px;
+  img {
+    width: 80px;
+    object-fit: contain;
+  }
 }
 
 .main-div {
@@ -73,34 +94,73 @@ h1 {
   text-align: center;
 }
 
+.private {
+  padding-top: 16px;
+}
 
-@media (min-height:800px) {
+.chooseAvatar {
+  padding: 16px;
+  h2 {
+    margin-top: 10px;
+    text-align: center;
+  }
+}
 
-  .main-div{
+.avatars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 50px;
+    object-fit: contain;
+  }
+}
 
-    mat-card{
+.headline {
+  display: flex;
+  gap: 16px;
+  img {
+    object-fit: contain;
+  }
+}
+
+.headline-avatar {
+  display: flex;
+  display: flex;
+  padding-top: 8px;
+  img {
+    object-fit: contain;
+    margin-top: -40px;
+  }
+  h1 {
+    color: #444df2;
+  }
+}
+
+@media (min-height: 800px) {
+  .main-div {
+    mat-card {
       margin-top: 36px;
       height: 65vh;
     }
   }
 
-  .login{
+  .login {
     padding: 16px;
     font-size: 20px;
-   }
+  }
 
-   .login-head{
-
+  .login-head {
     input {
       margin-top: 8px;
       margin-left: 16px;
       height: 40px;
-      &::placeholder{
+      &::placeholder {
         font-size: 20px;
       }
     }
 
-    .input-frame{
+    .input-frame {
       margin-bottom: 32px;
     }
 
@@ -109,15 +169,12 @@ h1 {
       padding-right: 16px;
       padding-left: 16px;
     }
-
-   }
+  }
 }
-    
 
-@media (min-width:500px) {
-
-  .main-div{
-    h1{
+@media (min-width: 500px) {
+  .main-div {
+    h1 {
       font-size: 40px;
       margin-top: 32px;
       margin-bottom: 48px;
@@ -125,9 +182,8 @@ h1 {
   }
 }
 
-@media (min-width:769px) {
-
-  mat-card{
+@media (min-width: 769px) {
+  mat-card {
     max-width: 700px;
   }
 }
