@@ -59,7 +59,6 @@
         align-items: center;
         margin-left: 48px;
         cursor: pointer;
-        &:hover{
             background: rgb(236, 238, 254);
             color: rgb(68, 77, 242);
         }
@@ -69,7 +68,7 @@
         }
     }
 
-}
+
 
 .message-frame {
     height: 20vh;
@@ -89,10 +88,14 @@
         input{
             border: 1px solid rgba(0, 0, 0, .2);
             border-radius: 25px;
-            height: 100px;
+            height: 120px;
             width: 90%;
             border: none;
             background-color: white; 
+            &::placeholder{
+                margin-top: -50px;
+                color: red;
+            }
         }
         .icon-container{
             height: 30px;
@@ -129,5 +132,53 @@
     justify-content: space-between;
     mat-icon{
         margin-right: 16px;
+        cursor: pointer;
     }
+}
+
+.close-workshop-menu{
+    background: white;
+    height: 380px;
+    width: 50px;
+    position: absolute;
+    left: 0;
+    bottom: 16px;
+    z-index: 99;
+    box-shadow: 0px 1px 5px #888, 0px -1px 5px #888;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    cursor: pointer;
+    &:hover{
+        color: rgb(68, 77, 242);
+    }
+    mat-icon{
+        margin-top: 32px;
+        margin-left: 8px;
+    }
+    p{
+        -webkit-transform: rotate(-90deg);  
+        white-space: nowrap;
+        margin-top: 240px;
+        margin-left: -10px;
+        font-size: 20px;
+        font-weight: 700;
+        font-family: Nunito, sans-serif !important;
+    }
+}
+
+.icon-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon-left{
+    margin-left: 24px;
+    mat-icon{
+        margin-right: 16px;
+    }
+}
+
+.icon-right{
+    margin-right: 24px;
 }

@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="main-container">
-    <div class="side-bar">
+    <div id="side-bar" class="side-bar">
 
     </div>
     <div class="content-box">
@@ -18,19 +18,35 @@
                 <input type="text" placeholder="Nachricht an #Entwicklerteam">
             </div>
             <div class="icon-container">
+               <div class="icon-left">
                 <mat-icon fontIcon="add"></mat-icon>
+                <mat-icon fontIcon="sentiment_satisfied"></mat-icon>
+                <mat-icon fontIcon="alternate_email"></mat-icon>
+               </div>
+               <div class="icon-right">
+                 <img src="./assets/img/Send icon.png" alt="submit arrow">
+               </div>
+                
             </div>
 
 
         </div>
     </div>
-    <div class="thread">
+    <div id="thread" class="thread">
         <div class="thread-head">
             <div class="thread-text">
                 <span>Thread</span><p class="thread-blue c-blue"># Entwicklerteam</p>  
             </div>
-            <mat-icon fontIcon="close"></mat-icon>
+            <div (click)="closeThread()">
+                <mat-icon fontIcon="close"></mat-icon>
+            </div>
         </div>
 
     </div>
+</div>
+<div (click)="closeSideBar()" class="close-workshop-menu">
+    <mat-icon id="close-x" fontIcon="close"></mat-icon>
+    <mat-icon id="open-arrow" class="d-none" fontIcon="arrow_forwards_ios"></mat-icon>
+    <p id="close-workspace">Workspace-Menü schließen</p>
+    <p id="open-workspace" class="d-none">Workspace-Menü öffnen</p>
 </div>
