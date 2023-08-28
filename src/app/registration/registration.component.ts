@@ -25,12 +25,17 @@ export class RegistrationComponent {
 
   ]
 
+
+
   close: boolean = true;
-  chooseAvatar: boolean =  false
+  chooseAvatar: boolean = false;
+
+  email: string = '';
+  password: string = '';
+
   users = {
     name: '',
-    email: '',
-    password: '',
+    email: this.email,
     avatar: ''
   };
 
@@ -44,21 +49,21 @@ export class RegistrationComponent {
     passwordInputElement.disabled = true;
 
     this.users.email = emailInputElement.value;
-    this.users.password = passwordInputElement.value;
 
   }
 
-addUser2() {
-  this.firebaseService.addUser(this.users);
-}
+  addUser2() {
+    this.firebaseService.addUser(this.email, this.password, this.users);
+    console.log(this.users)
+  }
 
   closeRegistration() {
     this.close = false;
     this.chooseAvatar = true;
   }
 
-  selectedAvatar(img:string) {
-this.users.avatar = img
+  selectedAvatar(img: string) {
+    this.users.avatar = img
     console.log(this.users)
   }
 }

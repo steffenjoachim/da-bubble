@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Auth } from '@angular/fire/auth';
 
@@ -7,26 +7,28 @@ import { Auth } from '@angular/fire/auth';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+
+  avatar = '';
+  name = '';
 
   constructor(
     private firebase: FirebaseService,
-    private afAuth: Auth
-  ) {
-    this.setCurrentUser();
+    private afAuth: Auth) { }
+
+  ngOnInit() {
+    const loggedInUser = this.firebase.getLoggedInUser();
+    this.avatar = loggedInUser.avatar;
+    this.name = loggedInUser.name
+    this.setCurrentUser()
   }
 
-  async setCurrentUser() {
-    const user = await this.afAuth.currentUser;
+  setCurrentUser() {
     const currentUserName = document.getElementById("current-user-name");
-    const currentUserImg = document.getElementById("current-user-img") as HTMLImageElement; 
+    const currentUserImg = document.getElementById("current-user-img") as HTMLImageElement;
     if (currentUserName) {
-      if (user) {
-        console.log('User exists. Name:', user.displayName || 'No name available');
-      } else {
-        currentUserName.innerHTML = 'Guest';
-        currentUserImg.src = './assets/img/Profile.png'; 
-      }
+      currentUserName.innerHTML = this.name;
+      currentUserImg.src = this.avatar;
     }
   }
 }
