@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-board',
@@ -8,7 +9,10 @@ import { FirebaseService } from '../services/firebase.service';
 })
 export class BoardComponent implements OnInit {
 
-  constructor(private firebase: FirebaseService){
+  constructor(
+    private firebase: FirebaseService,
+    private afAuth: Auth
+  ){
 
   }
   ngOnInit(): void {
@@ -18,5 +22,7 @@ export class BoardComponent implements OnInit {
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
   }
+
+
 
 }

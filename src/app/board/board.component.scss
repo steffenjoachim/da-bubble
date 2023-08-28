@@ -28,7 +28,7 @@
 }
 
 
-.content-head{
+.content-head, .thread-head{
     height: 72px;
     width: 100%;
     display: flex;
@@ -39,6 +39,12 @@
         margin-left: 12px;
         margin-right: 16px;
         margin-top: 12px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    span{
+        font-size: 20px;
+        font-weight: 700;
     }
     button{
         height: 70%;
@@ -46,8 +52,6 @@
         border: none;
         border-radius: 25px;
         background: white;
-        font-size: 20px;
-        font-weight: 700;
         display: flex;
         align-items: center;
         margin-left: 48px;
@@ -101,4 +105,25 @@
     background: white;
     border-radius: 25px;
     margin-right: 16px;
+    display: flex;
+    span{
+        margin-left: 16px;
+    }
+    .thread-blue{
+        font-size: 12px;
+        font-weight: 400;
+    }
+}
+
+.thread-text{
+    display: flex;
+    align-items: center;
+}
+
+.thread-head{
+    display: flex;
+    justify-content: space-between;
+    mat-icon{
+        margin-right: 16px;
+    }
 }
