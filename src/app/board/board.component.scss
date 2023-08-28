@@ -2,6 +2,7 @@
     background: rgb(236, 238, 254);
     display: flex;
     min-zoom: 87vh;
+    font-family: Nunito, sans-serif;
 }
 
 .side-bar{
@@ -35,6 +36,7 @@
     align-items: center;
     border-radius: 25px 25px 0 0;
     box-shadow: 0 7px 5px -4px rgba(0, 0, 0, .2);
+    
     p{
         margin-left: 12px;
         margin-right: 16px;
@@ -45,6 +47,7 @@
     span{
         font-size: 20px;
         font-weight: 700;
+        font-family: Nunito, sans-serif !important;
     }
     button{
         height: 70%;
@@ -111,13 +114,14 @@
     }
     .thread-blue{
         font-size: 12px;
-        font-weight: 400;
+        font-weight: 500;
     }
 }
 
 .thread-text{
     display: flex;
     align-items: center;
+    
 }
 
 .thread-head{
