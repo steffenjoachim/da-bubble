@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -12,8 +13,8 @@ export class RegistrationComponent {
   @ViewChild('emailField') emailField!: ElementRef;
   @ViewChild('passwordField') passwordField!: ElementRef;
 
-  constructor(public firebaseService: FirebaseService) { }
-
+  constructor(public firebaseService: FirebaseService,
+    private router: Router) { }
 
   avatarUrls: string[] = [
     './assets/img/avatarinteractionmobile.png',
@@ -25,37 +26,42 @@ export class RegistrationComponent {
 
   ]
 
-
-
+  registirationComplete: boolean = false;
   close: boolean = true;
   chooseAvatar: boolean = false;
-
   email: string = '';
   password: string = '';
 
   users = {
     name: '',
-    email: this.email,
+    email: '',
     avatar: ''
   };
 
-  addUser() {
-    const nameInputElement = this.nameField.nativeElement;
-    const emailInputElement = this.emailField.nativeElement;
-    const passwordInputElement = this.passwordField.nativeElement;
-
-    nameInputElement.disabled = true;
-    emailInputElement.disabled = true;
-    passwordInputElement.disabled = true;
-
-    this.users.email = emailInputElement.value;
-
+  backToUserInput() {
+    this.chooseAvatar = false;
+    this.close = true;
   }
 
-  addUser2() {
-    this.firebaseService.addUser(this.email, this.password, this.users);
-    console.log(this.users)
+  checkIfSuccess() {
+    this.chooseAvatar = false;
+    this.registirationComplete = true;
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 2500);
   }
+
+  async addUser() {
+    try {
+      this.users.email = this.email;
+      await this.firebaseService.addUser(this.email, this.password, this.users);
+      await this.checkIfSuccess();
+    } catch (error) {
+      alert('Fehler beim Hinzufügen des Benutzers. Bitte versuche erneut');
+    }
+  }
+
+
 
   closeRegistration() {
     this.close = false;
@@ -64,6 +70,5 @@ export class RegistrationComponent {
 
   selectedAvatar(img: string) {
     this.users.avatar = img
-    console.log(this.users)
   }
 }

@@ -35,7 +35,7 @@
     </mat-card-content>
     <div class="chooseAvatar" *ngIf="chooseAvatar">
       <div class="headline-avatar">
-    <img src="./assets/img/arrow_back.png" alt="">
+    <img (click)="backToUserInput()" src="./assets/img/arrow_back.png" alt="">
     <h1>Wähle deinen Avatar</h1>
   </div>
     <div class="avatar">
@@ -47,8 +47,13 @@
 <img *ngFor="let image of avatarUrls;" (click)="selectedAvatar(image)" [src]="image" alt="">
     </div>
     <div class="login-btn">
-      <button (click)="addUser2()" class="login mr-16 bg-blue fz-16-fw-700">Weiter</button>
+      <button (click)="addUser()" class="login mr-16 bg-blue fz-16-fw-700">Weiter</button>
     </div>
+  </div>
+  <div class="registiration-complete" *ngIf="registirationComplete">
+    <h2>Vielen Dank für Ihre Registrierung!</h2>
+    <p>Sie werden nun zur Login-Seite weitergeleitet. Bitte loggen Sie sich dort ein.</p>
+    <div class="loader"></div>
   </div>
   </mat-card>
 </div>
