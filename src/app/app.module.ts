@@ -19,8 +19,8 @@ import { LoginComponent } from './login/login.component';
 import { BoardComponent } from './board/board.component';
 import { HeaderComponent } from './header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
-
+import { MatTreeModule}  from '@angular/material/tree';
+// import { AlertModule } from 'ngx-bootstrap';
 
 
 @NgModule({
@@ -32,6 +32,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     HeaderComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -39,12 +40,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatIconModule,
     FormsModule,
     MatSidenavModule,
+    MatTreeModule,
+    
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
-    provideMessaging(() => getMessaging())
+    provideMessaging(() => getMessaging()),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

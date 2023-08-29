@@ -42,6 +42,31 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  openChannels(){
+    document.getElementById('channels-body').classList.remove('d-none');
+    document.getElementById('arrow-drop-down').classList.remove('d-none');
+    document.getElementById('arrow-right').classList.add('d-none');
+  }
+
+  closeChannels(){
+    document.getElementById('channels-body').classList.add('d-none');
+    document.getElementById('arrow-drop-down').classList.add('d-none');
+    document.getElementById('arrow-right').classList.remove('d-none');
+  }
+
+  closeDirectMessages(){
+    document.getElementById('direct-messages-body').classList.add('d-none');
+    document.getElementById('arrow-drop-down2').classList.add('d-none');
+    document.getElementById('arrow-right2').classList.remove('d-none');
+
+  }
+
+  openDirectMessages(){
+    document.getElementById('direct-messages-body').classList.remove('d-none');
+    document.getElementById('arrow-drop-down2').classList.remove('d-none');
+    document.getElementById('arrow-right2').classList.add('d-none');
+  }
+
   closeThread(){
     document.getElementById('thread')?.classList.add('d-none');
   }

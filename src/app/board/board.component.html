@@ -1,7 +1,47 @@
 <app-header></app-header>
 <div class="main-container">
     <div id="side-bar" class="side-bar">
-
+        <div class="sidebar-head">
+            <img src="./assets/img/Workspace logo.png" alt="code learning logo">
+            <span>Code learning</span>
+            <img class="edit-square" src="./assets/img/edit_square.png" alt="">
+        </div>
+        <div class="channels-frame">
+            <div class="channels-head">
+                <mat-icon (click)="closeChannels()" id="arrow-drop-down" class="arrow-drop-down"
+                    fontIcon="arrow_drop_down"></mat-icon>
+                <mat-icon (click)="openChannels()" id="arrow-right" class="arrow-right d-none"
+                    fontIcon="arrow_right"></mat-icon>
+                <mat-icon fontIcon="workspaces"></mat-icon>
+                <div class="channels">
+                    <span>Channels</span>
+                </div>
+                <mat-icon class="add" fontIcon="add"></mat-icon>
+            </div>
+            <div id="channels-body" class="channels-body">
+                <div class="entwicklerteam c-blue">
+                    <span># Entwicklerteam</span>
+                </div>
+                <div class="add-channel">
+                    <mat-icon fontIcon="add_circle"></mat-icon>
+                    <span>Channel hinzufügen</span>
+                </div>
+            </div>
+            <div class="direct-messages">
+                <div class="direct-messages-frame">
+                    <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2" class="arrow-drop-down"
+                        fontIcon="arrow_drop_down"></mat-icon>
+                    <mat-icon (click)="openDirectMessages()" id="arrow-right2" class="arrow-right d-none"
+                        fontIcon="arrow_right"></mat-icon>
+                    <div class="channels">
+                        <span>Direktnachrichten</span>
+                    </div>
+                </div>
+                <div class="direct-messages-body" id="direct-messages-body">
+                    Messages
+                </div>
+            </div>
+        </div>
     </div>
     <div class="content-box">
         <div class="content-head">
@@ -15,27 +55,33 @@
         </div>
         <div class="message-frame">
             <div class="input-frame">
-                <input type="text" placeholder="Nachricht an #Entwicklerteam">
+                <textarea placeholder="Nachricht an #Entwicklerteam" name="Nachricht" id="" cols="37"
+                    rows="9"></textarea>
+                <!-- <input type="text" placeholder="Nachricht an #Entwicklerteam"> -->
             </div>
             <div class="icon-container">
-               <div class="icon-left">
-                <mat-icon fontIcon="add"></mat-icon>
-                <mat-icon fontIcon="sentiment_satisfied"></mat-icon>
-                <mat-icon fontIcon="alternate_email"></mat-icon>
-               </div>
-               <div class="icon-right">
-                 <img src="./assets/img/Send icon.png" alt="submit arrow">
-               </div>
-                
+                <div class="icon-left">
+                    <div class="icon-div">
+                        <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
+                    </div>
+                    <div class="icon-div">
+                        <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                    </div>
+                    <div class="icon-div">
+                        <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
+                    </div>
+                </div>
+                <div class="icon-right">
+                    <img class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+                </div>
             </div>
-
-
         </div>
     </div>
     <div id="thread" class="thread">
         <div class="thread-head">
             <div class="thread-text">
-                <span>Thread</span><p class="thread-blue c-blue"># Entwicklerteam</p>  
+                <span>Thread</span>
+                <p class="thread-blue c-blue"># Entwicklerteam</p>
             </div>
             <div (click)="closeThread()">
                 <mat-icon fontIcon="close"></mat-icon>

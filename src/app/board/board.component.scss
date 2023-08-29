@@ -13,6 +13,90 @@
     margin-left: 16px;
 }
 
+.sidebar-head{
+    display: flex;
+    align-items: center;
+    padding: 10px 24px;
+    justify-content: space-between;
+    box-shadow: 0 7px 5px -4px rgba(0, 0, 0, .2);
+    .edit-square{
+        height: 24px;
+    }
+    span{
+        font-size: 24px;
+        font-weight: 700;
+    }
+}
+
+.channels-frame{
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    position: relative;
+    mat-icon{
+        margin-right: 8px;
+    }
+    .channels-head{
+        display: flex;
+    }
+
+    .add{
+        position: absolute;
+        right: 16px;
+    }
+
+    .channels{
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: 3px;
+        margin-left: 4px;
+    }
+}
+
+.arrow-drop-down, .arrow-right{
+    cursor: pointer;
+    &:hover{
+        color: rgb(68, 77, 242);
+        transform: scale(1.2);
+    }
+}
+
+.channels-body{
+    margin-top: 32px;
+    margin-left: 32px;
+}
+
+.entwicklerteam{
+    width: 150px;
+    padding: 8px;
+    background: rgb(236, 238, 254);
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.add-channel{
+    display: flex;
+    align-items: center;
+    margin-top: 32px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    &:hover{
+        color: rgb(68, 77, 242);;
+    }
+}
+
+.direct-messages{
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+}
+
+.direct-messages-frame{
+    display: flex;
+}
+
 .content-box {
     position: relative;
     flex: 1;
@@ -30,7 +114,7 @@
 
 
 .content-head, .thread-head{
-    height: 72px;
+    height: 80px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -51,7 +135,7 @@
     }
     button{
         height: 70%;
-        width: 40%;
+        width: 45%;
         border: none;
         border-radius: 25px;
         background: white;
@@ -84,6 +168,13 @@
     .input-frame{
         display: flex;
         justify-content: center;
+
+        textarea{
+            margin-top: 16px;
+            border: none;
+            resize: none;
+            width: 90%;
+        }
         
         input{
             border: 1px solid rgba(0, 0, 0, .2);
@@ -102,7 +193,13 @@
             width: 40%;
         }
     }
-    
+}
+
+.mat-icons{
+    cursor: pointer;
+    &:hover{
+        color: rgb(68, 77, 242);
+    }
 }
 
 .thread{
@@ -174,11 +271,29 @@
 
 .icon-left{
     margin-left: 24px;
-    mat-icon{
-        margin-right: 16px;
+    display: flex;
+}
+
+.icon-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    margin-right: 16px;
+    &:hover{
+        background: rgb(236, 238, 254);
     }
 }
 
 .icon-right{
     margin-right: 24px;
+}
+
+.submit-arrow{
+    cursor: pointer;
+    &:hover{
+       opacity: 0.8;
+    }
 }

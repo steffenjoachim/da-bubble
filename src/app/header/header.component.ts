@@ -24,11 +24,17 @@ export class HeaderComponent implements OnInit {
   }
 
   setCurrentUser() {
+    debugger
     const currentUserName = document.getElementById("current-user-name");
     const currentUserImg = document.getElementById("current-user-img") as HTMLImageElement;
     if (currentUserName) {
+      debugger
       currentUserName.innerHTML = this.name;
       currentUserImg.src = this.avatar;
+    } else {
+      debugger
+      currentUserName.innerHTML = "Guest";
+      currentUserImg.src = "./assets/img/Logo.png";
     }
   }
 }
