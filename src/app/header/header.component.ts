@@ -20,21 +20,6 @@ export class HeaderComponent implements OnInit {
     const loggedInUser = this.firebase.getLoggedInUser();
     this.avatar = loggedInUser.avatar;
     this.name = loggedInUser.name
-    this.setCurrentUser()
   }
 
-  setCurrentUser() {
-    debugger
-    const currentUserName = document.getElementById("current-user-name");
-    const currentUserImg = document.getElementById("current-user-img") as HTMLImageElement;
-    if (currentUserName) {
-      debugger
-      currentUserName.innerHTML = this.name;
-      currentUserImg.src = this.avatar;
-    } else {
-      debugger
-      currentUserName.innerHTML = "Guest";
-      currentUserImg.src = "./assets/img/Logo.png";
-    }
-  }
 }
