@@ -1,6 +1,8 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Auth } from '@angular/fire/auth';
+import { getAuth, signOut } from "firebase/auth";
 
 @Component({
   selector: 'app-header',
@@ -9,17 +11,42 @@ import { Auth } from '@angular/fire/auth';
 })
 export class HeaderComponent implements OnInit {
 
-  avatar = '';
-  name = '';
+  popup: boolean = false;
+
+  loggedUser: any = {
+    avatar: '',
+    name: ''
+  }
 
   constructor(
     private firebase: FirebaseService,
-    private afAuth: Auth) { }
+    private afAuth: Auth,
+    private router: Router) { }
 
   ngOnInit() {
-    const loggedInUser = this.firebase.getLoggedInUser();
-    this.avatar = loggedInUser.avatar;
-    this.name = loggedInUser.name
+    this.loadLoggedUserData();
   }
 
+  loadLoggedUserData() {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      this.loggedUser.avatar = userData.avatar;
+      this.loggedUser.name = userData.name;
+    }
+  }
+
+  openPopup() {
+    this.popup = true;
+  }
+
+  logout() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      localStorage.removeItem('userData');
+      this.router.navigate(['/login']);
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
 }

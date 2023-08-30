@@ -1,23 +1,35 @@
 import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseService {
+export class FirebaseService implements OnDestroy {
   private logoVisibility = new BehaviorSubject<boolean>(false);
   logoVisible$ = this.logoVisibility.asObservable();
   usersCollection: any = collection(this.firebase, 'users');
   users$ !: Observable<any>;
-  private loggedInUser: any;
+
+  private usersSubscription: Subscription
+
+  loggedUser: any = {
+    avatar: '',
+    name: ''
+  }
 
   constructor(public firebase: Firestore,
     private router: Router) {
     this.getUers()
+  }
+
+  ngOnDestroy(): void {
+    if (this.usersSubscription) {
+      this.usersSubscription.unsubscribe();
+    }
   }
 
   setLogoVisible(visible: boolean): void {
@@ -28,6 +40,7 @@ export class FirebaseService {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        addDoc(this.usersCollection, users)
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
@@ -42,10 +55,20 @@ export class FirebaseService {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        this.users$ = collectionData(this.usersCollection, { idField: 'id' });
+        this.usersSubscription = this.users$.subscribe((usersArray) => {
+          const userWithEmail = usersArray.find(user => user.email === userCredential.user.email);
+          const userData = {
+            avatar: userWithEmail.avatar,
+            name: userWithEmail.name
+          };
+          localStorage.setItem('userData', JSON.stringify(userData));
+          this.usersSubscription.unsubscribe();
+        });
         this.router.navigate(['/board']);
       })
       .catch((error) => {
-        alert('email oder password ungültig')
+        alert('E-Mail oder Passwort ungültig');
       });
   }
 
@@ -74,16 +97,8 @@ export class FirebaseService {
 
   }
 
-
   getUers() {
     this.users$ = collectionData(this.usersCollection, { idField: 'id' })
   }
 
-  setLoggedInUser(user: any) {
-    this.loggedInUser = user;
-  }
-
-  getLoggedInUser() {
-    return this.loggedInUser;
-  }
 }
