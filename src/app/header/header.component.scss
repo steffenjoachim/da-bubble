@@ -13,9 +13,9 @@
     border-radius: 25px;
     width: 90%;
     height: 95%;
-    
+
     cursor: pointer;
-    &::placeholder{
+    &::placeholder {
       font-size: 20px;
       padding-left: 32px;
     }
@@ -26,25 +26,35 @@
   }
 }
 
-.current-user-name{
-    font-size: 24px;
-    &:hover{
-        color: blue;
-    }
+.user-frame {
+  position: relative;
 }
 
-.search-frame{
-    display: flex;
-    justify-content: space-between;
-    width: 48%;
-    background: white;
-    border-radius: 25px;
-    
-    mat-icon{
-        margin-right: 16px;
-        color: rgba(0, 0, 0, 0.5);
-        font-size: 28px;
-    }
+.popup {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  left: 0;
+  background-color: rgba(211, 211, 211, 0.279);
 }
 
+.current-user-name {
+  font-size: 24px;
+  &:hover {
+    color: blue;
+  }
+}
 
+.search-frame {
+  display: flex;
+  justify-content: space-between;
+  width: 48%;
+  background: white;
+  border-radius: 25px;
+
+  mat-icon {
+    margin-right: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 28px;
+  }
+}
