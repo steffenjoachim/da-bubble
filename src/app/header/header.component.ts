@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
   popup: boolean = false;
 
   loggedUser: any = {
-    avatar: '',
-    name: ''
+    avatar: './assets/img/avatarinteractionmobile3.png',
+    name: 'Gast'
   }
 
   constructor(

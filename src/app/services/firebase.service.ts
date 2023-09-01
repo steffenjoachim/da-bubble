@@ -56,20 +56,35 @@ export class FirebaseService implements OnDestroy {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         this.users$ = collectionData(this.usersCollection, { idField: 'id' });
-        this.usersSubscription = this.users$.subscribe((usersArray) => {
+        this.usersSubscription = this.users$.subscribe(async (usersArray) => {
           const userWithEmail = usersArray.find(user => user.email === userCredential.user.email);
           const userData = {
             avatar: userWithEmail.avatar,
             name: userWithEmail.name
           };
-          localStorage.setItem('userData', JSON.stringify(userData));
-          this.usersSubscription.unsubscribe();
+          this.setLocalStorage(userData)
         });
-        this.router.navigate(['/board']);
+        this.toBoard()
       })
       .catch((error) => {
-        alert('E-Mail oder Passwort ungültig');
+        this.wrongPassword()
       });
+  }
+
+  setLocalStorage(userData) {
+    localStorage.setItem('userData', JSON.stringify(userData));
+    this.usersSubscription.unsubscribe();
+  }
+
+  toBoard() {
+    setTimeout(() => {
+      this.router.navigate(['/board']);
+    }, 800);
+  }
+
+  wrongPassword() {
+    let wrongPassword = document.getElementById('wrong');
+    wrongPassword.innerHTML = 'E-Mail oder Passwort ungültig'
   }
 
   loginWithGoogle() {

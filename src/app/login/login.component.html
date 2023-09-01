@@ -2,16 +2,18 @@
     <mat-card>
         <mat-card-content>
             <h1 class="c-blue login-h1">Anmeldung</h1>
+            <form id="form" (submit)="logIn()" ngNativeValidate #myForm>
             <div class="login-head">
                 <span class="recommendation fw-400">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei deiner Arbeit verwendest.</span>
                 <div class="input-frame">
                     <mat-icon fontIcon="email"></mat-icon>
-                    <input [(ngModel)]="loginData.email" type="email" required placeholder="beispielname@email.com">
+                    <input [(ngModel)]="loginData.email" type="email" name="email" required placeholder="beispielname@email.com" #emailField>
                 </div>
                 <div class="input-frame">
                     <mat-icon fontIcon="lock"></mat-icon>
-                    <input [(ngModel)]="loginData.password" required type="password" placeholder="Passwort">
-                </div>
+                    <input [(ngModel)]="loginData.password" name="password" required type="password" placeholder="Passwort" #passwordField>
+                  </div>
+                  <span id="wrong"></span>
                 <span class="forgot-password fw-400">Passwort vergessen?</span>
             </div>
             <div class="or-container">
@@ -25,10 +27,11 @@
                     <p class="login-with-google">Anmelden mit Google</p>
                 </a>
                 <div class="login-btn">
-                    <a (click)="logIn()" class="login bg-blue fz-16-fw-700">Anmelden</a>
+                  <button class="login bg-blue fz-16-fw-700" #button>Anmelden</button>
                     <a routerLink="/board" class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
                 </div>
             </div>
+          </form>
         </mat-card-content>
     </mat-card>
     <span class=" new fw-400">Neu bei DABubble?</span>
