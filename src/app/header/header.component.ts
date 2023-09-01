@@ -16,10 +16,11 @@ export class HeaderComponent implements OnInit {
     private firebase: FirebaseService,
     private afAuth: Auth) { }
 
-  ngOnInit() {
-    const loggedInUser = this.firebase.getLoggedInUser();
-    this.avatar = loggedInUser.avatar;
-    this.name = loggedInUser.name
+  async ngOnInit() {
+    const loggedInUser = await this.firebase.getLoggedInUser();
+    // this.avatar = loggedInUser.avatar;
+    // this.name = loggedInUser.name
+    console.log(this.firebase.getLoggedInUser())
   }
 
 }
