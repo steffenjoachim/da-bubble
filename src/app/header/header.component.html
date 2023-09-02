@@ -8,8 +8,12 @@
         <mat-icon fontIcon="search"></mat-icon>
     </div>
     <div class="user-frame">
-        <span class="current-user-name" id="current-user-name">{{ name }}</span>
-        <img id="current-user-img" src="{{ avatar }}" alt="image of user">
-        <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
+        <span class="current-user-name" id="current-user-name">{{ loggedUser.name }}</span>
+        <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
+        <mat-icon (click)="openPopup()" fontIcon="keyboard_arrow_down">
+          <div *ngIf="popup" class="popup">
+            <h2 (click)="logout()">log out</h2>
+          </div>
+        </mat-icon>
     </div>
 </div>

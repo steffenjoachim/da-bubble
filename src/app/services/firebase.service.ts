@@ -23,7 +23,7 @@ export class FirebaseService implements OnDestroy {
 
   constructor(public firebase: Firestore,
     private router: Router) {
-    this.getUers()
+    this.getUsers()
   }
 
   ngOnDestroy(): void {
@@ -112,7 +112,7 @@ export class FirebaseService implements OnDestroy {
 
   }
 
-  getUers() {
+  getUsers() {
     this.users$ = collectionData(this.usersCollection, { idField: 'id' })
   }
 

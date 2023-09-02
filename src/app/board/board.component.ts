@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Auth } from '@angular/fire/auth';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -9,15 +11,33 @@ import { Auth } from '@angular/fire/auth';
 })
 export class BoardComponent implements OnInit {
   open: boolean = true;
+  loggedUser: any = {
+    avatar: './assets/img/Profile.png',
+    name: 'Gast'
+  }
+  usersCollection: any = collection(this.firestore, 'users');
+  users: any[] = [];
 
   constructor(
-    private firebase: FirebaseService,
+    public firestore: Firestore,
+    private firebase:FirebaseService,
     private afAuth: Auth
-  ){
+  ){}
 
-  }
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
+    this.loadLoggedUserData();
+    this.getUsers();
+  }
+
+  getUsers() {
+    const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
+
+    console.log(this.loggedUser);
+    usersObservable.subscribe((usersArray) => {
+      this.users = usersArray;
+    });
+    
   }
 
   ngOnDestroy(): void {
@@ -69,6 +89,15 @@ export class BoardComponent implements OnInit {
 
   closeThread(){
     document.getElementById('thread')?.classList.add('d-none');
+  }
+
+  loadLoggedUserData() {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      this.loggedUser.avatar = userData.avatar;
+      this.loggedUser.name = userData.name;
+    }
   }
 
 }

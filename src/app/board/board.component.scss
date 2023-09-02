@@ -97,6 +97,33 @@
     display: flex;
 }
 
+.direct-message-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 32px;
+    img{
+        height: 48px;
+        width: 48px;
+    }
+
+    span{
+        font-size: 18px;
+        font-weight: 400;
+        margin-left: 8px;
+    }
+    .you, .others{
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 25px;
+        &:hover{
+            background: rgb(236, 238, 254);;
+        }
+    }
+}
+
 .content-box {
     position: relative;
     flex: 1;
