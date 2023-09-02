@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -17,12 +17,12 @@ export class FirebaseService implements OnDestroy {
   private usersSubscription: Subscription
 
   loggedUser: any = {
-    avatar: '',
+    avatar: './assets/img/avatarinteractionmobile3.png',
     name: ''
   }
 
   constructor(public firebase: Firestore,
-    private router: Router) {
+    private router: Router,) {
     this.getUers()
   }
 
@@ -93,27 +93,23 @@ export class FirebaseService implements OnDestroy {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        // The signed-in user info.
         const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+        this.loggedUser.name = user.displayName
+        console.log(this.loggedUser)
+        this.setLocalStorage(this.loggedUser)
       }).catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
       });
-
+    setTimeout(() => {
+      this.toBoard()
+    }, 2500);
   }
 
   getUers() {
     this.users$ = collectionData(this.usersCollection, { idField: 'id' })
   }
-
 }
