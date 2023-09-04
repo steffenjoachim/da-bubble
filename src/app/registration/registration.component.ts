@@ -23,7 +23,6 @@ export class RegistrationComponent {
     './assets/img/avatarinteractionmobile3.png',
     './assets/img/avatarinteractionmobile4.png',
     './assets/img/avatarinteractionmobile5.png',
-
   ]
 
   registirationComplete: boolean = false;
@@ -60,8 +59,6 @@ export class RegistrationComponent {
       alert('Fehler beim Hinzufügen des Benutzers. Bitte versuche erneut');
     }
   }
-
-
 
   closeRegistration() {
     this.close = false;
