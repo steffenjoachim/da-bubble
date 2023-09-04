@@ -33,7 +33,6 @@ export class BoardComponent implements OnInit {
   }
 
   postChat() {
-    this.showName(name)
     this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient)
   }
 
