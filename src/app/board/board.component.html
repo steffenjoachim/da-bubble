@@ -43,13 +43,13 @@
                             <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
                             <span class="current-user-name" id="current-user-name">{{ loggedUser.name }} (Du)</span>
                         </div>
-                        <div class="others" *ngFor="let user of users">
+                        <div class="others" (click)="showName(user.name)" *ngFor="let user of users">
                             <ng-container *ngIf="user.name !== loggedUser.name">
                               <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
                               <span class="current-user-name" id="current-user-name">{{ user.name }}</span>
                             </ng-container>
                           </div>
-                          
+
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="message-frame">
             <div class="input-frame">
-                <textarea placeholder="Nachricht an #Entwicklerteam" name="Nachricht" id="" cols="37"
+                <textarea [(ngModel)]="message" placeholder="Nachricht an #Entwicklerteam" name="Nachricht" id="" cols="37"
                     rows="9"></textarea>
             </div>
             <div class="icon-container">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="icon-right">
-                    <img class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+                    <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
                 </div>
             </div>
         </div>

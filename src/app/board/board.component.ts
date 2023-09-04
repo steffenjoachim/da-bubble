@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { ChatService } from '../services/chats/chat.service';
 
 @Component({
   selector: 'app-board',
@@ -16,14 +17,29 @@ export class BoardComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
 
+  message: string;
+  selectedRecipient: string;
+
+
   constructor(
     public firestore: Firestore,
-    private firebase: FirebaseService) { }
+    private firebase: FirebaseService,
+    private chats: ChatService) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+  }
+
+  postChat() {
+    this.showName(name)
+    this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient)
+  }
+
+  showName(name) {
+    this.selectedRecipient = name
+    console.log(name)
   }
 
   getUsers() {
@@ -93,7 +109,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  setChat(){
+  setChat() {
 
   }
 
