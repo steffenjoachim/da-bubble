@@ -63,8 +63,8 @@ export class FirebaseService implements OnDestroy {
             name: userWithEmail.name
           };
           this.setLocalStorage(userData)
+          this.router.navigate(['/board']);
         });
-        this.toBoard()
       })
       .catch((error) => {
         this.wrongPassword()
@@ -73,13 +73,6 @@ export class FirebaseService implements OnDestroy {
 
   setLocalStorage(userData) {
     localStorage.setItem('userData', JSON.stringify(userData));
-    this.usersSubscription.unsubscribe();
-  }
-
-  toBoard() {
-    setTimeout(() => {
-      this.router.navigate(['/board']);
-    }, 800);
   }
 
   wrongPassword() {
@@ -93,20 +86,14 @@ export class FirebaseService implements OnDestroy {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
-        this.loggedUser.name = user.displayName
-        console.log(this.loggedUser)
-        this.setLocalStorage(this.loggedUser)
-      }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        this.loggedUser.name = user.displayName;
+        this.setLocalStorage(this.loggedUser);
+        this.router.navigate(['/board']);
+      })
+      .catch((error) => {
+        console.error('Fehler bei der Google-Authentifizierung:', error);
       });
-    setTimeout(() => {
-      this.toBoard()
-    }, 2500);
   }
 
   getUsers() {

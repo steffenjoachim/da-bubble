@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Auth } from '@angular/fire/auth';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -20,9 +18,7 @@ export class BoardComponent implements OnInit {
 
   constructor(
     public firestore: Firestore,
-    private firebase:FirebaseService,
-    private afAuth: Auth
-  ){}
+    private firebase: FirebaseService) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -36,14 +32,13 @@ export class BoardComponent implements OnInit {
     usersObservable.subscribe((usersArray) => {
       this.users = usersArray;
     });
-    
   }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
   }
 
-  closeSideBar(){
+  closeSideBar() {
     if (this.open) {
       document.getElementById('side-bar')?.classList.add('d-none');
       document.getElementById('close-x')?.classList.add('d-none');
@@ -61,32 +56,31 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  openChannels(){
+  openChannels() {
     document.getElementById('channels-body').classList.remove('d-none');
     document.getElementById('arrow-drop-down').classList.remove('d-none');
     document.getElementById('arrow-right').classList.add('d-none');
   }
 
-  closeChannels(){
+  closeChannels() {
     document.getElementById('channels-body').classList.add('d-none');
     document.getElementById('arrow-drop-down').classList.add('d-none');
     document.getElementById('arrow-right').classList.remove('d-none');
   }
 
-  closeDirectMessages(){
+  closeDirectMessages() {
     document.getElementById('direct-messages-body').classList.add('d-none');
     document.getElementById('arrow-drop-down2').classList.add('d-none');
     document.getElementById('arrow-right2').classList.remove('d-none');
-
   }
 
-  openDirectMessages(){
+  openDirectMessages() {
     document.getElementById('direct-messages-body').classList.remove('d-none');
     document.getElementById('arrow-drop-down2').classList.remove('d-none');
     document.getElementById('arrow-right2').classList.add('d-none');
   }
 
-  closeThread(){
+  closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
   }
 

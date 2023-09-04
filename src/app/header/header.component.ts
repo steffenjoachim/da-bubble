@@ -1,7 +1,5 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../services/firebase.service';
-import { Auth } from '@angular/fire/auth';
 import { getAuth, signOut } from "firebase/auth";
 
 @Component({
@@ -19,8 +17,6 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(
-    private firebase: FirebaseService,
-    private afAuth: Auth,
     private router: Router) { }
 
   ngOnInit() {
