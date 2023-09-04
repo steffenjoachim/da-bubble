@@ -33,7 +33,6 @@ export class BoardComponent implements OnInit {
   getUsers() {
     const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
 
-    console.log(this.loggedUser);
     usersObservable.subscribe((usersArray) => {
       this.users = usersArray;
     });
@@ -98,6 +97,10 @@ export class BoardComponent implements OnInit {
       this.loggedUser.avatar = userData.avatar;
       this.loggedUser.name = userData.name;
     }
+  }
+
+  setChat(){
+
   }
 
 }
