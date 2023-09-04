@@ -19,10 +19,10 @@ export class ChatService {
   constructor(private firebase: Firestore) { }
 
   postChat(message, sender, recipient) {
-    this.chats.message = message
-    this.chats.sender = sender
-    this.chats.receiver = recipient
-    console.log(recipient)
-    addDoc(this.chatCollection, this.chats)
+    this.chats.message = message;
+    this.chats.sender = sender;
+    this.chats.receiver = recipient;
+    console.log(recipient);
+    addDoc(this.chatCollection, this.chats);
   }
 }
