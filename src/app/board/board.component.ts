@@ -25,6 +25,7 @@ export class BoardComponent implements OnInit {
 
   message: string;
   selectedRecipient: string;
+  relevantChats = [];
 
 
   constructor(
@@ -36,7 +37,7 @@ export class BoardComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.getChats();
+    this.getChats(name);
   }
 
   postChat() {
@@ -47,6 +48,7 @@ export class BoardComponent implements OnInit {
   showChat(name) {
     this.selectedRecipient = name;
     this.interlocutor = '@ ' + name;
+    this.getChats(name)
   }
 
   showChannel() {
@@ -60,10 +62,19 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getChats() {
+  getChats(name) {
+    this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' })
     this.chats$.subscribe((chat: any) => {
+      for (let i = 0; i < chat.length; i++) {
+        const element = chat[i];
+        if ((this.loggedUser.name == element.sender && name == element.receiver) ||
+          (this.loggedUser.name == element.receiver && name == element.sender)) {
+          this.relevantChats.push(element)
+        }
+      }
     })
+    console.log(this.relevantChats)
   }
 
   ngOnDestroy(): void {

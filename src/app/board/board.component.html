@@ -51,7 +51,7 @@
             </div>
             <div class="others" (click)="showChat(user.name)"
               *ngFor="let user of users">
-              <ng-container *ngIf="user.name !== loggedUser.name">
+              <ng-container *ngIf="user.name">
                 <img id="current-user-img" src="{{ user.avatar }}"
                   alt="image of user">
                 <span class="current-user-name" id="current-user-name">{{
@@ -72,18 +72,14 @@
       </button>
     </div>
     <div class="content-frame">
-      <!-- <div class="sent-message">
+      <div>
         <span>
-          sent
         </span>
-      </div> -->
-      <div class="recieved-message" *ngFor="let chat of chats$ | async">
-        <ng-container
-          *ngIf="(loggedUser.name == chat.sender && selectedRecipient == chat.receiver) ||
-        (loggedUser.name == chat.receiver && selectedRecipient == chat.sender)">
-          <span>{{ chat.message }}</span>
-        </ng-container>
       </div>
+      <div *ngFor="let chat of relevantChats" class="recieved-message">
+        <span *ngIf="chat.message">{{ chat.message }}</span>
+      </div>
+
     </div>
     <div class="message-frame">
       <div class="input-frame">
