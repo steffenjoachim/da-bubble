@@ -1,117 +1,132 @@
 <app-header></app-header>
 <div class="main-container">
-    <div id="side-bar" class="side-bar">
-        <div class="sidebar-head">
-            <img src="./assets/img/Workspace logo.png" alt="code learning logo">
-            <span>Code learning</span>
-            <img class="edit-square" src="./assets/img/edit_square.png" alt="">
-        </div>
-        <div class="channels-frame">
-            <div class="channels-head">
-                <mat-icon (click)="closeChannels()" id="arrow-drop-down" class="arrow-drop-down"
-                    fontIcon="arrow_drop_down"></mat-icon>
-                <mat-icon (click)="openChannels()" id="arrow-right" class="arrow-right d-none"
-                    fontIcon="arrow_right"></mat-icon>
-                <mat-icon fontIcon="workspaces"></mat-icon>
-                <div class="channels">
-                    <span>Channels</span>
-                </div>
-                <mat-icon class="add" fontIcon="add"></mat-icon>
-            </div>
-            <div id="channels-body" class="channels-body">
-                <div (click)="showChannel()" class="entwicklerteam c-blue">
-                    <span># Entwicklerteam</span>
-                </div>
-                <div class="add-channel">
-                    <mat-icon fontIcon="add_circle"></mat-icon>
-                    <span>Channel hinzufügen</span>
-                </div>
-            </div>
-            <div class="direct-messages">
-                <div class="direct-messages-frame">
-                    <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2" class="arrow-drop-down"
-                        fontIcon="arrow_drop_down"></mat-icon>
-                    <mat-icon (click)="openDirectMessages()" id="arrow-right2" class="arrow-right d-none"
-                        fontIcon="arrow_right"></mat-icon>
-                    <div class="channels">
-                        <span>Direktnachrichten</span>
-                    </div>
-                </div>
-                <div class="direct-messages-body" id="direct-messages-body">
-                    <div class="direct-message-container">
-                        <div class="you">
-                            <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
-                            <span class="current-user-name" id="current-user-name">{{ loggedUser.name }} (Du)</span>
-                        </div>
-                        <div class="others" (click)="showChat(user.name)" *ngFor="let user of users">
-                            <ng-container *ngIf="user.name !== loggedUser.name">
-                              <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
-                              <span class="current-user-name" id="current-user-name">{{ user.name }}</span>
-                            </ng-container>
-                          </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div id="side-bar" class="side-bar">
+    <div class="sidebar-head">
+      <img src="./assets/img/Workspace logo.png" alt="code learning logo">
+      <span>Code learning</span>
+      <img class="edit-square" src="./assets/img/edit_square.png" alt>
     </div>
-    <div class="content-box">
-        <div class="content-head">
-            <button>
-                <span class="selectedInterloctor">{{ interlocutor }}</span>
-                <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
-            </button>
+    <div class="channels-frame">
+      <div class="channels-head">
+        <mat-icon (click)="closeChannels()" id="arrow-drop-down"
+          class="arrow-drop-down"
+          fontIcon="arrow_drop_down"></mat-icon>
+        <mat-icon (click)="openChannels()" id="arrow-right"
+          class="arrow-right d-none"
+          fontIcon="arrow_right"></mat-icon>
+        <mat-icon fontIcon="workspaces"></mat-icon>
+        <div class="channels">
+          <span>Channels</span>
         </div>
-        <div class="content-frame">
-            <div class="sent-message">
-                <span>Assalamu alaikum
-                </span>
+        <mat-icon class="add" fontIcon="add"></mat-icon>
+      </div>
+      <div id="channels-body" class="channels-body">
+        <div (click)="showChannel()" class="entwicklerteam c-blue">
+          <span># Entwicklerteam</span>
+        </div>
+        <div class="add-channel">
+          <mat-icon fontIcon="add_circle"></mat-icon>
+          <span>Channel hinzufügen</span>
+        </div>
+      </div>
+      <div class="direct-messages">
+        <div class="direct-messages-frame">
+          <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2"
+            class="arrow-drop-down"
+            fontIcon="arrow_drop_down"></mat-icon>
+          <mat-icon (click)="openDirectMessages()" id="arrow-right2"
+            class="arrow-right d-none"
+            fontIcon="arrow_right"></mat-icon>
+          <div class="channels">
+            <span>Direktnachrichten</span>
+          </div>
+        </div>
+        <div class="direct-messages-body" id="direct-messages-body">
+          <div class="direct-message-container">
+            <div class="you">
+              <img id="current-user-img" src="{{ loggedUser.avatar }}"
+                alt="image of user">
+              <span class="current-user-name" id="current-user-name">{{
+                loggedUser.name }} (Du)</span>
             </div>
-            <div class="recieved-message">
-                <span>Wa alaikum Assalam
-                </span>
+            <div class="others" (click)="showChat(user.name)"
+              *ngFor="let user of users">
+              <ng-container *ngIf="user.name !== loggedUser.name">
+                <img id="current-user-img" src="{{ user.avatar }}"
+                  alt="image of user">
+                <span class="current-user-name" id="current-user-name">{{
+                  user.name }}</span>
+              </ng-container>
             </div>
 
+          </div>
         </div>
-        <div class="message-frame">
-            <div class="input-frame">
-                <textarea [(ngModel)]="message" placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id="" cols="37"
-                    rows="9"></textarea>
-            </div>
-            <div class="icon-container">
-                <div class="icon-left">
-                    <div class="icon-div">
-                        <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
-                    </div>
-                    <div class="icon-div">
-                        <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
-                    </div>
-                    <div class="icon-div">
-                        <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
-                    </div>
-                </div>
-                <div class="icon-right">
-                    <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div id="thread" class="thread">
-        <div class="thread-head">
-            <div class="thread-text">
-                <span>Thread</span>
-                <p class="thread-blue c-blue"># Entwicklerteam</p>
-            </div>
-            <div (click)="closeThread()">
-                <mat-icon fontIcon="close"></mat-icon>
-            </div>
+  </div>
+  <div class="content-box">
+    <div class="content-head">
+      <button>
+        <span class="selectedInterloctor">{{ interlocutor }}</span>
+        <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
+      </button>
+    </div>
+    <div class="content-frame">
+      <!-- <div class="sent-message">
+        <span>
+          sent
+        </span>
+      </div> -->
+      <div class="recieved-message" *ngFor="let chat of chats$ | async">
+        <ng-container
+          *ngIf="(loggedUser.name == chat.sender && selectedRecipient == chat.receiver) ||
+        (loggedUser.name == chat.receiver && selectedRecipient == chat.sender)">
+          <span>{{ chat.message }}</span>
+        </ng-container>
+      </div>
+    </div>
+    <div class="message-frame">
+      <div class="input-frame">
+        <textarea [(ngModel)]="message"
+          placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id
+          cols="37"
+          rows="9"></textarea>
+      </div>
+      <div class="icon-container">
+        <div class="icon-left">
+          <div class="icon-div">
+            <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
+          </div>
+          <div class="icon-div">
+            <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+          </div>
+          <div class="icon-div">
+            <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
+          </div>
         </div>
+        <div class="icon-right">
+          <img (click)="postChat()" class="submit-arrow"
+            src="./assets/img/Send icon.png" alt="submit arrow">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="thread" class="thread">
+    <div class="thread-head">
+      <div class="thread-text">
+        <span>Thread</span>
+        <p class="thread-blue c-blue"># Entwicklerteam</p>
+      </div>
+      <div (click)="closeThread()">
+        <mat-icon fontIcon="close"></mat-icon>
+      </div>
+    </div>
 
-    </div>
+  </div>
 </div>
 <div (click)="closeSideBar()" class="close-workshop-menu">
-    <mat-icon id="close-x" fontIcon="close"></mat-icon>
-    <mat-icon id="open-arrow" class="d-none" fontIcon="arrow_forwards_ios"></mat-icon>
-    <p id="close-workspace">Workspace-Menü schließen</p>
-    <p id="open-workspace" class="d-none">Workspace-Menü öffnen</p>
+  <mat-icon id="close-x" fontIcon="close"></mat-icon>
+  <mat-icon id="open-arrow" class="d-none" fontIcon="arrow_forwards_ios"></mat-icon>
+  <p id="close-workspace">Workspace-Menü schließen</p>
+  <p id="open-workspace" class="d-none">Workspace-Menü öffnen</p>
 </div>

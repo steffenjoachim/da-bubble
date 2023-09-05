@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -14,8 +15,11 @@ export class BoardComponent implements OnInit {
     avatar: './assets/img/Profile.png',
     name: 'Gast'
   }
+
+  chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
+  chats$ !: Observable<any>;
 
   interlocutor = '# Entwicklerteam'
 
@@ -32,30 +36,34 @@ export class BoardComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+    this.getChats();
   }
 
   postChat() {
     this.showChat(this.selectedRecipient);
-    console.log(this.selectedRecipient);
     this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
   }
 
   showChat(name) {
     this.selectedRecipient = name;
     this.interlocutor = '@ ' + name;
-    console.log(name);
   }
 
-  showChannel(){
+  showChannel() {
     this.interlocutor = '# Entwicklerteam';
   }
 
   getUsers() {
     const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
-
     usersObservable.subscribe((usersArray) => {
       this.users = usersArray;
     });
+  }
+
+  getChats() {
+    this.chats$ = collectionData(this.chatCollection, { idField: 'id' })
+    this.chats$.subscribe((chat: any) => {
+    })
   }
 
   ngOnDestroy(): void {
