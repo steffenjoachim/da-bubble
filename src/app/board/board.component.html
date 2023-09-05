@@ -19,7 +19,7 @@
                 <mat-icon class="add" fontIcon="add"></mat-icon>
             </div>
             <div id="channels-body" class="channels-body">
-                <div class="entwicklerteam c-blue">
+                <div (click)="showChannel()" class="entwicklerteam c-blue">
                     <span># Entwicklerteam</span>
                 </div>
                 <div class="add-channel">
@@ -43,7 +43,7 @@
                             <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
                             <span class="current-user-name" id="current-user-name">{{ loggedUser.name }} (Du)</span>
                         </div>
-                        <div class="others" (click)="showName(user.name)" *ngFor="let user of users">
+                        <div class="others" (click)="showChat(user.name)" *ngFor="let user of users">
                             <ng-container *ngIf="user.name !== loggedUser.name">
                               <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
                               <span class="current-user-name" id="current-user-name">{{ user.name }}</span>
@@ -58,7 +58,7 @@
     <div class="content-box">
         <div class="content-head">
             <button>
-                <p>#</p><span>Entwicklerteam</span>
+                <span class="selectedInterloctor">{{ interlocutor }}</span>
                 <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
             </button>
         </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="message-frame">
             <div class="input-frame">
-                <textarea [(ngModel)]="message" placeholder="Nachricht an #Entwicklerteam" name="Nachricht" id="" cols="37"
+                <textarea [(ngModel)]="message" placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id="" cols="37"
                     rows="9"></textarea>
             </div>
             <div class="icon-container">

@@ -17,6 +17,8 @@ export class BoardComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
 
+  interlocutor = '# Entwicklerteam'
+
   message: string;
   selectedRecipient: string;
 
@@ -33,14 +35,19 @@ export class BoardComponent implements OnInit {
   }
 
   postChat() {
-    this.showName(this.selectedRecipient);
+    this.showChat(this.selectedRecipient);
     console.log(this.selectedRecipient);
     this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
   }
 
-  showName(name) {
+  showChat(name) {
     this.selectedRecipient = name;
+    this.interlocutor = '@ ' + name;
     console.log(name);
+  }
+
+  showChannel(){
+    this.interlocutor = '# Entwicklerteam';
   }
 
   getUsers() {
