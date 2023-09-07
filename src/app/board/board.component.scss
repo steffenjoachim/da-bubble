@@ -129,9 +129,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 1000px;
     background: white;
     border-radius: 25px;
     margin-left: 16px;
@@ -183,11 +180,14 @@
         }
     }
 
-
+.message-container{
+    display: flex;
+    justify-content: center;
+}
 
 .message-frame {
     height: 20vh;
-    width: 40%;
+    width: 43%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -201,10 +201,16 @@
         justify-content: center;
 
         textarea{
-            margin-top: 16px;
+            padding-top: 4px;
             border: none;
             resize: none;
-            width: 90%;
+            width: 100%;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            &::placeholder{
+                padding-top: 6px;
+                padding-left: 6px;
+            }
         }
         
         input{
@@ -235,10 +241,7 @@
 }
 
 .content-frame{
-    position: absolute;
-    top: 100px;
-    left: 32px;
-    // z-index: -1;
+    padding: 0 16px;
     
 }
 
@@ -338,6 +341,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: white;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 
 .icon-left{

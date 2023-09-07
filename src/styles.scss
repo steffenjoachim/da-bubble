@@ -40,9 +40,14 @@ a{
 }
 
 .message-content{
-    position: relative;
+    padding-top: 32px;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
     .sent-message{
-        width: auto;
+        display: flex;
+        justify-content: flex-start;
+        // width: auto;
         height: auto;
         border: 1px solid black;
         border-radius: 25px;
@@ -54,7 +59,9 @@ a{
     }
     
     .recieved-message{
-        width: auto;
+        display: flex;
+        justify-content: flex-end;
+        // width: auto;
         height: auto;
         border: none;
         background: rgb(236, 238, 254);

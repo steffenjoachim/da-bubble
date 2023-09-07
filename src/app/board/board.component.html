@@ -8,11 +8,9 @@
     </div>
     <div class="channels-frame">
       <div class="channels-head">
-        <mat-icon (click)="closeChannels()" id="arrow-drop-down"
-          class="arrow-drop-down"
+        <mat-icon (click)="closeChannels()" id="arrow-drop-down" class="arrow-drop-down"
           fontIcon="arrow_drop_down"></mat-icon>
-        <mat-icon (click)="openChannels()" id="arrow-right"
-          class="arrow-right d-none"
+        <mat-icon (click)="openChannels()" id="arrow-right" class="arrow-right d-none"
           fontIcon="arrow_right"></mat-icon>
         <mat-icon fontIcon="workspaces"></mat-icon>
         <div class="channels">
@@ -31,11 +29,9 @@
       </div>
       <div class="direct-messages">
         <div class="direct-messages-frame">
-          <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2"
-            class="arrow-drop-down"
+          <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2" class="arrow-drop-down"
             fontIcon="arrow_drop_down"></mat-icon>
-          <mat-icon (click)="openDirectMessages()" id="arrow-right2"
-            class="arrow-right d-none"
+          <mat-icon (click)="openDirectMessages()" id="arrow-right2" class="arrow-right d-none"
             fontIcon="arrow_right"></mat-icon>
           <div class="channels">
             <span>Direktnachrichten</span>
@@ -44,16 +40,13 @@
         <div class="direct-messages-body" id="direct-messages-body">
           <div class="direct-message-container">
             <div class="you">
-              <img id="current-user-img" src="{{ loggedUser.avatar }}"
-                alt="image of user">
+              <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
               <span class="current-user-name" id="current-user-name">{{
                 loggedUser.name }} (Du)</span>
             </div>
-            <div class="others" (click)="showChat(user.name)"
-              *ngFor="let user of users">
+            <div class="others" (click)="showChat(user.name)" *ngFor="let user of users">
               <ng-container *ngIf="user.name != loggedUser.name">
-                <img id="current-user-img" src="{{ user.avatar }}"
-                  alt="image of user">
+                <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
                 <span class="current-user-name" id="current-user-name">{{
                   user.name }}</span>
               </ng-container>
@@ -87,28 +80,27 @@
         </div> -->
       </div>
     </div>
-    <div class="message-frame">
-      <div class="input-frame">
-        <textarea [(ngModel)]="message"
-          placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id
-          cols="37"
-          rows="9"></textarea>
-      </div>
-      <div class="icon-container">
-        <div class="icon-left">
-          <div class="icon-div">
-            <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
-          </div>
-          <div class="icon-div">
-            <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
-          </div>
-          <div class="icon-div">
-            <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
-          </div>
+    <div class="message-container">
+      <div class="message-frame">
+        <div class="input-frame">
+          <textarea [(ngModel)]="message" placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id cols="37"
+            rows="9"></textarea>
         </div>
-        <div class="icon-right">
-          <img (click)="postChat()" class="submit-arrow"
-            src="./assets/img/Send icon.png" alt="submit arrow">
+        <div class="icon-container">
+          <div class="icon-left">
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
+            </div>
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+            </div>
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
+            </div>
+          </div>
+          <div class="icon-right">
+            <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+          </div>
         </div>
       </div>
     </div>
