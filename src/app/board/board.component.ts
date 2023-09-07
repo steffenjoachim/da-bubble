@@ -114,10 +114,6 @@ export class BoardComponent implements OnInit {
     const hour = jsDate.getHours();
     const minute = jsDate.getMinutes();
     const second = jsDate.getSeconds();
-
-    console.log(`Heutiges Datum: ${day}.${month}.${year}`);
-
-
     return `
       <div class="sent-message">
         <span>${day}.${month}.${year}  ${hour}.${minute}.${second}</span>
@@ -127,10 +123,16 @@ export class BoardComponent implements OnInit {
 
 
   returnRecievedMessageChat(element) {
-    const date = element.timeStamp.toString()
+    const unixTimestamp = element.timeStamp;
+    const jsDate = new Date(unixTimestamp * 1000); const day = jsDate.getDate();
+    const month = jsDate.getMonth() + 1;
+    const year = jsDate.getFullYear();
+    const hour = jsDate.getHours();
+    const minute = jsDate.getMinutes();
+    const second = jsDate.getSeconds();
     return `
     <div class="recieved-message">
-    <span>${date}</span>
+    <span>${day}.${month}.${year}  ${hour}.${minute}.${second}</span>
         </div>
     `
   }
