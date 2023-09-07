@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
 
@@ -69,35 +69,31 @@ export class BoardComponent implements OnInit {
       for (let i = 0; i < chats.length; i++) {
         let element = chats[i];
         if ((this.loggedUser.name == element.sender && name == element.receiver) ||
-            (this.loggedUser.name == element.receiver && name == element.sender)) {
+          (this.loggedUser.name == element.receiver && name == element.sender)) {
           // Konvertiere den Zeitstempel in ein JavaScript-Datumsobjekt
           element.timeStamp = new Date(element.timeStamp);
           this.relevantChats.push(element);
         }
       }
-  
+
       // Sortiere relevantChats nach dem Timestamp
       // Sortiere relevantChats nach dem Zeitstempel
       this.relevantChats.sort((a, b) => {
-        const timeA = a.timestamp instanceof Date ? a.timestamp.getTime() : 0;
-        const timeB = b.timestamp instanceof Date ? b.timestamp.getTime() : 0;
-        if (timeA < timeB) return -1;
-        if (timeA > timeB) return 1;
-        return 0;
+        return a.timeStamp - b.timeStamp;
       });
 
       console.log(this.relevantChats);
-  
+
       // Jetzt kannst du die sortierten Chats rendern
       this.renderChats();
     });
   }
-  
-  
+
+
   renderChats() {
     let content = document.getElementById('message-content');
     content.innerHTML = "";
-  
+
     for (let i = 0; i < this.relevantChats.length; i++) {
       let element = this.relevantChats[i];
       if (this.loggedUser.name == element.sender) {
@@ -107,21 +103,34 @@ export class BoardComponent implements OnInit {
       }
     }
   }
-  
-  
 
-  returnStentMessageChat(element){
+
+
+  returnStentMessageChat(element) {
+    const unixTimestamp = element.timeStamp;
+    const jsDate = new Date(unixTimestamp * 1000); const day = jsDate.getDate();
+    const month = jsDate.getMonth() + 1;
+    const year = jsDate.getFullYear();
+    const hour = jsDate.getHours();
+    const minute = jsDate.getMinutes();
+    const second = jsDate.getSeconds();
+
+    console.log(`Heutiges Datum: ${day}.${month}.${year}`);
+
+
     return `
-    <div class="sent-message">
-          <span>${element.message}</span>
-        </div>
-    `
+      <div class="sent-message">
+        <span>${day}.${month}.${year}  ${hour}.${minute}.${second}</span>
+      </div>
+    `;
   }
 
-  returnRecievedMessageChat(element){
+
+  returnRecievedMessageChat(element) {
+    const date = element.timeStamp.toString()
     return `
     <div class="recieved-message">
-          <span>${element.message}</span>
+    <span>${date}</span>
         </div>
     `
   }
