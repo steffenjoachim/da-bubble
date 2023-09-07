@@ -51,7 +51,7 @@
             </div>
             <div class="others" (click)="showChat(user.name)"
               *ngFor="let user of users">
-              <ng-container *ngIf="user.name">
+              <ng-container *ngIf="user.name != loggedUser.name">
                 <img id="current-user-img" src="{{ user.avatar }}"
                   alt="image of user">
                 <span class="current-user-name" id="current-user-name">{{
@@ -76,10 +76,16 @@
         <span>
         </span>
       </div>
-      <div *ngFor="let chat of relevantChats" class="recieved-message">
+      <!-- <div *ngFor="let chat of relevantChats" class="{{ class }}">
+        <ng-container>
         <span *ngIf="chat.message">{{ chat.message }}</span>
+        </ng-container>
+      </div> -->
+      <div class="message-content" id="message-content">
+        <!-- <div class="sent-message">
+          <span>{{ element.message }}</span>
+        </div> -->
       </div>
-
     </div>
     <div class="message-frame">
       <div class="input-frame">

@@ -191,7 +191,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    z-index: 1; 
+    z-index: 9; 
     position: fixed;
     bottom: 0 !important;
     border: 1px solid rgba(0, 0, 0, .2);
@@ -222,6 +222,7 @@
         .icon-container{
             height: 30px;
             width: 40%;
+            z-index: 99;
         }
     }
 }
@@ -237,28 +238,39 @@
     position: absolute;
     top: 100px;
     left: 32px;
-    .sent-message{
-        width: auto;
-        height: auto;
-        border: 1px solid black;
-        border-radius: 25px;
-        padding: 8px;
-        margin-bottom: 8cap;
-    }
-
-    .recieved-message{
-        width: auto;
-        height: auto;
-        border: none;
-        background: rgb(236, 238, 254);
-        border-radius: 25px;
-        padding: 8px;
-        margin-top: 8px;
-        right: 16px;
-        margin-left: 150px;
-    }
+    // z-index: -1;
+    
 }
 
+// .message-content{
+//     position: relative;
+//     .sent-message{
+//         width: auto;
+//         height: auto;
+//         border: 1px solid black;
+//         border-radius: 25px;
+//         padding: 8px;
+//         margin-top: 8px;
+//         margin-bottom: 8px;
+//         // position: absolute;
+//         // left: 16px;
+//     }
+    
+//     .recieved-message{
+//         width: auto;
+//         height: auto;
+//         border: none;
+//         background: rgb(236, 238, 254);
+//         border-radius: 25px;
+//         padding: 8px;
+//         margin-top: 8px;
+//         margin-bottom: 8px;
+//         right: 16px;
+//         margin-left: 150px;
+//         // position: absolute;
+//         // right: 16px;
+//     }
+// }
 
 
 .thread{

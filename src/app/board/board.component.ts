@@ -48,7 +48,7 @@ export class BoardComponent implements OnInit {
   showChat(name) {
     this.selectedRecipient = name;
     this.interlocutor = '@ ' + name;
-    this.getChats(name)
+    this.getChats(name);
   }
 
   showChannel() {
@@ -64,17 +64,66 @@ export class BoardComponent implements OnInit {
 
   getChats(name) {
     this.relevantChats = [];
-    this.chats$ = collectionData(this.chatCollection, { idField: 'id' })
-    this.chats$.subscribe((chat: any) => {
-      for (let i = 0; i < chat.length; i++) {
-        const element = chat[i];
+    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+    this.chats$.subscribe((chats: any[]) => {
+      for (let i = 0; i < chats.length; i++) {
+        let element = chats[i];
         if ((this.loggedUser.name == element.sender && name == element.receiver) ||
-          (this.loggedUser.name == element.receiver && name == element.sender)) {
-          this.relevantChats.push(element)
+            (this.loggedUser.name == element.receiver && name == element.sender)) {
+          // Konvertiere den Zeitstempel in ein JavaScript-Datumsobjekt
+          element.timeStamp = new Date(element.timeStamp);
+          this.relevantChats.push(element);
         }
       }
-    })
-    console.log(this.relevantChats)
+  
+      // Sortiere relevantChats nach dem Timestamp
+      // Sortiere relevantChats nach dem Zeitstempel
+      this.relevantChats.sort((a, b) => {
+        const timeA = a.timestamp instanceof Date ? a.timestamp.getTime() : 0;
+        const timeB = b.timestamp instanceof Date ? b.timestamp.getTime() : 0;
+        if (timeA < timeB) return -1;
+        if (timeA > timeB) return 1;
+        return 0;
+      });
+
+      console.log(this.relevantChats);
+  
+      // Jetzt kannst du die sortierten Chats rendern
+      this.renderChats();
+    });
+  }
+  
+  
+  renderChats() {
+    let content = document.getElementById('message-content');
+    content.innerHTML = "";
+  
+    for (let i = 0; i < this.relevantChats.length; i++) {
+      let element = this.relevantChats[i];
+      if (this.loggedUser.name == element.sender) {
+        content.innerHTML += this.returnStentMessageChat(element);
+      } else {
+        content.innerHTML += this.returnRecievedMessageChat(element);
+      }
+    }
+  }
+  
+  
+
+  returnStentMessageChat(element){
+    return `
+    <div class="sent-message">
+          <span>${element.message}</span>
+        </div>
+    `
+  }
+
+  returnRecievedMessageChat(element){
+    return `
+    <div class="recieved-message">
+          <span>${element.message}</span>
+        </div>
+    `
   }
 
   ngOnDestroy(): void {

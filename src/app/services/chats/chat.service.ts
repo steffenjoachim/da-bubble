@@ -7,6 +7,8 @@ import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 export class ChatService {
 
   chatDate = new Date().toString().slice(4, 21)
+ 
+  
 
   chats: any = {
     sender: '',
