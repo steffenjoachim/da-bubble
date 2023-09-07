@@ -3,6 +3,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-board',
@@ -108,15 +109,24 @@ export class BoardComponent implements OnInit {
 
   returnStentMessageChat(element) {
     const unixTimestamp = element.timeStamp;
-    const jsDate = new Date(unixTimestamp * 1000); const day = jsDate.getDate();
-    const month = jsDate.getMonth() + 1;
+    const jsDate = new Date(unixTimestamp * 1000);
+    const day = jsDate.getDate().toString().padStart(2, '0');
+    const month = (jsDate.getMonth() + 1).toString().padStart(2, '0');
     const year = jsDate.getFullYear();
     const hour = jsDate.getHours();
-    const minute = jsDate.getMinutes();
-    const second = jsDate.getSeconds();
+    const minute = jsDate.getMinutes().toString().padStart(2, '0');
     return `
+    <div class="sent-container">
+    <div class="sent-name-avatar">
+    <div><span>${this.loggedUser.name}</span>
       <div class="sent-message">
-        <span>${day}.${month}.${year}  ${hour}.${minute}.${second}</span>
+        <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
+        <span>${element.message}</span>
+      </div>
+      </div>
+      <img class="avatar" src="${this.loggedUser.avatar}">
+      </div>
+      </div>
       </div>
     `;
   }
@@ -124,15 +134,17 @@ export class BoardComponent implements OnInit {
 
   returnRecievedMessageChat(element) {
     const unixTimestamp = element.timeStamp;
-    const jsDate = new Date(unixTimestamp * 1000); const day = jsDate.getDate();
-    const month = jsDate.getMonth() + 1;
+    const jsDate = new Date(unixTimestamp * 1000);
+    const day = jsDate.getDate().toString().padStart(2, '0');
+    const month = (jsDate.getMonth() + 1).toString().padStart(2, '0');
     const year = jsDate.getFullYear();
-    const hour = jsDate.getHours();
-    const minute = jsDate.getMinutes();
-    const second = jsDate.getSeconds();
-    return `
+    const hour = jsDate.getHours().toString().padStart(2, '0');
+    const minute = jsDate.getMinutes().toString().padStart(2, '0');
+    return `<div class="recieved-container">
     <div class="recieved-message">
-    <span>${day}.${month}.${year}  ${hour}.${minute}.${second}</span>
+    <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
+    <span>${element.message}</span>
+        </div>
         </div>
     `
   }

@@ -1,77 +1,100 @@
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 
-@font-face{
-    font-family: Nunito;
-    src: url('./assets/fonts/Nunito-Regular.ttf');
+@font-face {
+  font-family: Nunito;
+  src: url("./assets/fonts/Nunito-Regular.ttf");
 }
 
 body {
-    margin: 0;
-    font-family: Nunito, "Helvetica Neue", sans-serif;
+  margin: 0;
+  font-family: Nunito, "Helvetica Neue", sans-serif;
 }
 
-.bg-blue{
-    background: rgb(68, 77, 242);
+.bg-blue {
+  background: rgb(68, 77, 242);
 }
 
-.c-blue{
-    color: rgb(68, 77, 242);
+.c-blue {
+  color: rgb(68, 77, 242);
 }
 
-.fz-16-fw-700{
-    font-size: 16px;
-    font-weight: 700;
+.fz-16-fw-700 {
+  font-size: 16px;
+  font-weight: 700;
 }
 
-.fw-400{
-    font-weight: 400;
+.fw-400 {
+  font-weight: 400;
 }
 
-a{
-    text-decoration: none;
+a {
+  text-decoration: none;
 }
 
 .mr-16 {
   margin-right: 16px;
 }
 
-.d-none{
-    display: none !important;
+.d-none {
+  display: none !important;
 }
 
-.message-content{
-    padding-top: 32px;
+.message-content {
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+  .sent-message {
     display: flex;
-    height: 100vh;
     flex-direction: column;
-    .sent-message{
-        display: flex;
-        justify-content: flex-start;
-        // width: auto;
-        height: auto;
-        border: 1px solid black;
-        border-radius: 25px;
-        padding: 8px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        // position: absolute;
-        // left: 16px;
-    }
-    
-    .recieved-message{
-        display: flex;
-        justify-content: flex-end;
-        // width: auto;
-        height: auto;
-        border: none;
-        background: rgb(236, 238, 254);
-        border-radius: 25px;
-        padding: 8px;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        right: 16px;
-        margin-left: 150px;
-        // position: absolute;
-        // right: 16px;
-    }
+    border: none;
+    background: rgb(236, 238, 254);
+    border-radius: 25px 0px 25px 25px;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: end;
+    width: fit-content;
+  }
+
+  .sent-container {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: end;
+  }
+
+  .sent-name-avatar {
+    display: flex;
+  }
+
+  .avatar {
+    object-fit: contain;
+
+  }
+
+  .recieved-message {
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: start;
+    width: fit-content;
+  }
+
+  .recieved-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .date {
+    font-size: 10px;
+  }
 }
