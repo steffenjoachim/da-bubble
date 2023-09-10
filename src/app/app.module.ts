@@ -20,6 +20,9 @@ import { BoardComponent } from './board/board.component';
 import { HeaderComponent } from './header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule}  from '@angular/material/tree';
+import { BoardSidebarComponent } from './board-sidebar/board-sidebar.component';
+import { BoardThreadComponent } from './board-thread/board-thread.component';
+import { BoardContentComponent } from './board-content/board-content.component';
 // import { AlertModule } from 'ngx-bootstrap';
 
 
@@ -29,7 +32,10 @@ import { MatTreeModule}  from '@angular/material/tree';
     RegistrationComponent,
     LoginComponent,
     BoardComponent,
-    HeaderComponent
+    HeaderComponent,
+    BoardSidebarComponent,
+    BoardThreadComponent,
+    BoardContentComponent
   ],
   imports: [
     

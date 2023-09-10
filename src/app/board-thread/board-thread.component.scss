@@ -1,0 +1,45 @@
+.thread-frame{
+    width: 100%;
+    display: flex;
+}
+
+.thread {
+    width: 100%;
+    min-height: 87vh;
+    background: white;
+    border-radius: 25px;
+    margin-right: 16px;
+    display: flex;
+    span {
+      margin-left: 16px;
+    }
+    .thread-blue {
+      font-size: 12px;
+      font-weight: 500;
+      padding-left: 16px;
+      padding-top: 10px;
+    }
+  }
+  
+  .thread-text {
+    display: flex;
+    align-items: center;
+  }
+  
+  .thread-head {
+    display: flex;
+    justify-content: space-between;
+    min-height: 80px;
+    max-height: 80px;
+    flex: 1;
+    width: 100%;
+    align-items: center;
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 7px 5px -4px rgba(0, 0, 0, 0.2);
+    mat-icon {
+      margin-right: 16px;
+      cursor: pointer;
+    }
+  }
+  
+ 

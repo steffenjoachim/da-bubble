@@ -50,9 +50,10 @@ a {
     display: flex;
     flex-direction: column;
     border: none;
-    background: rgb(236, 238, 254);
+    background: rgb(121, 126, 243);
+    color: white;
     border-radius: 25px 0px 25px 25px;
-    padding: 8px;
+    padding: 16px;
     margin-top: 8px;
     margin-bottom: 8px;
     text-align: end;
@@ -81,8 +82,8 @@ a {
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    border-radius: 25px;
-    padding: 8px;
+    border-radius: 0 25px 25px 25px;
+    padding: 16px;
     margin-top: 8px;
     margin-bottom: 8px;
     text-align: start;

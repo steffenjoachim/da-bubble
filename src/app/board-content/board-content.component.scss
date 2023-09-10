@@ -1,0 +1,163 @@
+  .content-head {
+    min-height: 80px;
+    max-height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 7px 5px -4px rgba(0, 0, 0, 0.2);
+  
+    p {
+      margin-left: 12px;
+      margin-right: 16px;
+      margin-top: 12px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    span {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: Nunito, sans-serif !important;
+      padding-left: 16px;
+    }
+    button {
+      height: 70%;
+      width: 35%;
+      border: none;
+      border-radius: 25px;
+      background: white;
+      display: flex;
+      align-items: center;
+      margin-left: 16px;
+      padding: 8px;
+      cursor: pointer;
+      background: rgb(236, 238, 254);
+      color: rgb(68, 77, 242);
+    }
+  
+    mat-icon {
+      margin-left: 16px;
+    }
+  }
+  
+  .message-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .message-frame {
+    height: 20vh;
+    width: 43%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 9;
+    position: fixed;
+    bottom: 0 !important;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    .input-frame {
+      display: flex;
+      justify-content: center;
+  
+      textarea {
+        padding-top: 4px;
+        border: none;
+        resize: none;
+        width: 100%;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        &::placeholder {
+          padding-top: 6px;
+          padding-left: 6px;
+        }
+      }
+  
+      input {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 25px;
+        height: 120px;
+        width: 90%;
+        border: none;
+        background-color: white;
+        &::placeholder {
+          margin-top: -50px;
+          color: red;
+        }
+      }
+      .icon-container {
+        height: 30px;
+        width: 40%;
+        z-index: 99;
+      }
+    }
+  }
+  
+  .mat-icons {
+    cursor: pointer;
+    &:hover {
+      color: rgb(68, 77, 242);
+    }
+  }
+  
+  .content-frame {
+      padding: 0 32px;
+      height: 560px; /* Hier sollte die Höhe definiert sein, damit der Inhalt scrollbar wird */
+      overflow-y: scroll;
+      /* Die folgenden CSS-Stile sind für die Scrollleiste */
+      scrollbar-width: thin; /* Für Firefox */
+      scrollbar-color: rgb(68, 77, 242) transparent; /* Für Firefox */
+    }
+    
+    .content-frame::-webkit-scrollbar {
+      width: 8px;
+      background-color: transparent; /* Hintergrundfarbe der Scrollleiste */
+    }
+    
+    .content-frame::-webkit-scrollbar-thumb {
+      background-color: rgb(68, 77, 242); /* Farbe des Scrollbalken-Thumb */
+      border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
+    }
+    
+  .thread-frame{ 
+      width: 25%;
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+  
+  .icon-left {
+    margin-left: 24px;
+    display: flex;
+  }
+  
+  .icon-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    margin-right: 16px;
+    &:hover {
+      background: rgb(236, 238, 254);
+    }
+  }
+  
+  .icon-right {
+    margin-right: 24px;
+  }
+  
+  .submit-arrow {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  

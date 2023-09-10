@@ -1,7 +1,6 @@
 .main-container {
   background: rgb(236, 238, 254);
   display: flex;
-  height: 90vh;
   font-family: Nunito, sans-serif;
 }
 
@@ -142,9 +141,9 @@
   margin-left: 16px;
 }
 
-.content-head,
-.thread-head {
-  height: 80px;
+.content-head {
+  min-height: 80px;
+  max-height: 80px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -243,67 +242,26 @@
 }
 
 .content-frame {
-  padding: 0 16px;
-}
-
-// .message-content{
-//     position: relative;
-//     .sent-message{
-//         width: auto;
-//         height: auto;
-//         border: 1px solid black;
-//         border-radius: 25px;
-//         padding: 8px;
-//         margin-top: 8px;
-//         margin-bottom: 8px;
-//         // position: absolute;
-//         // left: 16px;
-//     }
-
-//     .recieved-message{
-//         width: auto;
-//         height: auto;
-//         border: none;
-//         background: rgb(236, 238, 254);
-//         border-radius: 25px;
-//         padding: 8px;
-//         margin-top: 8px;
-//         margin-bottom: 8px;
-//         right: 16px;
-//         margin-left: 150px;
-//         // position: absolute;
-//         // right: 16px;
-//     }
-// }
-
-.thread {
-  width: 25%;
-  min-height: 87vh;
-  background: white;
-  border-radius: 25px;
-  margin-right: 16px;
-  display: flex;
-  span {
-    margin-left: 16px;
+    padding: 0 32px;
+    height: 560px; /* Hier sollte die Höhe definiert sein, damit der Inhalt scrollbar wird */
+    overflow-y: scroll;
+    /* Die folgenden CSS-Stile sind für die Scrollleiste */
+    scrollbar-width: thin; /* Für Firefox */
+    scrollbar-color: rgb(68, 77, 242) transparent; /* Für Firefox */
   }
-  .thread-blue {
-    font-size: 12px;
-    font-weight: 500;
+  
+  .content-frame::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent; /* Hintergrundfarbe der Scrollleiste */
   }
-}
-
-.thread-text {
-  display: flex;
-  align-items: center;
-}
-
-.thread-head {
-  display: flex;
-  justify-content: space-between;
-  mat-icon {
-    margin-right: 16px;
-    cursor: pointer;
+  
+  .content-frame::-webkit-scrollbar-thumb {
+    background-color: rgb(68, 77, 242); /* Farbe des Scrollbalken-Thumb */
+    border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
   }
+  
+.thread-frame{ 
+    width: 25%;
 }
 
 .close-workshop-menu {
