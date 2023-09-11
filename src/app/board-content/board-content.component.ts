@@ -33,14 +33,7 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private el: ElementRef
-  ) {
-
-    // setInterval(function () {
-    //   let reciep = ;
-    //   this.recipient = reciep
-    //   console.log(this.recipient)
-    // }, 100);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -62,11 +55,9 @@ export class BoardContentComponent implements OnInit {
   }
 
   postChat() {
-    // this.showChat(this.selectedRecipient);
     this.chatService.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
     console.log('posted');
     console.log(this.message, this.loggedUser.name, this.selectedRecipient)
-    // this.scrollToBottom();
   }
 
   getUsers() {

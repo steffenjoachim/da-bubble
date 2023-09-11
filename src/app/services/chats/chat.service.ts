@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, AfterViewInit } from '@angular/core';
 import { Firestore, Timestamp, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -38,7 +38,7 @@ export class ChatService {
   chatCollection: any = collection(this.firebase, 'chats');
   constructor(private firebase: Firestore) {
     this.loggedUser = JSON.parse(localStorage.getItem('userData'))
-   }
+  }
 
   postChat(message, sender, recipient) {
     this.chats.message = message;
@@ -53,6 +53,9 @@ export class ChatService {
     // this.interlocutor = '@ ' + name;
     localStorage.setItem('selected-recipient', this.selectedRecipient);
     this.getChats(name)
+    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient
+    const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
+    chatField.placeholder = `Nachricht an ${this.selectedRecipient}`;
   }
 
   getChats(name) {
@@ -67,15 +70,12 @@ export class ChatService {
           this.relevantChats.push(element);
         }
       }
-
       this.relevantChats.sort((a, b) => {
         return a.timeStamp - b.timeStamp;
       });
-
       this.renderChats();
     });
   }
-
 
   renderChats() {
     let content = document.getElementById('message-content');
@@ -90,8 +90,6 @@ export class ChatService {
       }
     }
   }
-
-
 
   returnStentMessageChat(element) {
     const unixTimestamp = element.timeStamp;
