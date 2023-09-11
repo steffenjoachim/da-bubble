@@ -22,10 +22,8 @@ export class BoardSidebarComponent implements OnInit {
   users: any[] = [];
   chats$ !: Observable<any>;
 
-  interlocutor = '# Entwicklerteam'
-
   message: string;
-  selectedRecipient: string;
+  selectedRecipient =  '# Entwicklerteam';
   relevantChats = [];
 
   constructor(
@@ -49,12 +47,19 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChat(name) {
+    
     this.selectedRecipient = name;
     // this.interlocutor = '@ ' + name;
     this.getChats(name);
     localStorage.setItem('selected-recipient', this.selectedRecipient);
     console.log(this.selectedRecipient)
+    // this.updateTextarea();
   }
+
+  // updateTextarea(){
+  //   const textarea = document.getElementById('textarea') as HTMLTextAreaElement;
+  //   textarea.placeholder = localStorage.getItem('selected-recipient');
+  // }
 
   showChannel() {
     // this.selectedRecipient = '# Entwicklerteam';
@@ -92,7 +97,8 @@ export class BoardSidebarComponent implements OnInit {
   renderChats() {
     let content = document.getElementById('message-content');
     content.innerHTML = "";
-    
+    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
+
     for (let i = 0; i < this.relevantChats.length; i++) {
       let element = this.relevantChats[i];
       if (this.loggedUser.name == element.sender) {
