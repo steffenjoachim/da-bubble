@@ -66,6 +66,6 @@ export class RegistrationComponent {
   }
 
   selectedAvatar(img: string) {
-    this.users.avatar = img
+    this.users.avatar = img;
   }
 }
