@@ -22,10 +22,8 @@ export class BoardSidebarComponent implements OnInit {
   users: any[] = [];
   chats$ !: Observable<any>;
 
-  interlocutor = '# Entwicklerteam'
-
   message: string;
-  selectedRecipient: string;
+  selectedRecipient =  '# Entwicklerteam';
   relevantChats = [];
 
   constructor(
@@ -51,6 +49,11 @@ export class BoardSidebarComponent implements OnInit {
   showChat(name) {
     this.chats.showChat(name)
   }
+
+  // updateTextarea(){
+  //   const textarea = document.getElementById('textarea') as HTMLTextAreaElement;
+  //   textarea.placeholder = localStorage.getItem('selected-recipient');
+  // }
 
   showChannel() {
     // this.selectedRecipient = '# Entwicklerteam';
