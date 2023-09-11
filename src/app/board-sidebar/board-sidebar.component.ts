@@ -50,14 +50,14 @@ export class BoardSidebarComponent implements OnInit {
 
   showChat(name) {
     this.selectedRecipient = name;
-    this.interlocutor = '@ ' + name;
+    // this.interlocutor = '@ ' + name;
     this.getChats(name);
-    console.log(this.interlocutor)
+    localStorage.setItem('selected-recipient', this.selectedRecipient);
+    console.log(this.selectedRecipient)
   }
 
   showChannel() {
-    this.interlocutor = '# Entwicklerteam';
-    console.log(this.interlocutor)
+    // this.selectedRecipient = '# Entwicklerteam';
   }
 
   getUsers() {
@@ -92,7 +92,7 @@ export class BoardSidebarComponent implements OnInit {
   renderChats() {
     let content = document.getElementById('message-content');
     content.innerHTML = "";
-
+    
     for (let i = 0; i < this.relevantChats.length; i++) {
       let element = this.relevantChats[i];
       if (this.loggedUser.name == element.sender) {

@@ -21,7 +21,6 @@ export class BoardContentComponent implements OnInit {
   users: any[] = [];
   chats$ !: Observable<any>;
 
-  @Input() interlocutor: string = '';
   message: string;
   selectedRecipient: string;
   relevantChats = [];
@@ -32,12 +31,15 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private el: ElementRef
-  ) { }
+  ) { 
+    
+  }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+    this.selectedRecipient = localStorage.getItem('selected-recipient')
   }
 
   ngAfterViewInit() {
@@ -54,12 +56,11 @@ export class BoardContentComponent implements OnInit {
     }
   }
   
-  
-
   postChat() {
-    this.showChat(this.selectedRecipient);
-    this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
+    // this.showChat(this.selectedRecipient);
+    this.chatService.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
     console.log('posted');
+    console.log(this.message,this.loggedUser.name, this.selectedRecipient)
     // this.scrollToBottom();
   }
   
@@ -75,6 +76,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   getChats(name) {
+    
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$.subscribe((chats: any[]) => {

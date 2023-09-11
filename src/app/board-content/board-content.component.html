@@ -1,6 +1,6 @@
 <div class="content-head">
     <button>
-        <span class="selectedInterloctor">{{ interlocutor }}</span>
+        <span class="selectedInterloctor">{{ selectedRecipient }}</span>
         <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
     </button>
 </div>
@@ -11,7 +11,7 @@
 <div class="message-container">
     <div class="message-frame">
         <div class="input-frame">
-            <textarea [(ngModel)]="message" placeholder="Nachricht an {{ interlocutor }}" name="Nachricht" id cols="37"
+            <textarea [(ngModel)]="message" placeholder="Nachricht an {{ selectedRecipient }}" name="Nachricht" id cols="37"
                 rows="9"></textarea>
         </div>
         <div class="icon-container">
