@@ -26,7 +26,8 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string;
   relevantChats = [];
   chats: any;
-  recipient = localStorage.getItem('selected-recipient')
+  recipient = localStorage.getItem('selected-recipient');
+  
 
   constructor(
     public firestore: Firestore,
@@ -38,7 +39,14 @@ export class BoardContentComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
+    this.setSelectedRecipient();
     this.getUsers();
+  }
+
+  setSelectedRecipient(){
+    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient = '# Entwicklerteam';
+    const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
+    chatField.placeholder = `Nachricht an @ # Entwicklerteam`
   }
 
   ngAfterViewInit() {
@@ -66,7 +74,6 @@ export class BoardContentComponent implements OnInit {
       this.users = usersArray;
     });
   }
-
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);

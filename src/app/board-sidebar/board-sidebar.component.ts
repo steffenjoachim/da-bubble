@@ -39,6 +39,7 @@ export class BoardSidebarComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+    this.showChat(name)
   }
 
   postChat() {
@@ -49,11 +50,6 @@ export class BoardSidebarComponent implements OnInit {
   showChat(name) {
     this.chats.showChat(name)
   }
-
-  // updateTextarea(){
-  //   const textarea = document.getElementById('textarea') as HTMLTextAreaElement;
-  //   textarea.placeholder = localStorage.getItem('selected-recipient');
-  // }
 
   showChannel() {
     // this.selectedRecipient = '# Entwicklerteam';

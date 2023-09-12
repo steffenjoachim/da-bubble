@@ -23,17 +23,17 @@ export class ChatService {
     name: 'Gast'
   }
 
-  selectedRecipient: any;
+  selectedRecipient = '# Entwicklerteam';
   relevantChats: any[];
   chats$: Observable<import("@angular/fire/firestore").DocumentData[]>;
 
-  setInterlocutor(interlocutor: string) {
-    this.interlocutorSubject.next(interlocutor);
-  }
+  // setInterlocutor(interlocutor: string) {
+  //   this.interlocutorSubject.next(interlocutor);
+  // }
 
-  getInterlocutor(): Observable<string> {
-    return this.interlocutorSubject.asObservable();
-  }
+  // getInterlocutor(): Observable<string> {
+  //   return this.interlocutorSubject.asObservable();
+  // }
 
   chatCollection: any = collection(this.firebase, 'chats');
   constructor(private firebase: Firestore) {
@@ -50,12 +50,19 @@ export class ChatService {
 
   showChat(name) {
     this.selectedRecipient = name;
-    // this.interlocutor = '@ ' + name;
     localStorage.setItem('selected-recipient', this.selectedRecipient);
     this.getChats(name)
-    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient
+    this.showNameInBoardHead();
+    this.showNameAsPlaceholderOfTextarea()
+  }
+
+  showNameInBoardHead(){
+    document.getElementById('selected-recipient').innerHTML = `@ ` + this.selectedRecipient
+  }
+
+  showNameAsPlaceholderOfTextarea(){
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = `Nachricht an ${this.selectedRecipient}`;
+    chatField.placeholder = `Nachricht an @ ` + localStorage.getItem('selected-recipient');
   }
 
   getChats(name) {
