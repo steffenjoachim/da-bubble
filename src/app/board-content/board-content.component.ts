@@ -46,7 +46,7 @@ export class BoardContentComponent implements OnInit {
   setSelectedRecipient(){
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient = '# Entwicklerteam';
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = `Nachricht an @ # Entwicklerteam`
+    chatField.placeholder = `Nachricht an # Entwicklerteam`
   }
 
   ngAfterViewInit() {
