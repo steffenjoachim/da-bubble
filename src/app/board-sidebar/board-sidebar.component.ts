@@ -23,7 +23,7 @@ export class BoardSidebarComponent implements OnInit {
   chats$ !: Observable<any>;
 
   message: string;
-  selectedRecipient =  '# Entwicklerteam';
+  selectedRecipient = '# Entwicklerteam';
   relevantChats = [];
 
   constructor(
@@ -31,15 +31,14 @@ export class BoardSidebarComponent implements OnInit {
     private firebase: FirebaseService,
     private chats: ChatService,
     private el: ElementRef
-    ) {
-      this.selectedRecipient = localStorage.getItem('selected-recipient')
-     }
+  ) {
+    this.selectedRecipient = localStorage.getItem('selected-recipient')
+  }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.showChat(name)
   }
 
   postChat() {
@@ -48,15 +47,15 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChat(name) {
-    // if (this.loggedUser.name == 'Gast') {
-    //   alert('Alls Gast kannst du leider keine Direktnachrichten senden');
-    //   console.log(this.loggedUser.name);
-    // } else {
+    if (this.loggedUser.name == 'Gast') {
+      alert('Alls Gast kannst du leider keine Direktnachrichten senden');
+      console.log(this.loggedUser.name);
+    } else {
       this.chats.showChat(name);
-  //     console.log(this.loggedUser.name);
-  // }
+      console.log(this.loggedUser.name);
     }
-    
+  }
+
 
   showChannel() {
     // this.selectedRecipient = '# Entwicklerteam';
