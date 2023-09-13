@@ -26,8 +26,6 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string;
   relevantChats = [];
   chats: any;
-  recipient = localStorage.getItem('selected-recipient');
-  
 
   constructor(
     public firestore: Firestore,
@@ -43,7 +41,7 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
   }
 
-  setSelectedRecipient(){
+  setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient = '# Entwicklerteam';
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = `Nachricht an # Entwicklerteam`
@@ -63,9 +61,10 @@ export class BoardContentComponent implements OnInit {
   }
 
   postChat() {
-    this.chatService.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
+    const recipient = localStorage.getItem('selected-recipient');
+    console.log(this.message, this.loggedUser.name, recipient)
+    this.chatService.postChat(this.message, this.loggedUser.name, recipient);
     console.log('posted');
-    console.log(this.message, this.loggedUser.name, this.selectedRecipient)
   }
 
   getUsers() {
