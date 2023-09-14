@@ -52,15 +52,11 @@ export class BoardContentComponent implements OnInit {
   }
 
   scrollToBottom() {
-    const messageContent = this.el.nativeElement.querySelector('.message-content') as HTMLElement;
-    if (messageContent) {
-      setTimeout(() => {
-        messageContent.scrollTop = messageContent.scrollHeight - messageContent.clientHeight;
-      }, 100);
-    }
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
   postChat() {
+    debugger
     const recipient = localStorage.getItem('selected-recipient');
     console.log(this.message, this.loggedUser.name, recipient)
     this.chatService.postChat(this.message, this.loggedUser.name, recipient);

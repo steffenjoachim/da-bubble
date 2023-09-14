@@ -41,10 +41,11 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
   }
 
-  postChat() {
-    this.showChat(this.selectedRecipient);
-    this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
-  }
+  // postChat() {
+  //   debugger
+  //   this.showChat(this.selectedRecipient);
+  //   this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
+  // }
 
   showChat(name) {
     if (this.loggedUser.name == 'Gast') {
@@ -53,7 +54,13 @@ export class BoardSidebarComponent implements OnInit {
     } else {
       this.chats.showChat(name);
       console.log(this.loggedUser.name);
+      this.scrollToBottom();
     }
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+    // document.getElementById('content-frame').classList.add('d-none');
   }
 
 
