@@ -40,6 +40,8 @@ export class HeaderComponent implements OnInit {
     const auth = getAuth();
     signOut(auth).then(() => {
       localStorage.removeItem('userData');
+      localStorage.removeItem('selected-recipient');
+      localStorage.removeItem('channel');
       this.router.navigate(['/login']);
     }).catch((error) => {
       console.log(error)

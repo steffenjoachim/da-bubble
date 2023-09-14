@@ -56,11 +56,11 @@ export class ChatService {
     this.showNameAsPlaceholderOfTextarea()
   }
 
-  showNameInBoardHead(){
+  showNameInBoardHead() {
     document.getElementById('selected-recipient').innerHTML = `@ ` + this.selectedRecipient
   }
 
-  showNameAsPlaceholderOfTextarea(){
+  showNameAsPlaceholderOfTextarea() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = `Nachricht an @ ` + localStorage.getItem('selected-recipient');
   }
@@ -77,14 +77,14 @@ export class ChatService {
           this.relevantChats.push(element);
         }
       }
-      this.relevantChats.sort((a, b) => {
-        return a.timeStamp - b.timeStamp;
-      });
       this.renderChats();
     });
   }
 
   renderChats() {
+    this.relevantChats.sort((a, b) => {
+      return a.timeStamp - b.timeStamp;
+    });
     let content = document.getElementById('message-content');
     content.innerHTML = "";
 

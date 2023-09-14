@@ -4,6 +4,7 @@ import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
 import { user } from '@angular/fire/auth';
+import { ChannelService } from '../services/channels/channel.service';
 
 @Component({
   selector: 'app-board-sidebar',
@@ -17,28 +18,34 @@ export class BoardSidebarComponent implements OnInit {
     name: 'Gast'
   }
 
+  channelName:string;
+  channelDescription:string;
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
   chats$ !: Observable<any>;
-
+  addChannelPopup:boolean = false
   message: string;
   selectedRecipient = '# Entwicklerteam';
+  channel;
   relevantChats = [];
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chats: ChatService,
+    private channelChat: ChannelService,
+    private channels: ChannelService,
     private el: ElementRef
   ) {
-    this.selectedRecipient = localStorage.getItem('selected-recipient')
+    this.channel = localStorage.getItem('channel')
   }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+    this.showChannel();
   }
 
   // postChat() {
@@ -64,8 +71,23 @@ export class BoardSidebarComponent implements OnInit {
   }
 
 
+addChannel(){
+console.log(this.channelName, this.channelDescription)
+}
+
+openAddChanelPopup() {
+  this.addChannelPopup = true
+}
+
+closeAddChannelPopup() {
+  this.addChannelPopup = false
+}
+
   showChannel() {
-    // this.selectedRecipient = '# Entwicklerteam';
+    let channel = '# Entwicklerteam'
+    localStorage.setItem('channel', channel)
+    this.chats.showChat(channel);
+    this.channelChat.getChats(channel)
   }
 
   getUsers() {

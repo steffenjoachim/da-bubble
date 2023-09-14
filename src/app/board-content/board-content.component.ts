@@ -3,6 +3,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
+import { ChannelService } from '../services/channels/channel.service';
 
 @Component({
   selector: 'app-board-content',
@@ -22,8 +23,8 @@ export class BoardContentComponent implements OnInit {
   chats$ !: Observable<any>;
 
 
-  message: string;
-  selectedRecipient: string;
+  message: any;
+  selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
 
@@ -31,7 +32,8 @@ export class BoardContentComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
-    private el: ElementRef
+    private el: ElementRef,
+    private chanelService: ChannelService
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +44,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   setSelectedRecipient() {
-    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient = '# Entwicklerteam';
+    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = `Nachricht an # Entwicklerteam`
   }
@@ -56,11 +58,13 @@ export class BoardContentComponent implements OnInit {
   }
 
   postChat() {
-    debugger
+    const channel = localStorage.getItem('channel')
     const recipient = localStorage.getItem('selected-recipient');
-    console.log(this.message, this.loggedUser.name, recipient)
-    this.chatService.postChat(this.message, this.loggedUser.name, recipient);
-    console.log('posted');
+    if (channel == recipient) {
+      this.chanelService.postChat(this.message, channel)
+    } else {
+      this.chatService.postChat(this.message, this.loggedUser.name, recipient);
+    }
   }
 
   getUsers() {
