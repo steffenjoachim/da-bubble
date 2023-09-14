@@ -1,9 +1,8 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
-import { user } from '@angular/fire/auth';
 import { ChannelService } from '../services/channels/channel.service';
 
 @Component({
@@ -18,13 +17,24 @@ export class BoardSidebarComponent implements OnInit {
     name: 'Gast'
   }
 
-  channelName:string;
-  channelDescription:string;
+  channelsData: any = {
+    admin: '',
+    members: [],
+    name: '',
+    description: ''
+  }
+
+  channelName: string;
+  channelDescription: string;
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
+  channelCollection: any = collection(this.channels, 'channels')
   users: any[] = [];
   chats$ !: Observable<any>;
-  addChannelPopup:boolean = false
+  addChannelPopup: boolean = false;
+  popupContainer: boolean = true;
+  addMembers: boolean = false;
+  popupheadline: string;
   message: string;
   selectedRecipient = '# Entwicklerteam';
   channel;
@@ -35,7 +45,7 @@ export class BoardSidebarComponent implements OnInit {
     private firebase: FirebaseService,
     private chats: ChatService,
     private channelChat: ChannelService,
-    private channels: ChannelService,
+    private channels: Firestore,
     private el: ElementRef
   ) {
     this.channel = localStorage.getItem('channel')
@@ -47,12 +57,6 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
     this.showChannel();
   }
-
-  // postChat() {
-  //   debugger
-  //   this.showChat(this.selectedRecipient);
-  //   this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
-  // }
 
   showChat(name) {
     if (this.loggedUser.name == 'Gast') {
@@ -71,17 +75,37 @@ export class BoardSidebarComponent implements OnInit {
   }
 
 
-addChannel(){
-console.log(this.channelName, this.channelDescription)
-}
+  addChannel() {
+    this.channelsData.name = this.channelName
+    this.channelsData.admin = this.loggedUser.name
+    this.channelsData.description = this.channelDescription
+    this.chooseMember()
+  }
 
-openAddChanelPopup() {
-  this.addChannelPopup = true
-}
+  chooseMember() {
+    this.popupContainer = false
+    this.addMembers = true
+    this.popupheadline = 'Leute hinzufügen'
+  }
 
-closeAddChannelPopup() {
-  this.addChannelPopup = false
-}
+  addChannelToFirebase() {
+    for (let i = 0; i < this.users.length; i++) {
+      const element = this.users[i].name;
+      this.channelsData.members.push(element)
+      console.log(element)
+    }
+    addDoc(this.channelCollection, this.channelsData)
+  }
+
+  openAddChanelPopup() {
+    this.addChannelPopup = true
+    this.popupheadline = 'Channel erstellen'
+  }
+
+  closeAddChannelPopup() {
+    this.addChannelPopup = false
+    this.popupContainer = true
+  }
 
   showChannel() {
     let channel = '# Entwicklerteam'

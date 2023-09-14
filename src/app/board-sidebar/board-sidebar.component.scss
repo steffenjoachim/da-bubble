@@ -192,6 +192,7 @@ h3 {
   background-color: white;
   padding: 32px;
   border-radius: 25px;
+  width: 80%;
   input {
     width: 100%;
     border-radius: 25px;
@@ -210,4 +211,18 @@ h3 {
   gap: 16px;
   display: flex;
   flex-direction: column;
+}
+
+
+.member-container {
+  display: flex;
+  flex-direction: column;
+  label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    input {
+      width: 20px;
+    }
+  }
 }

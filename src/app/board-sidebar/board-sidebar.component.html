@@ -66,11 +66,11 @@
   </div>
   <div *ngIf="addChannelPopup" class="add-channels-popup">
     <div class="popup-container">
-      <form (submit)="addChannel()" ngNativeValidate>
-        <div class="channel-popup-head">
-          <h2>Channel erstellen</h2>
-          <img (click)="closeAddChannelPopup()" src="./assets/img/close.png" alt>
-        </div>
+      <div class="channel-popup-head">
+        <h2>{{popupheadline}}</h2>
+        <img (click)="closeAddChannelPopup()" src="./assets/img/close.png" alt>
+      </div>
+      <form *ngIf="popupContainer" (submit)="addChannel()" ngNativeValidate>
         <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
           themenbezogen sein #marketing zum Beispiel</p>
         <div class="input-container">
@@ -84,11 +84,23 @@
           </div>
           <input [(ngModel)]="channelDescription" type="text"
             placeholder="Dein Text hier" name="name">
-        </div>
-        <div class="channel-popup-btn">
-          <button>Erstellen</button>
+          <div class="channel-popup-btn">
+            <button>Nächste Seite</button>
+          </div>
         </div>
       </form>
+      <div class="member-container" *ngIf="addMembers">
+        <form action=""></form>
+        <label>
+          <input type="radio" name="option" value="option1"> Alle Mitglieder von {{ channelName }} hinzufügen
+        </label>
+        <label>
+          <input type="radio" name="option" value="option2"> Bestimmte Leute hinzufügen
+        </label>
+        <div>
+          <button (click)="addChannelToFirebase()">Erstellen</button>
+        </div>
+      </div>
     </div>
 
   </div>
