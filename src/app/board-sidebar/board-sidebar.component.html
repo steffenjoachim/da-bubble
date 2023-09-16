@@ -1,56 +1,106 @@
 <div id="side-bar" class="side-bar">
-    <div class="sidebar-head">
-      <img src="./assets/img/Workspace logo.png" alt="code learning logo">
-      <span>Code learning</span>
-      <img class="edit-square" src="./assets/img/edit_square.png" alt>
-    </div>
-    <div class="channels-frame">
-      <div class="channels-head">
-        <mat-icon (click)="closeChannels()" id="arrow-drop-down" class="arrow-drop-down"
-          fontIcon="arrow_drop_down"></mat-icon>
-        <mat-icon (click)="openChannels()" id="arrow-right" class="arrow-right d-none"
-          fontIcon="arrow_right"></mat-icon>
-        <mat-icon fontIcon="workspaces"></mat-icon>
-        <div class="channels">
-          <span>Channels</span>
-        </div>
+  <div class="sidebar-head">
+    <img src="./assets/img/Workspace logo.png" alt="code learning logo">
+    <span>Code learning</span>
+    <img class="edit-square" src="./assets/img/edit_square.png" alt>
+  </div>
+  <div class="channels-frame">
+    <div class="channels-head">
+      <mat-icon (click)="closeChannels()" id="arrow-drop-down"
+        class="arrow-drop-down"
+        fontIcon="arrow_drop_down"></mat-icon>
+      <mat-icon (click)="openChannels()" id="arrow-right"
+        class="arrow-right d-none"
+        fontIcon="arrow_right"></mat-icon>
+      <mat-icon fontIcon="workspaces"></mat-icon>
+      <div class="channels">
+        <span>Channels</span>
+      </div>
+      <div (click)="openAddChanelPopup()">
         <mat-icon class="add" fontIcon="add"></mat-icon>
       </div>
-      <div id="channels-body" class="channels-body">
-        <div (click)="showChannel()" class="entwicklerteam c-blue">
-          <span># Entwicklerteam</span>
-        </div>
-        <div class="add-channel">
-          <mat-icon fontIcon="add_circle"></mat-icon>
-          <span>Channel hinzufügen</span>
+
+    </div>
+    <div id="channels-body" class="channels-body">
+      <div (click)="showChannel()" class="entwicklerteam c-blue">
+        <span># Entwicklerteam</span>
+      </div>
+      <div class="add-channel">
+        <mat-icon fontIcon="add_circle"></mat-icon>
+        <span (click)="openAddChanelPopup()">Channel hinzufügen</span>
+      </div>
+    </div>
+    <div class="direct-messages">
+      <div class="direct-messages-frame">
+        <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2"
+          class="arrow-drop-down"
+          fontIcon="arrow_drop_down"></mat-icon>
+        <mat-icon (click)="openDirectMessages()" id="arrow-right2"
+          class="arrow-right d-none"
+          fontIcon="arrow_right"></mat-icon>
+        <div class="channels">
+          <span>Direktnachrichten</span>
         </div>
       </div>
-      <div class="direct-messages">
-        <div class="direct-messages-frame">
-          <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2" class="arrow-drop-down"
-            fontIcon="arrow_drop_down"></mat-icon>
-          <mat-icon (click)="openDirectMessages()" id="arrow-right2" class="arrow-right d-none"
-            fontIcon="arrow_right"></mat-icon>
-          <div class="channels">
-            <span>Direktnachrichten</span>
+      <div class="direct-messages-body" id="direct-messages-body">
+        <div class="direct-message-container">
+          <div class="you">
+            <img id="current-user-img" src="{{ loggedUser.avatar }}"
+              alt="image of user">
+            <span class="current-user-name" id="current-user-name">{{
+              loggedUser.name }} (Du)</span>
           </div>
-        </div>
-        <div class="direct-messages-body" id="direct-messages-body">
-          <div class="direct-message-container">
-            <div class="you">
-              <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
+          <div class="others" (click)="showChat(user.name)"
+            *ngFor="let user of users">
+            <ng-container *ngIf="user.name != loggedUser.name">
+              <img id="current-user-img" src="{{ user.avatar }}"
+                alt="image of user">
               <span class="current-user-name" id="current-user-name">{{
-                loggedUser.name }} (Du)</span>
-            </div>
-            <div class="others" (click)="showChat(user.name)" *ngFor="let user of users">
-              <ng-container *ngIf="user.name != loggedUser.name">
-                <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
-                <span class="current-user-name" id="current-user-name">{{
-                  user.name }}</span>
-              </ng-container>
-            </div>
-
+                user.name }}</span>
+            </ng-container>
           </div>
+
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="addChannelPopup" class="add-channels-popup">
+    <div class="popup-container">
+      <div class="channel-popup-head">
+        <h2>{{popupheadline}}</h2>
+        <img (click)="closeAddChannelPopup()" src="./assets/img/close.png" alt>
+      </div>
+      <form *ngIf="popupContainer" (submit)="addChannel()" ngNativeValidate>
+        <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
+          themenbezogen sein #marketing zum Beispiel</p>
+        <div class="input-container">
+          <h3>Channel-Name</h3>
+
+          <input [(ngModel)]="channelName" type="text" required
+            placeholder="# z.B. Kooperationsprojekte" name="name">
+          <div class="channel-popup-description">
+            <h3>Beschreibung</h3>
+            <span>(optional)</span>
+          </div>
+          <input [(ngModel)]="channelDescription" type="text"
+            placeholder="Dein Text hier" name="name">
+          <div class="channel-popup-btn">
+            <button>Nächste Seite</button>
+          </div>
+        </div>
+      </form>
+      <div class="member-container" *ngIf="addMembers">
+        <form action=""></form>
+        <label>
+          <input type="radio" name="option" value="option1"> Alle Mitglieder von {{ channelName }} hinzufügen
+        </label>
+        <label>
+          <input type="radio" name="option" value="option2"> Bestimmte Leute hinzufügen
+        </label>
+        <div>
+          <button (click)="addChannelToFirebase()">Erstellen</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
