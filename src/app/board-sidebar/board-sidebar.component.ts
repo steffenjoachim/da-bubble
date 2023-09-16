@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { DocumentData, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -30,13 +30,14 @@ export class BoardSidebarComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.channels, 'channels')
   users: any[] = [];
+  channel$: Observable<any>;
   chats$ !: Observable<any>;
   addChannelPopup: boolean = false;
   popupContainer: boolean = true;
   addMembers: boolean = false;
   popupheadline: string;
   message: string;
-  selectedRecipient = '# Entwicklerteam';
+  selectedRecipient = '';
   channel;
   relevantChats = [];
 
@@ -46,7 +47,6 @@ export class BoardSidebarComponent implements OnInit {
     private chats: ChatService,
     private channelChat: ChannelService,
     private channels: Firestore,
-    private el: ElementRef
   ) {
     this.channel = localStorage.getItem('channel')
   }
@@ -56,14 +56,17 @@ export class BoardSidebarComponent implements OnInit {
     this.loadLoggedUserData();
     this.getUsers();
     this.scrollToBottom();
+    this.getChannels();
+    this.showChannel(name)
   }
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    this.showChannel();
+    // this.showChannel(name);
   }
 
   showChat(name) {
+    console.log(name)
     if (this.loggedUser.name == 'Gast') {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
@@ -110,11 +113,9 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
-  showChannel() {
-    let channel = '# Entwicklerteam'
-    localStorage.setItem('channel', channel)
-    this.chats.showChat(channel);
-    this.channelChat.getChats(channel)
+  showChannel(channel) {
+    localStorage.setItem('channel', channel.name)
+    this.channelChat.showChannelChat(channel)
   }
 
   getUsers() {
@@ -122,6 +123,10 @@ export class BoardSidebarComponent implements OnInit {
     usersObservable.subscribe((usersArray) => {
       this.users = usersArray;
     });
+  }
+
+  getChannels() {
+    this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
   }
 
   ngOnDestroy(): void {

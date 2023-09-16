@@ -54,7 +54,6 @@ export class ChatService {
 
 
   showChat(name) {
-    console.log(name)
     this.selectedRecipient = name;
     localStorage.setItem('selected-recipient', this.selectedRecipient);
     this.getChats(name)
@@ -79,7 +78,6 @@ export class ChatService {
     this.chats$.subscribe((chats: any[]) => {
       for (let i = 0; i < chats.length; i++) {
         let element = chats[i];
-        console.log(element.receiver)
         if ((this.loggedUser.name == element.sender && name == element.receiver) ||
           (this.loggedUser.name == element.receiver && name == element.sender)) {
           element.timeStamp = new Date(element.timeStamp);

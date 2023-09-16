@@ -43,6 +43,21 @@ export class ChannelService {
     addDoc(this.chatCollection, this.channelMessage);
   }
 
+showChannelChat(channel) {
+  this.getChats(channel)
+  this.showNameInBoardHead(channel);
+  this.showNameAsPlaceholderOfTextarea(channel);
+}
+
+showNameInBoardHead(channel) {
+  document.getElementById('selected-recipient').innerHTML = `# ` + channel.name
+}
+
+showNameAsPlaceholderOfTextarea(channel) {
+  const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
+  chatField.placeholder = `Nachricht an @ ` + channel.name;
+}
+
   getChats(selectedChannel) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });

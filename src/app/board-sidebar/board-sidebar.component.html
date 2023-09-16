@@ -22,8 +22,8 @@
 
     </div>
     <div id="channels-body" class="channels-body">
-      <div (click)="showChannel()" class="entwicklerteam c-blue">
-        <span># Entwicklerteam</span>
+      <div *ngFor="let chanel of channel$ | async" (click)="showChannel(chanel)" class="entwicklerteam c-blue">
+        <span># {{ chanel.name }}</span>
       </div>
       <div class="add-channel">
         <mat-icon fontIcon="add_circle"></mat-icon>
