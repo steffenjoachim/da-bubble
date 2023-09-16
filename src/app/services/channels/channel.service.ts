@@ -30,15 +30,16 @@ export class ChannelService {
     message: '',
     timeStamp: this.timeStamp.seconds,
     channel: '',
-    sender: ''
+    sender: '',
+    avatar: ''
   }
 
   postChat(message: any, selectedChannel) {
     let loggedUser = JSON.parse(localStorage.getItem('userData'));
+    this.channelMessage.avatar = loggedUser.avatar
     this.channelMessage.sender = loggedUser.name;
     this.channelMessage.message = message;
     this.channelMessage.channel = selectedChannel;
-    console.log(this.channelMessage)
     addDoc(this.chatCollection, this.channelMessage);
   }
 
@@ -97,6 +98,7 @@ export class ChannelService {
   }
 
   returnRecievedMessageChat(element) {
+    console.log(element)
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -105,11 +107,14 @@ export class ChannelService {
     const hour = jsDate.getHours().toString().padStart(2, '0');
     const minute = jsDate.getMinutes().toString().padStart(2, '0');
     return `<div class="recieved-container">
+    <div class="recieved-name-avatar">
     <div><span>${element.sender}</span>
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
         </div>
+        </div>
+        <img class="avatar" src="${element.avatar}">
         </div>
         </div>
     `
