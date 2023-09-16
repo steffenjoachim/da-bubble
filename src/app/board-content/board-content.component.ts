@@ -50,11 +50,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   postChat() {
-<<<<<<< HEAD
-    // debugger
-=======
     const channel = localStorage.getItem('channel')
->>>>>>> 514de719c7697e664610893c5087208c0089975b
     const recipient = localStorage.getItem('selected-recipient');
     if (channel == recipient) {
       this.chanelService.postChat(this.message, channel)

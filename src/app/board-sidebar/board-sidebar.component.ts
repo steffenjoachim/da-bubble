@@ -113,7 +113,10 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel() {
-    // this.selectedRecipient = '# Entwicklerteam';
+    let channel = '# Entwicklerteam'
+    localStorage.setItem('channel', channel)
+    this.chats.showChat(channel);
+    this.channelChat.getChats(channel)
   }
 
   getUsers() {

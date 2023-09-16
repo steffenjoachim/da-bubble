@@ -10,6 +10,7 @@ export class ChatService {
   chatDate = new Date();
   timeStamp = Timestamp.fromDate(this.chatDate);
   counter = 0;
+  counter2 = 0;
 
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -55,7 +56,7 @@ export class ChatService {
     localStorage.setItem('selected-recipient', this.selectedRecipient);
     this.getChats(name)
     this.showNameInBoardHead();
-    this.showNameAsPlaceholderOfTextarea()
+    this.showNameAsPlaceholderOfTextarea();
   }
 
   showNameInBoardHead() {
@@ -70,7 +71,7 @@ export class ChatService {
   getChats(name) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
-    let renderChatsCalled = false; // Eine Flagge, um zu überprüfen, ob renderChats bereits aufgerufen wurde
+    // let renderChatsCalled = false; // Eine Flagge, um zu überprüfen, ob renderChats bereits aufgerufen wurde
   
     this.chats$.subscribe((chats: any[]) => {
       for (let i = 0; i < chats.length; i++) {
@@ -82,10 +83,10 @@ export class ChatService {
         }
       }
       
-      if (!renderChatsCalled) {
+      // if (!renderChatsCalled) {
         this.renderChats();
-        renderChatsCalled = true; // Setzen Sie die Flagge auf true, um zu markieren, dass renderChats aufgerufen wurde
-      }
+      //   renderChatsCalled = true; // Setzen Sie die Flagge auf true, um zu markieren, dass renderChats aufgerufen wurde
+      // }
   
       this.counter++;
       console.log(this.counter);

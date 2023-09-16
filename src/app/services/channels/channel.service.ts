@@ -29,12 +29,15 @@ export class ChannelService {
   channelMessage: any = {
     message: '',
     timeStamp: this.timeStamp.seconds,
-    channel: ''
+    channel: '',
+    sender: ''
   }
 
   postChat(message: any, selectedChannel) {
+    let loggedUser = JSON.parse(localStorage.getItem('userData'));
+    this.channelMessage.sender = loggedUser.name;
     this.channelMessage.message = message;
-    this.channelMessage.channel = selectedChannel
+    this.channelMessage.channel = selectedChannel;
     console.log(this.channelMessage)
     addDoc(this.chatCollection, this.channelMessage);
   }
@@ -52,7 +55,7 @@ export class ChannelService {
   }
 
   renderChats() {
-    let loggedUser = JSON.parse(localStorage.getItem('userData'))
+    let loggedUser = JSON.parse(localStorage.getItem('userData'));
     this.relevantChats.sort((a, b) => {
       return a.timeStamp - b.timeStamp;
     });
