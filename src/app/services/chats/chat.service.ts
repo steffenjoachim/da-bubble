@@ -1,4 +1,4 @@
-import { Injectable, AfterViewInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Firestore, Timestamp, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -8,7 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ChatService {
 
   chatDate = new Date();
-  timeStamp = Timestamp.fromDate(this.chatDate)
+  timeStamp = Timestamp.fromDate(this.chatDate);
+  counter = 0;
 
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -18,6 +19,7 @@ export class ChatService {
     message: '',
     timeStamp: this.timeStamp.seconds
   }
+
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
     name: 'Gast'
@@ -68,6 +70,8 @@ export class ChatService {
   getChats(name) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+    let renderChatsCalled = false; // Eine Flagge, um zu überprüfen, ob renderChats bereits aufgerufen wurde
+  
     this.chats$.subscribe((chats: any[]) => {
       for (let i = 0; i < chats.length; i++) {
         let element = chats[i];
@@ -80,9 +84,17 @@ export class ChatService {
       this.relevantChats.sort((a, b) => {
         return a.timeStamp - b.timeStamp;
       });
-      this.renderChats();
+      
+      if (!renderChatsCalled) {
+        this.renderChats();
+        renderChatsCalled = true; // Setzen Sie die Flagge auf true, um zu markieren, dass renderChats aufgerufen wurde
+      }
+  
+      this.counter++;
+      console.log(this.counter);
     });
   }
+  
 
   renderChats() {
     let content = document.getElementById('message-content');

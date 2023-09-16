@@ -47,16 +47,8 @@ export class BoardContentComponent implements OnInit {
     chatField.placeholder = `Nachricht an # Entwicklerteam`
   }
 
-  ngAfterViewInit() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom() {
-    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-  }
-
   postChat() {
-    debugger
+    // debugger
     const recipient = localStorage.getItem('selected-recipient');
     console.log(this.message, this.loggedUser.name, recipient)
     this.chatService.postChat(this.message, this.loggedUser.name, recipient);

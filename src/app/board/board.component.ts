@@ -40,24 +40,24 @@ export class BoardComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.getChats(name);
+    // this.getChats(name);
   }
 
-  postChat() {
-    this.showChat(this.selectedRecipient);
-    this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
-  }
+  // postChat() {
+  //   this.showChat(this.selectedRecipient);
+  //   this.chats.postChat(this.message, this.loggedUser.name, this.selectedRecipient);
+  // }
 
-  showChat(name) {
-    this.selectedRecipient = name;
-    this.interlocutor = '@ ' + name;
-    this.ChatService.setInterlocutor(this.interlocutor)
-    this.getChats(name);
-  }
+  // showChat(name) {
+  //   this.selectedRecipient = name;
+  //   this.interlocutor = '@ ' + name;
+  //   this.ChatService.setInterlocutor(this.interlocutor)
+  //   this.getChats(name);
+  // }
 
-  showChannel() {
-    this.interlocutor = '# Entwicklerteam';
-  }
+  // showChannel() {
+  //   this.interlocutor = '# Entwicklerteam';
+  // }
 
   getUsers() {
     const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
@@ -66,25 +66,25 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  getChats(name) {
-    this.relevantChats = [];
-    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
-    this.chats$.subscribe((chats: any[]) => {
-      for (let i = 0; i < chats.length; i++) {
-        let element = chats[i];
-        if ((this.loggedUser.name == element.sender && name == element.receiver) ||
-          (this.loggedUser.name == element.receiver && name == element.sender)) {
-          element.timeStamp = new Date(element.timeStamp);
-          this.relevantChats.push(element);
-        }
-      }
+  // getChats(name) {
+  //   this.relevantChats = [];
+  //   this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+  //   this.chats$.subscribe((chats: any[]) => {
+  //     for (let i = 0; i < chats.length; i++) {
+  //       let element = chats[i];
+  //       if ((this.loggedUser.name == element.sender && name == element.receiver) ||
+  //         (this.loggedUser.name == element.receiver && name == element.sender)) {
+  //         element.timeStamp = new Date(element.timeStamp);
+  //         this.relevantChats.push(element);
+  //       }
+  //     }
 
-      this.relevantChats.sort((a, b) => {
-        return a.timeStamp - b.timeStamp;
-      });
-      // this.renderChats();
-    });
-  }
+  //     this.relevantChats.sort((a, b) => {
+  //       return a.timeStamp - b.timeStamp;
+  //     });
+  //     // this.renderChats();
+  //   });
+  // }
 
 
   // renderChats() {

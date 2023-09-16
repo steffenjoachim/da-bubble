@@ -39,6 +39,11 @@ export class BoardSidebarComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
+    this.scrollToBottom();
+  }
+
+  ngAfterViewInit() {
+    this.scrollToBottom();
   }
 
   // postChat() {
@@ -60,12 +65,13 @@ export class BoardSidebarComponent implements OnInit {
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-    // document.getElementById('content-frame').classList.add('d-none');
+    // 'document.getElementById('content-frame').classList.add('d-none');'
   }
 
 
   showChannel() {
-    // this.selectedRecipient = '# Entwicklerteam';
+    this.selectedRecipient = '# Entwicklerteam';
+    console.log(this.selectedRecipient);
   }
 
   getUsers() {
