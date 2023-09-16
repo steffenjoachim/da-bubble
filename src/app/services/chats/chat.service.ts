@@ -18,7 +18,8 @@ export class ChatService {
     sender: '',
     receiver: '',
     message: '',
-    timeStamp: this.timeStamp.seconds
+    timeStamp: this.timeStamp.seconds,
+    avatar: ''
   }
 
   loggedUser: any = {
@@ -45,8 +46,9 @@ export class ChatService {
 
   postChat(message, sender, recipient) {
     this.chats.message = message;
-    this.chats.sender = sender;
+    this.chats.sender = sender.name;
     this.chats.receiver = recipient;
+    this.chats.avatar = sender.avatar
     addDoc(this.chatCollection, this.chats);
   }
 
@@ -72,7 +74,7 @@ export class ChatService {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     // let renderChatsCalled = false; // Eine Flagge, um zu überprüfen, ob renderChats bereits aufgerufen wurde
-  
+
     this.chats$.subscribe((chats: any[]) => {
       for (let i = 0; i < chats.length; i++) {
         let element = chats[i];
@@ -82,17 +84,17 @@ export class ChatService {
           this.relevantChats.push(element);
         }
       }
-      
+
       // if (!renderChatsCalled) {
         this.renderChats();
       //   renderChatsCalled = true; // Setzen Sie die Flagge auf true, um zu markieren, dass renderChats aufgerufen wurde
       // }
-  
+
       this.counter++;
       console.log(this.counter);
     });
   }
-  
+
 
   renderChats() {
     this.relevantChats.sort((a, b) => {
@@ -112,6 +114,7 @@ export class ChatService {
   }
 
   returnStentMessageChat(element) {
+    console.log(element)
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -137,6 +140,7 @@ export class ChatService {
 
 
   returnRecievedMessageChat(element) {
+    console.log(element)
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -145,9 +149,14 @@ export class ChatService {
     const hour = jsDate.getHours().toString().padStart(2, '0');
     const minute = jsDate.getMinutes().toString().padStart(2, '0');
     return `<div class="recieved-container">
+    <div class="recieved-name-avatar">
+    <div><span>${element.sender}</span>
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
+        </div>
+        </div>
+        <img class="avatar" src="${element.avatar}">
         </div>
         </div>
     `

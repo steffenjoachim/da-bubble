@@ -55,7 +55,7 @@ export class BoardContentComponent implements OnInit {
     if (channel == recipient) {
       this.chanelService.postChat(this.message, channel)
     } else {
-      this.chatService.postChat(this.message, this.loggedUser.name, recipient);
+      this.chatService.postChat(this.message, this.loggedUser, recipient);
     }
   }
 

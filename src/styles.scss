@@ -74,7 +74,6 @@ a {
 
   .avatar {
     object-fit: contain;
-
   }
 
   .recieved-message {
@@ -93,6 +92,11 @@ a {
   .recieved-container {
     display: flex;
     justify-content: flex-start;
+  }
+
+  .recieved-name-avatar {
+    display: flex;
+    flex-direction: row-reverse;
   }
 
   .date {
