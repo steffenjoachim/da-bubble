@@ -66,10 +66,8 @@ export class BoardSidebarComponent implements OnInit {
   showChat(name) {
     if (this.loggedUser.name == 'Gast') {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
-      console.log(this.loggedUser.name);
     } else {
       this.chats.showChat(name);
-      console.log(this.loggedUser.name);
       this.scrollToBottom();
     }
   }

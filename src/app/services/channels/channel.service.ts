@@ -98,7 +98,6 @@ export class ChannelService {
   }
 
   returnRecievedMessageChat(element) {
-    console.log(element)
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
