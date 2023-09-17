@@ -36,7 +36,7 @@
     right: 16px;
   }
 
-  .channels {
+  .channels-headline {
     font-size: 20px;
     font-weight: 700;
     margin-top: 3px;
@@ -54,18 +54,26 @@
 }
 
 .channels-body {
-  margin-top: 32px;
   margin-left: 32px;
+  margin-top: 16px;
 }
 
-.entwicklerteam {
-  width: 150px;
+.channels {
+  margin-top: 16px;
+  width: 170px;
   padding: 16px;
-  background: rgb(236, 238, 254);
   border-radius: 25px;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
+  &:hover{
+    background: rgb(236, 238, 254);
+    color: rgb(68, 77, 242);
+  }
+  &.active {
+    background: rgb(236, 238, 254);
+    color: rgb(68, 77, 242);
+  }
 }
 
 .add-channel {
@@ -113,6 +121,9 @@
     padding: 8px;
     border-radius: 25px;
     &:hover {
+      background: rgb(236, 238, 254);
+    }
+    &.active {
       background: rgb(236, 238, 254);
     }
   }

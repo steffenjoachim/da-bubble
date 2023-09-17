@@ -56,10 +56,10 @@ export class ChatService {
   showChat(name) {
     this.selectedRecipient = name;
     localStorage.setItem('selected-recipient', this.selectedRecipient);
-    this.getChats(name)
+    this.getChats(name);
     this.showNameInBoardHead();
     this.showNameAsPlaceholderOfTextarea();
-  }
+  }  
 
   showNameInBoardHead() {
     document.getElementById('selected-recipient').innerHTML = `@ ` + this.selectedRecipient

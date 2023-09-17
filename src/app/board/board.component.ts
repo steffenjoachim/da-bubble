@@ -201,4 +201,5 @@ export class BoardComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
+  
 }

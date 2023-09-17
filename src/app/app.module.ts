@@ -23,6 +23,7 @@ import { MatTreeModule}  from '@angular/material/tree';
 import { BoardSidebarComponent } from './board-sidebar/board-sidebar.component';
 import { BoardThreadComponent } from './board-thread/board-thread.component';
 import { BoardContentComponent } from './board-content/board-content.component';
+import { DialogChannelAnswerComponent } from './dialog-channel-answer/dialog-channel-answer.component';
 // import { AlertModule } from 'ngx-bootstrap';
 
 
@@ -35,7 +36,8 @@ import { BoardContentComponent } from './board-content/board-content.component';
     HeaderComponent,
     BoardSidebarComponent,
     BoardThreadComponent,
-    BoardContentComponent
+    BoardContentComponent,
+    DialogChannelAnswerComponent
   ],
   imports: [
     
