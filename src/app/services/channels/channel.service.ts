@@ -8,8 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class ChannelService {
 
-  constructor(private channelChat: Firestore) { }
+  constructor(private channelChat: Firestore) {
+  };
 
+ 
   chatCollection: any = collection(this.channelChat, 'channelChats');
   chats$: Observable<any>
   relevantChats: any[];
@@ -62,6 +64,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$.subscribe((chats: any[]) => {
+      this.relevantChats = [];
       for (let i = 0; i < chats.length; i++) {
         const element = chats[i];
         this.relevantChats.push(element)
@@ -83,10 +86,11 @@ showNameAsPlaceholderOfTextarea(channel) {
       if (loggedUser.name == element.sender) {
         content.innerHTML += this.returnStentMessageChat(element, loggedUser);
       } else {
-        content.innerHTML += this.returnRecievedMessageChat(element);
+        content.innerHTML += this.returnRecievedMessageChat(element,i);
       }
     }
     this. scrollToBottom();
+    document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
   }
 
   scrollToBottom() {
@@ -108,7 +112,7 @@ showNameAsPlaceholderOfTextarea(channel) {
       <div class="sent-message">
         <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
         <span>${element.message}</span>
-        <span class="answer" (click)="openDialogChannelAnswer()">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+        <span class="answer" onclick="openDialogChannelAnswer()">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
       </div>
       </div>
       <img class="avatar" src="${loggedUser.avatar}">
@@ -118,7 +122,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     `;
   }
 
-  returnRecievedMessageChat(element) {
+  returnRecievedMessageChat(element,i) {
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -132,7 +136,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
-    <span (click)="openDialogChannelAnswer()" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+    <span id="recieved" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
         </div>
         </div>
         <img class="avatar" src="${element.avatar}">

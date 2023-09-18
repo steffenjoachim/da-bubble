@@ -71,13 +71,11 @@ export class BoardSidebarComponent implements OnInit {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
       this.chats.showChat(name);
-      this.scrollToBottom();
     }
   }
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-    // 'document.getElementById('content-frame').classList.add('d-none');'
   }
 
 

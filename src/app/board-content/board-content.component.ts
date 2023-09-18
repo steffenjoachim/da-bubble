@@ -34,7 +34,7 @@ export class BoardContentComponent implements OnInit {
     private chatService: ChatService,
     private el: ElementRef,
     private channelService: ChannelService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -50,6 +50,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   openDialogChannelAnswer(){
+    console.log('nichts');
     this.channelService.openDialogChannelAnswer();
   }
 
