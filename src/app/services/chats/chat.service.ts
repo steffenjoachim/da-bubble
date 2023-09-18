@@ -73,6 +73,7 @@ export class ChatService {
           this.relevantChats.push(element);
         }
       }
+      this.renderChats();
     });
   }
 

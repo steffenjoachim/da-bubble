@@ -33,7 +33,9 @@ export class BoardContentComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
-    private channelService: ChannelService) { }
+    private el: ElementRef,
+    private channelService: ChannelService
+  ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -46,6 +48,10 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = `Nachricht an # Entwicklerteam`
+  }
+
+  openDialogChannelAnswer(){
+    this.channelService.openDialogChannelAnswer();
   }
 
   postChat() {

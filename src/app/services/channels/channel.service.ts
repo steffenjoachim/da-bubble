@@ -10,7 +10,9 @@ export class ChannelService {
   private openDialogChannelAnswerSubject = new Subject<void>();
   openDialogChannelAnswer$ = this.openDialogChannelAnswerSubject.asObservable();
 
-  constructor(private channelChat: Firestore) { }
+  constructor(private channelChat: Firestore) {
+  };
+
 
   chatCollection: any = collection(this.channelChat, 'channelChats');
   chats$: Observable<any>
@@ -64,6 +66,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$.subscribe((chats: any[]) => {
+      this.relevantChats = [];
       for (let i = 0; i < chats.length; i++) {
         const element = chats[i];
         this.relevantChats.push(element)
@@ -85,14 +88,19 @@ showNameAsPlaceholderOfTextarea(channel) {
       if (loggedUser.name == element.sender) {
         content.innerHTML += this.returnStentMessageChat(element, loggedUser);
       } else {
-        content.innerHTML += this.returnRecievedMessageChat(element);
+        content.innerHTML += this.returnRecievedMessageChat(element,i);
       }
     }
     this. scrollToBottom();
+    document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
   }
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+  }
+
+  openDialogChannelAnswer() {
+    console.log('test')
   }
 
   returnStentMessageChat(element, loggedUser) {
@@ -120,7 +128,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     `;
   }
 
-  returnRecievedMessageChat(element) {
+  returnRecievedMessageChat(element,i) {
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -134,7 +142,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
-    <span id="event" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+    <span (click)="openDialogChannelAnswer()" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
         </div>
         </div>
         <img class="avatar" src="${element.avatar}">
