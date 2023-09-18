@@ -86,6 +86,11 @@ showNameAsPlaceholderOfTextarea(channel) {
         content.innerHTML += this.returnRecievedMessageChat(element);
       }
     }
+    this. scrollToBottom();
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
   returnStentMessageChat(element, loggedUser) {

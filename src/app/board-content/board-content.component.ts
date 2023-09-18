@@ -23,7 +23,7 @@ export class BoardContentComponent implements OnInit {
   chats$ !: Observable<any>;
 
 
-  message: any;
+  message: any ='';
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
@@ -61,6 +61,7 @@ export class BoardContentComponent implements OnInit {
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);
     }
+    this.message = '';
   }
 
   getUsers() {
