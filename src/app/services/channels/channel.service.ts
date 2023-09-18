@@ -84,13 +84,16 @@ showNameAsPlaceholderOfTextarea(channel) {
     for (let i = 0; i < this.relevantChats.length; i++) {
       let element = this.relevantChats[i];
       if (loggedUser.name == element.sender) {
-        content.innerHTML += this.returnStentMessageChat(element, loggedUser);
+        content.innerHTML += this.returnStentMessageChat(element, loggedUser,);
+        
       } else {
         content.innerHTML += this.returnRecievedMessageChat(element,i);
+        
       }
+      document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
     }
     this. scrollToBottom();
-    document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
+    
   }
 
   scrollToBottom() {
