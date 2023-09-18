@@ -103,3 +103,16 @@ a {
     font-size: 10px;
   }
 }
+
+.answer{
+  margin-top: 16px;
+  font-size: 10px;
+  cursor: pointer;
+  &:hover{
+    text-decoration: underline;
+  }
+  .element-sender{
+    font-weight: 700;
+    color: #92c83e;
+  }
+}

@@ -23,7 +23,7 @@ export class BoardContentComponent implements OnInit {
   chats$ !: Observable<any>;
 
 
-  message: any;
+  message: any ='';
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
@@ -33,7 +33,7 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private el: ElementRef,
-    private chanelService: ChannelService
+    private channelService: ChannelService
   ) { }
 
   ngOnInit(): void {
@@ -49,14 +49,19 @@ export class BoardContentComponent implements OnInit {
     chatField.placeholder = `Nachricht an # Entwicklerteam`
   }
 
+  openDialogChannelAnswer(){
+    this.channelService.openDialogChannelAnswer();
+  }
+
   postChat() {
     const channel = localStorage.getItem('channel')
     const recipient = localStorage.getItem('selected-recipient');
     if (channel == recipient) {
-      this.chanelService.postChat(this.message, channel)
+      this.channelService.postChat(this.message, channel)
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);
     }
+    this.message = '';
   }
 
   getUsers() {

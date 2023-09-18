@@ -86,6 +86,11 @@ showNameAsPlaceholderOfTextarea(channel) {
         content.innerHTML += this.returnRecievedMessageChat(element);
       }
     }
+    this. scrollToBottom();
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
   returnStentMessageChat(element, loggedUser) {
@@ -103,6 +108,7 @@ showNameAsPlaceholderOfTextarea(channel) {
       <div class="sent-message">
         <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
         <span>${element.message}</span>
+        <span class="answer" (click)="openDialogChannelAnswer()">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
       </div>
       </div>
       <img class="avatar" src="${loggedUser.avatar}">
@@ -126,11 +132,16 @@ showNameAsPlaceholderOfTextarea(channel) {
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
+    <span (click)="openDialogChannelAnswer()" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
         </div>
         </div>
         <img class="avatar" src="${element.avatar}">
         </div>
         </div>
     `
+  }
+
+  openDialogChannelAnswer(){
+    console.log('answered');
   }
 }

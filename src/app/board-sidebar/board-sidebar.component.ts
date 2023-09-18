@@ -37,7 +37,7 @@ export class BoardSidebarComponent implements OnInit {
   addMembers: boolean = false;
   popupheadline: string;
   message: string;
-  selectedRecipient = '';
+  selectedRecipient = 'Entwicklerteam';
   channel;
   relevantChats = [];
 
@@ -57,6 +57,7 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
     this.scrollToBottom();
     this.getChannels();
+    this.showChannel(this.selectedRecipient);
   }
 
   ngAfterViewInit() {
@@ -65,7 +66,7 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChat(name) {
-    console.log(name)
+    this.selectedRecipient = name;
     if (this.loggedUser.name == 'Gast') {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
@@ -113,6 +114,11 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel(channel) {
+    if (channel !== 'Entwicklerteam') {
+      this.selectedRecipient = channel['name'];
+    } else {
+      this.selectedRecipient = 'Entwicklerteam';
+    }
     localStorage.setItem('channel', channel.name)
     this.channelChat.showChannelChat(channel)
   }
@@ -182,7 +188,6 @@ export class BoardSidebarComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
-
 }
 
 

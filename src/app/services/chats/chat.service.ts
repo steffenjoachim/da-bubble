@@ -9,8 +9,6 @@ export class ChatService {
 
   chatDate = new Date();
   timeStamp = Timestamp.fromDate(this.chatDate);
-  counter = 0;
-  counter2 = 0;
 
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -31,14 +29,6 @@ export class ChatService {
   relevantChats: any[];
   chats$: Observable<import("@angular/fire/firestore").DocumentData[]>;
 
-  // setInterlocutor(interlocutor: string) {
-  //   this.interlocutorSubject.next(interlocutor);
-  // }
-
-  // getInterlocutor(): Observable<string> {
-  //   return this.interlocutorSubject.asObservable();
-  // }
-
   chatCollection: any = collection(this.firebase, 'chats');
   constructor(private firebase: Firestore) {
     this.loggedUser = JSON.parse(localStorage.getItem('userData'))
@@ -56,10 +46,10 @@ export class ChatService {
   showChat(name) {
     this.selectedRecipient = name;
     localStorage.setItem('selected-recipient', this.selectedRecipient);
-    this.getChats(name)
+    this.getChats(name);
     this.showNameInBoardHead();
     this.showNameAsPlaceholderOfTextarea();
-  }
+  }  
 
   showNameInBoardHead() {
     document.getElementById('selected-recipient').innerHTML = `@ ` + this.selectedRecipient
@@ -73,9 +63,8 @@ export class ChatService {
   getChats(name) {
     this.relevantChats = [];
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
-    // let renderChatsCalled = false; // Eine Flagge, um zu überprüfen, ob renderChats bereits aufgerufen wurde
-
     this.chats$.subscribe((chats: any[]) => {
+      this.relevantChats = [];
       for (let i = 0; i < chats.length; i++) {
         let element = chats[i];
         if ((this.loggedUser.name == element.sender && name == element.receiver) ||
@@ -84,14 +73,6 @@ export class ChatService {
           this.relevantChats.push(element);
         }
       }
-
-      // if (!renderChatsCalled) {
-        this.renderChats();
-      //   renderChatsCalled = true; // Setzen Sie die Flagge auf true, um zu markieren, dass renderChats aufgerufen wurde
-      // }
-
-      this.counter++;
-      console.log(this.counter);
     });
   }
 
@@ -111,6 +92,11 @@ export class ChatService {
         content.innerHTML += this.returnRecievedMessageChat(element);
       }
     }
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
   returnStentMessageChat(element) {
