@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Firestore, Timestamp, collectionData } from '@angular/fire/firestore';
 import { addDoc, collection } from '@firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
+  private openDialogChannelAnswerSubject = new Subject<void>();
+  openDialogChannelAnswer$ = this.openDialogChannelAnswerSubject.asObservable();
 
   constructor(private channelChat: Firestore) { }
 
@@ -108,7 +110,7 @@ showNameAsPlaceholderOfTextarea(channel) {
       <div class="sent-message">
         <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
         <span>${element.message}</span>
-        <span class="answer" (click)="openDialogChannelAnswer()">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+        <span class="answer" onclick="openDialogChannelAnswer()">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
       </div>
       </div>
       <img class="avatar" src="${loggedUser.avatar}">
@@ -132,16 +134,12 @@ showNameAsPlaceholderOfTextarea(channel) {
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
-    <span (click)="openDialogChannelAnswer()" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+    <span id="event" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
         </div>
         </div>
         <img class="avatar" src="${element.avatar}">
         </div>
         </div>
     `
-  }
-
-  openDialogChannelAnswer(){
-    console.log('answered');
   }
 }

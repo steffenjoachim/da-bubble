@@ -5,6 +5,8 @@ import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 
+
+
 @Component({
   selector: 'app-board-content',
   templateUrl: './board-content.component.html',
@@ -22,7 +24,6 @@ export class BoardContentComponent implements OnInit {
   users: any[] = [];
   chats$ !: Observable<any>;
 
-
   message: any ='';
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
@@ -32,9 +33,7 @@ export class BoardContentComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
-    private el: ElementRef,
-    private channelService: ChannelService
-  ) { }
+    private channelService: ChannelService) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -47,10 +46,6 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = `Nachricht an # Entwicklerteam`
-  }
-
-  openDialogChannelAnswer(){
-    this.channelService.openDialogChannelAnswer();
   }
 
   postChat() {

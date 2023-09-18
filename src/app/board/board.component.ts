@@ -1,8 +1,8 @@
-import { Component, OnInit, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
-import { ChatService } from '../services/chats/chat.service';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-board',
@@ -32,9 +32,7 @@ export class BoardComponent implements OnInit {
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
-    private chats: ChatService,
-    private el: ElementRef
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -65,6 +63,7 @@ export class BoardComponent implements OnInit {
       this.users = usersArray;
     });
   }
+
 
   // getChats(name) {
   //   this.relevantChats = [];
@@ -201,5 +200,5 @@ export class BoardComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
-  
+
 }
