@@ -48,7 +48,7 @@ export class BoardSidebarComponent implements OnInit {
     private channelChat: ChannelService,
     private channels: Firestore,
   ) {
-    this.channel = localStorage.getItem('channel')
+    // this.channel = localStorage.getItem('channel')
   }
 
   ngOnInit(): void {
@@ -57,12 +57,11 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
     this.scrollToBottom();
     this.getChannels();
-    this.showChannel(name)
   }
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    // this.showChannel(name);
+    this.showChannel(name);
   }
 
   showChat(name) {
