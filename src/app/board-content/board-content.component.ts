@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
@@ -13,6 +13,9 @@ import { ChannelService } from '../services/channels/channel.service';
   styleUrls: ['./board-content.component.scss']
 })
 export class BoardContentComponent implements OnInit {
+
+@ViewChild('recieved') recievedElement: ElementRef;
+
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
@@ -43,6 +46,12 @@ export class BoardContentComponent implements OnInit {
     this.setSelectedRecipient();
     this.getUsers();
   }
+  ngAfterViewInit() {
+    this.recievedElement.nativeElement.addEventListener('click', this.openDialogAnswer.bind(this));
+  }
+
+  openDialogAnswer() {
+console.log('test222222')  }
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;

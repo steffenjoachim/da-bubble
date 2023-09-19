@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef, ViewChild } from '@angular/core';
 import { Firestore, Timestamp, collectionData } from '@angular/fire/firestore';
 import { addDoc, collection } from '@firebase/firestore';
 import { Observable, Subject } from 'rxjs';
@@ -7,17 +7,12 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ChannelService {
-  private openDialogChannelAnswerSubject = new Subject<void>();
-  openDialogChannelAnswer$ = this.openDialogChannelAnswerSubject.asObservable();
-
   constructor(private channelChat: Firestore) {
   };
-
 
   chatCollection: any = collection(this.channelChat, 'channelChats');
   chats$: Observable<any>
   relevantChats: any[];
-
   channels: any = {
     name: 'Entwicklerteam',
     admin: 'Sufyan',
@@ -29,7 +24,6 @@ export class ChannelService {
 
   chatDate = new Date();
   timeStamp = Timestamp.fromDate(this.chatDate)
-
   channelMessage: any = {
     message: '',
     timeStamp: this.timeStamp.seconds,
@@ -47,20 +41,20 @@ export class ChannelService {
     addDoc(this.chatCollection, this.channelMessage);
   }
 
-showChannelChat(channel) {
-  this.getChats(channel)
-  this.showNameInBoardHead(channel);
-  this.showNameAsPlaceholderOfTextarea(channel);
-}
+  showChannelChat(channel) {
+    this.getChats(channel)
+    this.showNameInBoardHead(channel);
+    this.showNameAsPlaceholderOfTextarea(channel);
+  }
 
-showNameInBoardHead(channel) {
-  document.getElementById('selected-recipient').innerHTML = `# ` + channel.name
-}
+  showNameInBoardHead(channel) {
+    document.getElementById('selected-recipient').innerHTML = `# ` + channel.name
+  }
 
-showNameAsPlaceholderOfTextarea(channel) {
-  const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-  chatField.placeholder = `Nachricht an @ ` + channel.name;
-}
+  showNameAsPlaceholderOfTextarea(channel) {
+    const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
+    chatField.placeholder = `Nachricht an @ ` + channel.name;
+  }
 
   getChats(selectedChannel) {
     this.relevantChats = [];
@@ -88,11 +82,10 @@ showNameAsPlaceholderOfTextarea(channel) {
       if (loggedUser.name == element.sender) {
         content.innerHTML += this.returnStentMessageChat(element, loggedUser);
       } else {
-        content.innerHTML += this.returnRecievedMessageChat(element,i);
+        content.innerHTML += this.returnRecievedMessageChat(element, i);
       }
     }
-    this. scrollToBottom();
-    document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
+    this.scrollToBottom();
   }
 
   scrollToBottom() {
@@ -100,7 +93,7 @@ showNameAsPlaceholderOfTextarea(channel) {
   }
 
   openDialogChannelAnswer() {
-    console.log('test')
+    console.log('test222')
   }
 
   returnStentMessageChat(element, loggedUser) {
@@ -128,7 +121,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     `;
   }
 
-  returnRecievedMessageChat(element,i) {
+  returnRecievedMessageChat(element, i) {
     const unixTimestamp = element.timeStamp;
     const jsDate = new Date(unixTimestamp * 1000);
     const day = jsDate.getDate().toString().padStart(2, '0');
@@ -142,7 +135,7 @@ showNameAsPlaceholderOfTextarea(channel) {
     <div class="recieved-message">
     <span class="date">${day}.${month}.${year}  ${hour}:${minute}</span>
     <span>${element.message}</span>
-    <span (click)="openDialogChannelAnswer()" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
+    <span id="recieved" class="answer">Gib <span class="element-sender">${element.sender} </span> eine Antwort</span>
         </div>
         </div>
         <img class="avatar" src="${element.avatar}">

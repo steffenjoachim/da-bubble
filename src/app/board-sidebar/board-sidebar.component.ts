@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { DocumentData, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
@@ -11,6 +11,7 @@ import { ChannelService } from '../services/channels/channel.service';
   styleUrls: ['./board-sidebar.component.scss']
 })
 export class BoardSidebarComponent implements OnInit {
+
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
