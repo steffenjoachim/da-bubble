@@ -1,0 +1,47 @@
+.sent-message {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  background: rgb(121, 126, 243);
+  color: white;
+  border-radius: 25px 0px 25px 25px;
+  padding: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: end;
+  width: fit-content;
+}
+
+.sent-name-avatar {
+  display: flex;
+  justify-content: flex-end;
+  img {
+    object-fit: contain;
+  }
+}
+
+.recieved-message {
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 0 25px 25px 25px;
+  padding: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: start;
+  width: fit-content;
+}
+
+.recieved-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.recieved-name-avatar {
+  display: flex;
+  flex-direction: row-reverse;
+  img {
+    object-fit: contain;
+  }
+}

@@ -46,12 +46,6 @@ export class BoardContentComponent implements OnInit {
     this.setSelectedRecipient();
     this.getUsers();
   }
-  ngAfterViewInit() {
-    this.recievedElement.nativeElement.addEventListener('click', this.openDialogAnswer.bind(this));
-  }
-
-  openDialogAnswer() {
-console.log('test222222')  }
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
@@ -59,14 +53,11 @@ console.log('test222222')  }
     chatField.placeholder = `Nachricht an # Entwicklerteam`
   }
 
-  openDialogChannelAnswer(){
-    this.channelService.openDialogChannelAnswer();
-  }
-
   postChat() {
     const channel = localStorage.getItem('channel')
     const recipient = localStorage.getItem('selected-recipient');
     if (channel == recipient) {
+      console.log('test')
       this.channelService.postChat(this.message, channel)
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);

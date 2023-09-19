@@ -34,7 +34,7 @@ export class ChannelService {
     avatar: ''
   }
 
-  postChat(message: any, selectedChannel) {
+  postChat(message: any, selectedChannel: string) {
     let loggedUser = JSON.parse(localStorage.getItem('userData'));
     this.channelMessage.avatar = loggedUser.avatar
     this.channelMessage.sender = loggedUser.name;
@@ -96,6 +96,7 @@ export class ChannelService {
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
+
 
   returnStentMessageChat(element, loggedUser) {
     const unixTimestamp = element.timeStamp;

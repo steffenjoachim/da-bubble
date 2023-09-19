@@ -9,10 +9,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogChannelAnswerComponent {
 
-  constructor(public dialog: MatDialog, private firestore:Firestore, public dialogRef: MatDialogRef<DialogChannelAnswerComponent >){
-     
+  constructor(public dialog: MatDialog,
+    private firestore: Firestore,
+    public dialogRef: MatDialogRef<DialogChannelAnswerComponent>) {
+
   }
-  saveAnswer(){
-    
+  saveAnswer() {
+
   }
 }

@@ -68,36 +68,11 @@ a {
     align-items: end;
   }
 
-  .sent-name-avatar {
-    display: flex;
-  }
-
   .avatar {
     object-fit: contain;
   }
 
-  .recieved-message {
-    padding-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    border-radius: 0 25px 25px 25px;
-    padding: 16px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    text-align: start;
-    width: fit-content;
-  }
 
-  .recieved-container {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .recieved-name-avatar {
-    display: flex;
-    flex-direction: row-reverse;
-  }
 
   .date {
     font-size: 10px;

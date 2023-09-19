@@ -49,7 +49,6 @@ export class BoardSidebarComponent implements OnInit {
     private channelChat: ChannelService,
     private channels: Firestore,
   ) {
-    // this.channel = localStorage.getItem('channel')
   }
 
   ngOnInit(): void {
@@ -113,8 +112,10 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel(channel) {
+    console.log(channel['name'])
     if (channel !== 'Entwicklerteam') {
       this.selectedRecipient = channel['name'];
+      localStorage.setItem('selected-recipient', this.selectedRecipient)
     } else {
       this.selectedRecipient = 'Entwicklerteam';
     }

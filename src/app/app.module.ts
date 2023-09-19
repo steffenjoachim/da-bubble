@@ -27,6 +27,7 @@ import { DialogChannelAnswerComponent } from './dialog-channel-answer/dialog-cha
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule}  from '@angular/material/input';
+import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 
 
 
@@ -40,7 +41,8 @@ import { MatInputModule}  from '@angular/material/input';
     BoardSidebarComponent,
     BoardThreadComponent,
     BoardContentComponent,
-    DialogChannelAnswerComponent
+    DialogChannelAnswerComponent,
+    ChannelChatComponent
   ],
   imports: [
     
