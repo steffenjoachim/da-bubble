@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Firestore, Timestamp, collectionData } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { addDoc, collection } from '@firebase/firestore';
 import { Observable } from 'rxjs';
+import { DialogChannelAnswerComponent } from 'src/app/dialog-channel-answer/dialog-channel-answer.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
 
-  constructor(private channelChat: Firestore) {
+  constructor(private channelChat: Firestore, public dialog : MatDialog,) {
   };
 
  
@@ -150,5 +152,6 @@ showNameAsPlaceholderOfTextarea(channel) {
 
   openDialogChannelAnswer(){
     console.log('answered');
+    this.dialog.open(DialogChannelAnswerComponent);
   }
 }
