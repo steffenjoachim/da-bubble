@@ -1,1 +1,16 @@
-<p>dialog-channel-answer works!</p>
+<div class="dialog-channel-answer-frame">
+    <h1 mat-dialog-title class="dialog-add-user-headline">Add user</h1>
+    <div mat-dialog-content>
+        <div>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Deine Antwort</mat-label>
+                <input matInput placeholder="Remarks">
+            </mat-form-field>
+        </div>
+    <div mat-dialog-action class="dialog-add-user-button-frame">
+        <button mat-button (click)="dialogRef.close()">Cancel</button>
+        <button mat-button (click)="saveAnswer()" cdkFocusInitial>Save</button>
+    </div>
+</div>
+
+<!-- [disabled]="loading" [(ngModel)]="user.remarks"  ausgeschnitten aus Inputfield-->

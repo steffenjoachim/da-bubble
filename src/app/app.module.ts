@@ -24,7 +24,10 @@ import { BoardSidebarComponent } from './board-sidebar/board-sidebar.component';
 import { BoardThreadComponent } from './board-thread/board-thread.component';
 import { BoardContentComponent } from './board-content/board-content.component';
 import { DialogChannelAnswerComponent } from './dialog-channel-answer/dialog-channel-answer.component';
-// import { AlertModule } from 'ngx-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule}  from '@angular/material/input';
+
 
 
 @NgModule({
@@ -49,6 +52,9 @@ import { DialogChannelAnswerComponent } from './dialog-channel-answer/dialog-cha
     FormsModule,
     MatSidenavModule,
     MatTreeModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

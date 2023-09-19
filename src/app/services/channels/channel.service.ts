@@ -1,12 +1,14 @@
 import { Injectable, ElementRef, ViewChild } from '@angular/core';
 import { Firestore, Timestamp, collectionData } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { addDoc, collection } from '@firebase/firestore';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
+
   constructor(private channelChat: Firestore) {
   };
 
@@ -80,20 +82,19 @@ export class ChannelService {
     for (let i = 0; i < this.relevantChats.length; i++) {
       let element = this.relevantChats[i];
       if (loggedUser.name == element.sender) {
-        content.innerHTML += this.returnStentMessageChat(element, loggedUser);
+        content.innerHTML += this.returnStentMessageChat(element, loggedUser,);
+
       } else {
-        content.innerHTML += this.returnRecievedMessageChat(element, i);
+        content.innerHTML += this.returnRecievedMessageChat(element,i);
       }
+      document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
     }
-    this.scrollToBottom();
+    this. scrollToBottom();
+    document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
   }
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-  }
-
-  openDialogChannelAnswer() {
-    console.log('test222')
   }
 
   returnStentMessageChat(element, loggedUser) {
@@ -142,5 +143,9 @@ export class ChannelService {
         </div>
         </div>
     `
+  }
+
+  openDialogChannelAnswer(){
+    console.log('answered');
   }
 }
