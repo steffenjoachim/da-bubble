@@ -1,9 +1,10 @@
-import { Component, OnInit, ElementRef, AfterViewInit, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
+import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 
 
 
@@ -14,7 +15,7 @@ import { ChannelService } from '../services/channels/channel.service';
 })
 export class BoardContentComponent implements OnInit {
 
-@ViewChild('recieved') recievedElement: ElementRef;
+  @ViewChild('recieved') recievedElement: ElementRef;
 
   open: boolean = true;
   loggedUser: any = {
@@ -22,12 +23,14 @@ export class BoardContentComponent implements OnInit {
     name: 'Gast'
   }
 
+  channelChatCollection: any = collection(this.firestore, 'channelChats');
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
-  chats$ !: Observable<any>;
+  chatsChannel$ !: Observable<any>;
+  channel;
 
-  message: any ='';
+  message: any = '';
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
@@ -36,8 +39,7 @@ export class BoardContentComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
-    private el: ElementRef,
-    private channelService: ChannelService
+    private channelService: ChannelService,
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +47,11 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
+    this.getChats();
+  }
+
+  openDialogChannelAnswer() {
+    console.log('test')
   }
 
   setSelectedRecipient() {
@@ -55,7 +62,9 @@ export class BoardContentComponent implements OnInit {
 
   postChat() {
     const channel = localStorage.getItem('channel')
+
     const recipient = localStorage.getItem('selected-recipient');
+    console.log('channel: ', channel, ' recipient :', recipient )
     if (channel == recipient) {
       console.log('test')
       this.channelService.postChat(this.message, channel)
@@ -83,6 +92,17 @@ export class BoardContentComponent implements OnInit {
       this.loggedUser.avatar = userData.avatar;
       this.loggedUser.name = userData.name;
     }
+  }
+
+  getChats() {
+    this.channel = localStorage.getItem('channel')
+    this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.chatsChannel$ = this.chatsChannel$.pipe(
+      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+    );
+    this.chatsChannel$.subscribe((chats) => {
+      console.log(chats)
+    });
   }
 }
 

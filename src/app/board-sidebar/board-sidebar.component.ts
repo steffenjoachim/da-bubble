@@ -1,9 +1,12 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { DocumentData, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
+import { BoardComponent } from '../board/board.component';
+import { BoardContentComponent } from '../board-content/board-content.component';
+import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 
 @Component({
   selector: 'app-board-sidebar',
@@ -11,6 +14,9 @@ import { ChannelService } from '../services/channels/channel.service';
   styleUrls: ['./board-sidebar.component.scss']
 })
 export class BoardSidebarComponent implements OnInit {
+
+
+  @Output() sidebarLinkClicked: EventEmitter<void> = new EventEmitter<void>();
 
   open: boolean = true;
   loggedUser: any = {
@@ -25,7 +31,7 @@ export class BoardSidebarComponent implements OnInit {
     description: ''
   }
 
-  channelName: string;
+  channelName: any;
   channelDescription: string;
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
@@ -39,7 +45,7 @@ export class BoardSidebarComponent implements OnInit {
   popupheadline: string;
   message: string;
   selectedRecipient = 'Entwicklerteam';
-  channel;
+  channel = 'Entwicklerteam';
   relevantChats = [];
 
   constructor(
@@ -57,12 +63,11 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
     this.scrollToBottom();
     this.getChannels();
-    this.showChannel(this.selectedRecipient);
   }
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    this.showChannel(name);
+    this.getChannels()
   }
 
   showChat(name) {
@@ -96,9 +101,12 @@ export class BoardSidebarComponent implements OnInit {
     for (let i = 0; i < this.users.length; i++) {
       const element = this.users[i].name;
       this.channelsData.members.push(element)
-      console.log(element)
+      console.log(this.channelsData)
     }
     addDoc(this.channelCollection, this.channelsData)
+    this.addChannelPopup = false
+    this.popupContainer = false
+    this.addMembers = false
   }
 
   openAddChanelPopup() {
@@ -111,15 +119,17 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
+
   showChannel(channel) {
-    console.log(channel['name'])
-    if (channel !== 'Entwicklerteam') {
-      this.selectedRecipient = channel['name'];
-      localStorage.setItem('selected-recipient', this.selectedRecipient)
-    } else {
-      this.selectedRecipient = 'Entwicklerteam';
-    }
-    localStorage.setItem('channel', channel.name)
+    localStorage.setItem('selected-recipient', '# ' + channel.name)
+    localStorage.setItem('channel', '# ' + channel.name)
+    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+    this.chats$ = this.chats$.pipe(
+      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+    );
+    this.chats$.subscribe((chats) => {
+      this.scrollToBottom()
+    });
     this.channelChat.showChannelChat(channel)
   }
 

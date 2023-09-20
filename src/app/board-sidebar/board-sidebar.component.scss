@@ -26,6 +26,11 @@
   position: relative;
   mat-icon {
     margin-right: 8px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(236, 238, 254);
+      border-radius: 25px;
+    }
   }
   .channels-head {
     display: flex;

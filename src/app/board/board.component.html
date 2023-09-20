@@ -1,17 +1,21 @@
+<!-- board.component.html -->
 <app-header></app-header>
 <div id="main-container" class="main-container">
   <div id="side-bar" class="side-bar">
-    <app-board-sidebar></app-board-sidebar>
+    <app-board-sidebar
+      (sidebarLinkClicked)="channelChatComponent.meineFunktion()"></app-board-sidebar>
   </div>
   <div class="content-box">
-    <app-board-content></app-board-content>
+    <app-board-content #boardContent>
+    </app-board-content>
   </div>
   <div id="thread" class="thread-frame">
     <app-board-thread></app-board-thread>
   </div>
-<div (click)="closeSideBar()" class="close-workshop-menu">
-  <mat-icon id="close-x" fontIcon="close"></mat-icon>
-  <mat-icon id="open-arrow" class="d-none" fontIcon="arrow_forwards_ios"></mat-icon>
-  <p id="close-workspace">Workspace-Menü schließen</p>
-  <p id="open-workspace" class="d-none">Workspace-Menü öffnen</p>
+  <div (click)="closeSideBar()" class="close-workshop-menu">
+    <mat-icon id="close-x" fontIcon="close"></mat-icon>
+    <mat-icon id="open-arrow" class="d-none" fontIcon="arrow_forwards_ios"></mat-icon>
+    <p id="close-workspace">Workspace-Menü schließen</p>
+    <p id="open-workspace" class="d-none">Workspace-Menü öffnen</p>
+  </div>
 </div>

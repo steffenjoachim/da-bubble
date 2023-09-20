@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { ChannelChatComponent } from './../channel-chat/channel-chat.component';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
+import { Observable, map } from 'rxjs';
+import { BoardSidebarComponent } from '../board-sidebar/board-sidebar.component';
+import { BoardContentComponent } from '../board-content/board-content.component';
 
 @Component({
   selector: 'app-board',
@@ -9,11 +12,29 @@ import { Observable } from 'rxjs';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+  @ViewChild(ChannelChatComponent) public channelChatComponent: ChannelChatComponent;
+
+  constructor(
+    public firestore: Firestore,
+    private firebase: FirebaseService,
+    private channelChat: Firestore
+  ) { }
+
+
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
     name: 'Gast'
   }
+
+
+  channelChatCollection: any = collection(this.channelChat, 'channelChats');
+  channelChats$: Observable<any>
+  chatDate = new Date();
+  timeStamp = Timestamp.fromDate(this.chatDate);
+  channel: any;
+  showChannelChat = false;
+
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
@@ -27,17 +48,22 @@ export class BoardComponent implements OnInit {
   relevantChats = [];
   ChatService: any;
 
+  functionInParent(channel) {
+    console.log('Function in parent (board) component called', channel.name);
+  }
 
-  constructor(
-    public firestore: Firestore,
-    private firebase: FirebaseService,
-    ) { }
+  public callFunctionInChannelChat(): void {
+    if (this.channelChatComponent) {
+      this.showChannelChat = true;
+      this.channelChatComponent.meineFunktion();
+    }
+  }
+
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    // this.getChats(name);
   }
 
   getUsers() {
@@ -46,8 +72,6 @@ export class BoardComponent implements OnInit {
       this.users = usersArray;
     });
   }
-
-
 
 
   ngOnDestroy(): void {
