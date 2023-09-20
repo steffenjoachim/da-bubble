@@ -25,11 +25,10 @@ export class ChannelService {
     ]
   }
 
-  chatDate = new Date();
-  timeStamp = Timestamp.fromDate(this.chatDate)
+
   channelMessage: any = {
     message: '',
-    timeStamp: this.timeStamp.seconds,
+    timeStamp: 0,
     channel: '',
     sender: '',
     avatar: ''
@@ -40,7 +39,10 @@ export class ChannelService {
   }
 
   postChat(message: any, selectedChannel: string) {
-    console.log(selectedChannel)
+    const chatDate = new Date();
+    console.log(chatDate)
+    const timeStamp = Timestamp.fromDate(chatDate)
+    this.channelMessage.timeStamp = timeStamp.seconds;
     let loggedUser = JSON.parse(localStorage.getItem('userData'));
     this.channelMessage.avatar = loggedUser.avatar
     this.channelMessage.sender = loggedUser.name;
