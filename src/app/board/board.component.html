@@ -2,8 +2,7 @@
 <app-header></app-header>
 <div id="main-container" class="main-container">
   <div id="side-bar" class="side-bar">
-    <app-board-sidebar
-      (sidebarLinkClicked)="channelChatComponent.meineFunktion()"></app-board-sidebar>
+    <app-board-sidebar (sidebarLinkClicked)="boardContent.showFunction()"></app-board-sidebar>
   </div>
   <div class="content-box">
     <app-board-content #boardContent>

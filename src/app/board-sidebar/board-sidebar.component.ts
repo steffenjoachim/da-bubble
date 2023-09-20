@@ -71,8 +71,8 @@ export class BoardSidebarComponent implements OnInit {
   }
 
 
-  public onSidebarLinkClick(): void {
-    // Emit das Event, um die Funktion in der BoardComponent aufzurufen
+  public onSidebarLinkClick(chanel): void {
+    this.showChannel(chanel)
     this.sidebarLinkClicked.emit();
   }
 
@@ -125,18 +125,10 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
-
   showChannel(channel) {
     localStorage.setItem('selected-recipient', '# ' + channel.name)
     localStorage.setItem('channel', '# ' + channel.name)
-    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
-    this.chats$ = this.chats$.pipe(
-      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
-    );
-    this.chats$.subscribe((chats) => {
-      this.scrollToBottom()
-    });
-    this.channelChat.showChannelChat(channel)
+     this.channelChat.showChannelChat(channel)
   }
 
   getUsers() {
