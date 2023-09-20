@@ -70,6 +70,12 @@ export class BoardSidebarComponent implements OnInit {
     this.getChannels()
   }
 
+
+  public onSidebarLinkClick(): void {
+    // Emit das Event, um die Funktion in der BoardComponent aufzurufen
+    this.sidebarLinkClicked.emit();
+  }
+
   showChat(name) {
     this.selectedRecipient = name;
     if (this.loggedUser.name == 'Gast') {
