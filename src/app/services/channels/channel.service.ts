@@ -2,7 +2,7 @@ import { Injectable, ElementRef, ViewChild } from '@angular/core';
 import { Firestore, Timestamp, collectionData } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { addDoc, collection } from '@firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class ChannelService {
 
   chatCollection: any = collection(this.channelChat, 'channelChats');
   chats$: Observable<any>
+  private chatData$: Observable<any>;
   relevantChats: any[];
   channels: any = {
     name: 'Entwicklerteam',
@@ -34,7 +35,12 @@ export class ChannelService {
     avatar: ''
   }
 
+  getChatData(): Observable<any> {
+    return this.chatData$;
+  }
+
   postChat(message: any, selectedChannel: string) {
+    console.log(selectedChannel)
     let loggedUser = JSON.parse(localStorage.getItem('userData'));
     this.channelMessage.avatar = loggedUser.avatar
     this.channelMessage.sender = loggedUser.name;
@@ -44,7 +50,6 @@ export class ChannelService {
   }
 
   showChannelChat(channel) {
-    this.getChats(channel)
     this.showNameInBoardHead(channel);
     this.showNameAsPlaceholderOfTextarea(channel);
   }
@@ -58,24 +63,21 @@ export class ChannelService {
     chatField.placeholder = `Nachricht an @ ` + channel.name;
   }
 
-  getChats(selectedChannel) {
-    this.relevantChats = [];
-    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
-    this.chats$.subscribe((chats: any[]) => {
-      this.relevantChats = [];
-      for (let i = 0; i < chats.length; i++) {
-        const element = chats[i];
-        this.relevantChats.push(element)
-      }
-      // this.renderChats();
-    });
-  }
+  // getChats(selectedChannel) {
+  //   const channel = localStorage.getItem('channel')
+  //   console.log(channel)
+  //   this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+  //   this.chats$ = this.chats$.pipe(
+  //     map(chats => chats.filter(chat => chat.channel == selectedChannel.name)),
+  //     map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+  //   );
+  //   this.chats$.subscribe((chats) => {
+  //     this.scrollToBottom()
+  //   });
+  // }
 
   // renderChats() {
   //   let loggedUser = JSON.parse(localStorage.getItem('userData'));
-  //   this.relevantChats.sort((a, b) => {
-  //     return a.timeStamp - b.timeStamp;
-  //   });
   //   let content = document.getElementById('message-content');
   //   content.innerHTML = "";
 
@@ -85,11 +87,11 @@ export class ChannelService {
   //       content.innerHTML += this.returnStentMessageChat(element, loggedUser,);
 
   //     } else {
-  //       content.innerHTML += this.returnRecievedMessageChat(element,i);
+  //       content.innerHTML += this.returnRecievedMessageChat(element, i);
   //     }
   //     document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
   //   }
-  //   this. scrollToBottom();
+  //   this.scrollToBottom();
   //   document.getElementById(`recieved`).addEventListener("click", this.openDialogChannelAnswer);
   // }
 
@@ -146,7 +148,7 @@ export class ChannelService {
   //   `
   // }
 
-  // openDialogChannelAnswer(){
-  //   console.log('answered');
-  // }
+  openDialogChannelAnswer(){
+    console.log('answered');
+  }
 }
