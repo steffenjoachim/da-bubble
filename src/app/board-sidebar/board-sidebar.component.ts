@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { DocumentData, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
@@ -11,7 +11,6 @@ import { ChannelService } from '../services/channels/channel.service';
   styleUrls: ['./board-sidebar.component.scss']
 })
 export class BoardSidebarComponent implements OnInit {
-
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
@@ -49,6 +48,7 @@ export class BoardSidebarComponent implements OnInit {
     private channelChat: ChannelService,
     private channels: Firestore,
   ) {
+    this.channel = localStorage.getItem('channel')
   }
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class BoardSidebarComponent implements OnInit {
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    this.showChannel(name);
+    // this.showChannel(name);
   }
 
   showChat(name) {
@@ -71,11 +71,13 @@ export class BoardSidebarComponent implements OnInit {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
       this.chats.showChat(name);
+      this.scrollToBottom();
     }
   }
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+    // 'document.getElementById('content-frame').classList.add('d-none');'
   }
 
 
@@ -112,10 +114,8 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel(channel) {
-    console.log(channel['name'])
     if (channel !== 'Entwicklerteam') {
       this.selectedRecipient = channel['name'];
-      localStorage.setItem('selected-recipient', this.selectedRecipient)
     } else {
       this.selectedRecipient = 'Entwicklerteam';
     }
