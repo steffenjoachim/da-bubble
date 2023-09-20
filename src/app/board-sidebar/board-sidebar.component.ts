@@ -59,13 +59,13 @@ export class BoardSidebarComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.scrollToBottom();
+    // this.scrollToBottom();
     this.getChannels();
   }
 
   ngAfterViewInit() {
-    this.scrollToBottom();
-    this.showChannel(name);
+    // this.scrollToBottom();
+    this.getChannels()
   }
 
   showChat(name) {
@@ -74,14 +74,14 @@ export class BoardSidebarComponent implements OnInit {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
       this.chats.showChat(name);
-      this.scrollToBottom();
+      // this.scrollToBottom();
     }
   }
 
-  scrollToBottom() {
-    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-    // 'document.getElementById('content-frame').classList.add('d-none');'
-  }
+  // scrollToBottom() {
+  //   document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+  //   // 'document.getElementById('content-frame').classList.add('d-none');'
+  // }
 
 
   addChannel() {
@@ -100,8 +100,8 @@ export class BoardSidebarComponent implements OnInit {
   addChannelToFirebase() {
     for (let i = 0; i < this.users.length; i++) {
       const element = this.users[i].name;
-      this.channelsData.members.push(element)
-      console.log(this.channelsData)
+      this.channelsData.members.push(element);
+      console.table(this.channelsData);
     }
     addDoc(this.channelCollection, this.channelsData)
     this.addChannelPopup = false
@@ -121,15 +121,21 @@ export class BoardSidebarComponent implements OnInit {
 
 
   showChannel(channel) {
-    console.log(channel['name'])
-    if (channel !== 'Entwicklerteam') {
-      this.selectedRecipient = channel['name'];
-      localStorage.setItem('selected-recipient', this.selectedRecipient)
-    } else {
-      this.selectedRecipient = 'Entwicklerteam';
-    }
-    localStorage.setItem('channel', channel.name)
+    localStorage.setItem('selected-recipient', '# ' + channel.name)
+    localStorage.setItem('channel', '# ' + channel.name)
+    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+    this.chats$ = this.chats$.pipe(
+      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+    );
+    this.chats$.subscribe((chats) => {
+      
+    });
     this.channelChat.showChannelChat(channel)
+    this.scrollToBottom()
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
   getUsers() {

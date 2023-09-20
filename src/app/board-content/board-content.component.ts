@@ -5,7 +5,7 @@ import { ChatService } from '../services/chats/chat.service';
 import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-
+import { DialogChannelAnswerComponent } from '../dialog-channel-answer/dialog-channel-answer.component'
 
 
 @Component({
@@ -34,6 +34,7 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
+  dialog: any;
 
   constructor(
     public firestore: Firestore,
@@ -52,6 +53,7 @@ export class BoardContentComponent implements OnInit {
 
   openDialogChannelAnswer() {
     console.log('test')
+    // this.dialog.open(DialogChannelAnswerComponent);
   }
 
   setSelectedRecipient() {
@@ -95,14 +97,20 @@ export class BoardContentComponent implements OnInit {
   }
 
   getChats() {
+    this.relevantChats = [];
     this.channel = localStorage.getItem('channel')
     this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.chatsChannel$ = this.chatsChannel$.pipe(
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
-      console.log(chats)
+      console.log(chats);
+      this.scrollToBottom();
     });
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 }
 
