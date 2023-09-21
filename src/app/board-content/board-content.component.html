@@ -1,48 +1,78 @@
 <div class="content-head">
-    <button>
-        <span id="selected-recipient" class="selectedInterloctor">{{ selectedRecipient }}</span>
-        <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
-    </button>
+  <button>
+    <span id="selected-recipient" class="selectedInterloctor">{{
+      selectedRecipient }}</span>
+    <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
+  </button>
 </div>
 <div class="content-frame" id="content-frame">
-  <div *ngFor="let chat of chatsChannel$ | async">
-    <div [class.sent-container]="chat.sender === loggedUser.name" [class.recieved-container]="chat.sender !== loggedUser.name">
-      <div [class.sent-name-avatar]="chat.sender === loggedUser.name" [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
-        <div><span>{{ chat.sender }}</span>
-          <div [class.sent-message]="chat.sender === loggedUser.name" [class.recieved-message]="chat.sender !== loggedUser.name">
-            <span class="date">{{ chat.timeStamp * 1000 | date: 'dd.MM.yyyy HH:mm' }}</span>
-            <span>{{ chat.message }}</span>
-            <span class="answer" (click)="openDialogChannelAnswer()">Gib <span class="element-sender"> </span> eine Antwort</span>
+  <!-- Channel -->
+  <ng-container *ngIf="showChannelChat">
+    <div *ngFor="let chat of chatsChannel$ | async">
+      <div [class.sent-container]="chat.sender === loggedUser.name"
+        [class.recieved-container]="chat.sender !== loggedUser.name">
+        <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
+          [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+          <div><span>{{ chat.sender }}</span>
+            <div [class.sent-message]="chat.sender === loggedUser.name"
+              [class.recieved-message]="chat.sender !== loggedUser.name">
+              <span class="date">{{ chat.timeStamp * 1000 | date:
+                'dd.MM.yyyy HH:mm' }}</span>
+              <span>{{ chat.message }}</span>
+              <span class="answer" (click)="openDialogChannelAnswer()">Gib <span
+                  class="element-sender"> </span> eine Antwort</span>
+            </div>
           </div>
+          <img class="avatar" src={{chat.avatar}}>
         </div>
-        <img class="avatar" src={{chat.avatar}}>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="showChat">
+<div *ngFor="let chat of chats$ | async">
+  <div [class.sent-container]="chat.sender === loggedUser.name"
+  [class.recieved-container]="chat.sender !== loggedUser.name">
+  <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
+    [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+    <div><span>{{ chat.sender }}</span>
+      <div [class.sent-message]="chat.sender === loggedUser.name"
+        [class.recieved-message]="chat.sender !== loggedUser.name">
+        <span class="date">{{ chat.timeStamp * 1000 | date:
+          'dd.MM.yyyy HH:mm' }}</span>
+        <span>{{ chat.message }}</span>
+        <span class="answer" (click)="openDialogChannelAnswer()">Gib <span
+            class="element-sender"> </span> eine Antwort</span>
+      </div>
+    </div>
+    <img class="avatar" src={{chat.avatar}}>
+  </div>
+</div>
+</div>
+  </ng-container>
+</div>
+<div class="message-container">
+  <div class="message-frame">
+    <div class="input-frame">
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
+        cols="37"
+        rows="9"></textarea>
+    </div>
+    <div class="icon-container">
+      <div class="icon-left">
+        <div class="icon-div">
+          <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
+        </div>
+        <div class="icon-div">
+          <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+        </div>
+        <div class="icon-div">
+          <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
+        </div>
+      </div>
+      <div class="icon-right">
+        <img (click)="postChat()" class="submit-arrow"
+          src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>
-  <!-- <div class="message-content" id="message-content">
-    </div> -->
-</div>
-<div class="message-container">
-    <div class="message-frame">
-        <div class="input-frame">
-            <textarea id="textarea" [(ngModel)]="message" placeholder=""  name="Nachricht" cols="37"
-                rows="9"></textarea>
-        </div>
-        <div class="icon-container">
-            <div class="icon-left">
-                <div class="icon-div">
-                    <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
-                </div>
-                <div class="icon-div">
-                    <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
-                </div>
-                <div class="icon-div">
-                    <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
-                </div>
-            </div>
-            <div class="icon-right">
-                <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
-            </div>
-        </div>
-    </div>
 </div>

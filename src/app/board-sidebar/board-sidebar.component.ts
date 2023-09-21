@@ -17,6 +17,7 @@ export class BoardSidebarComponent implements OnInit {
 
 
   @Output() sidebarLinkClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() anotherEvent: EventEmitter<void> = new EventEmitter<void>();
 
   open: boolean = true;
   loggedUser: any = {
@@ -61,34 +62,22 @@ export class BoardSidebarComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.scrollToBottom();
     this.getChannels();
   }
 
   ngAfterViewInit() {
-    this.scrollToBottom();
     this.getChannels()
   }
 
-
-  public onSidebarLinkClick(chanel): void {
-    this.showChannel(chanel)
+  public onSidebarLinkClick(selectedData): void {
+    this.showChannel(selectedData)
     this.sidebarLinkClicked.emit();
   }
 
-  showChat(name) {
-    this.selectedRecipient = name;
-    if (this.loggedUser.name == 'Gast') {
-      alert('Alls Gast kannst du leider keine Direktnachrichten senden');
-    } else {
-      this.chats.showChat(name);
-    }
+  public OnAnotherEvent(selectedData): void {
+    this.showChat(selectedData)
+     this.anotherEvent.emit();
   }
-
-  scrollToBottom() {
-    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
-  }
-
 
   addChannel() {
     this.channelsData.name = this.channelName
@@ -129,6 +118,16 @@ export class BoardSidebarComponent implements OnInit {
     localStorage.setItem('selected-recipient', '# ' + channel.name)
     localStorage.setItem('channel', '# ' + channel.name)
      this.channelChat.showChannelChat(channel)
+  }
+
+  showChat(name) {
+    this.selectedRecipient = name;
+    if (this.loggedUser.name == 'Gast') {
+      alert('Alls Gast kannst du leider keine Direktnachrichten senden');
+    } else {
+      localStorage.setItem('selected-recipient', '@ ' + name)
+      this.channelChat.showChannelChat(name)
+    }
   }
 
   getUsers() {

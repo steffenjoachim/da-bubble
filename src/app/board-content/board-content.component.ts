@@ -28,8 +28,11 @@ export class BoardContentComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   users: any[] = [];
   chatsChannel$ !: Observable<any>;
+  chats$ !: Observable<any>;
   channel;
-
+  chat;
+  showChannelChat: boolean = false
+  showChat: boolean = false;
   message: any = '';
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
@@ -90,11 +93,33 @@ export class BoardContentComponent implements OnInit {
     }
   }
 
-  showFunction() {
+  startChat() {
     this.getChats()
   }
 
+  showFunction() {
+    this.getChanelChats()
+  }
+
   getChats() {
+    this.showChannelChat = false;
+    this.showChat = true
+    this.chat = localStorage.getItem('selected-recipient')
+    this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
+    this.chats$ = this.chats$.pipe(
+      map(chats => chats.filter(chat => (chat.sender == this.loggedUser.name && chat.receiver == this.chat) || (chat.receiver == this.loggedUser.name && chat.sender == this.chat) )),
+      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+    );
+    this.chats$.subscribe((chats) => {
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 200);
+    });
+  }
+
+  getChanelChats() {
+    this.showChat = false
+    this.showChannelChat = true
     this.channel = localStorage.getItem('channel')
     this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.chatsChannel$ = this.chatsChannel$.pipe(
@@ -102,7 +127,14 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 200);
     });
+  }
+
+  scrollToBottom() {
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 }
 

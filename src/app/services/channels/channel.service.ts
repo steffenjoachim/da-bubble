@@ -56,12 +56,20 @@ export class ChannelService {
   }
 
   showNameInBoardHead(channel) {
-    document.getElementById('selected-recipient').innerHTML = `# ` + channel.name
+    if (channel.name) {
+      document.getElementById('selected-recipient').innerHTML = `# ` + channel.name;
+    } else {
+      document.getElementById('selected-recipient').innerHTML = `@ ` + channel;
+    }
   }
 
   showNameAsPlaceholderOfTextarea(channel) {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = `Nachricht an @ ` + channel.name;
+    if (channel.name) {
+      chatField.placeholder = `Nachricht an # ` + channel.name;
+    } else {
+      chatField.placeholder = `Nachricht an @ ` + channel;
+    }
   }
 
   // getChats(selectedChannel) {
