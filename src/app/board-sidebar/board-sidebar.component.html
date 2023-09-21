@@ -19,7 +19,7 @@
 
     </div>
     <div id="channels-body" class="channels-body">
-      <div *ngFor="let chanel of channel$ | async" (click)="showChannel(chanel)" class="channels" [ngClass]="{'active': chanel.name == selectedRecipient}">
+      <div *ngFor="let chanel of channel$ | async" (click)="onSidebarLinkClick(chanel)" class="channels" [ngClass]="{'active': chanel.name == selectedRecipient}">
         <span># {{ chanel.name }}</span>
       </div>
       <div class="add-channel">

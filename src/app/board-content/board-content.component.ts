@@ -48,7 +48,6 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
-    this.getChats();
   }
 
   openDialogChannelAnswer() {
@@ -64,11 +63,8 @@ export class BoardContentComponent implements OnInit {
 
   postChat() {
     const channel = localStorage.getItem('channel')
-
     const recipient = localStorage.getItem('selected-recipient');
-    console.log('channel: ', channel, ' recipient :', recipient )
     if (channel == recipient) {
-      console.log('test')
       this.channelService.postChat(this.message, channel)
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);
@@ -96,16 +92,19 @@ export class BoardContentComponent implements OnInit {
     }
   }
 
+  showFunction() {
+    this.getChats()
+  }
+
   getChats() {
     this.relevantChats = [];
     this.channel = localStorage.getItem('channel')
     this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.chatsChannel$ = this.chatsChannel$.pipe(
+      map(chats => chats.filter(chat => chat.channel == this.channel)),
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
-      console.log(chats);
-      this.scrollToBottom();
     });
   }
 
