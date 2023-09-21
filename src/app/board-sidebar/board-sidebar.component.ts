@@ -14,7 +14,7 @@ import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
   styleUrls: ['./board-sidebar.component.scss']
 })
 export class BoardSidebarComponent implements OnInit {
-
+  @Output() sidebarLinkClicked: EventEmitter<void> = new EventEmitter<void>();
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
