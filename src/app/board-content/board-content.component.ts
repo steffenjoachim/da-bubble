@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 import { DialogChannelAnswerComponent } from '../dialog-channel-answer/dialog-channel-answer.component'
-
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-board-content',
@@ -37,13 +37,14 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
-  dialog: any;
+  // dialog: any;
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
     private channelService: ChannelService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -55,8 +56,8 @@ export class BoardContentComponent implements OnInit {
 
   openDialogChannelAnswer() {
     console.log('test')
-    // this.dialog.open(DialogChannelAnswerComponent);
-  }
+    this.dialog.open(DialogChannelAnswerComponent);
+  }  
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
