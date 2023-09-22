@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 import { DialogChannelAnswerComponent } from '../dialog-channel-answer/dialog-channel-answer.component'
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-board-content',
@@ -54,10 +54,11 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
   }
 
-  openDialogChannelAnswer() {
-    console.log('test')
-    this.dialog.open(DialogChannelAnswerComponent);
-  }  
+  openDialogChannelAnswer(chat) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = chat;
+    this.dialog.open(DialogChannelAnswerComponent, dialogConfig);
+  }
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;

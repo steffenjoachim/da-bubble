@@ -3,12 +3,12 @@
     <div mat-dialog-content>
         <div>
             <mat-form-field appearance="outline" class="full-width">
-                <input matInput placeholder="Deine Antwort">
+                <input matInput placeholder="Deine Antwort" [(ngModel)]="message">
             </mat-form-field>
         </div>
     <div mat-dialog-action class="dialog-add-user-button-frame">
         <button class="cancel-button" mat-button (click)="dialogRef.close()">Cancel</button>
-        <button mat-button (click)="saveAnswer()" cdkFocusInitial>Save</button>
+        <button mat-button cdkFocusInitial (click)="updateFirebase()">Save</button>
     </div>
 </div>
 

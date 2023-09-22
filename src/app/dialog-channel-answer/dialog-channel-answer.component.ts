@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChannelService } from '../services/channels/channel.service';
 
 @Component({
   selector: 'app-dialog-channel-answer',
@@ -10,11 +10,16 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 export class DialogChannelAnswerComponent {
 
   constructor(public dialog: MatDialog,
-    private firestore: Firestore,
-    public dialogRef: MatDialogRef<DialogChannelAnswerComponent>) {
-
+    public dialogRef: MatDialogRef<DialogChannelAnswerComponent>,
+    public channelService: ChannelService,
+    @Inject(MAT_DIALOG_DATA) public chat: any) {
   }
-  saveAnswer() {
 
+  message: string;
+
+  updateFirebase() {
+    const userDataString = localStorage.getItem('userData');
+    const loggedUser = JSON.parse(userDataString);
+    this.channelService.postAnswer(this.chat, loggedUser, this.message)
   }
 }

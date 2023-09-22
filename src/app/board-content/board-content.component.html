@@ -19,7 +19,7 @@
               <span class="date">{{ chat.timeStamp * 1000 | date:
                 'dd.MM.yyyy HH:mm' }}</span>
               <span>{{ chat.message }}</span>
-              <span class="answer" (click)="openDialogChannelAnswer()">Gib <span
+              <span class="answer" (click)="openDialogChannelAnswer(chat)">Gib <span
                   class="element-sender"> </span> eine Antwort</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
         <span class="date">{{ chat.timeStamp * 1000 | date:
           'dd.MM.yyyy HH:mm' }}</span>
         <span>{{ chat.message }}</span>
-        <span class="answer" (click)="openDialogChannelAnswer()">Gib <span
+        <span class="answer" (click)="openDialogChannelAnswer(chat)">Gib <span
             class="element-sender"> </span> eine Antwort</span>
       </div>
     </div>

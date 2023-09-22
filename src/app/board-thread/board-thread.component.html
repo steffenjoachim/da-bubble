@@ -1,13 +1,35 @@
 <div class="thread-frame">
-    <div class="thread">
-        <div class="thread-head">
-            <div class="thread-text">
-                <span>Thread</span>
-                <p class="thread-blue c-blue"># Entwicklerteam</p>
-            </div>
-            <div (click)="closeThread()">
-                <mat-icon fontIcon="close"></mat-icon>
-            </div>
-        </div>
+  <div class="thread">
+
+    <div class="thread-head">
+
+      <div class="thread-text">
+        <span>Thread</span>
+        <p class="thread-blue c-blue"># Entwicklerteam</p>
+      </div>
+      <div (click)="closeThread()">
+        <mat-icon fontIcon="close"></mat-icon>
+      </div>
     </div>
+    <div>
+      <div *ngFor="let answer of answers">
+        <div [class.sent-container]="answer.sender === loggedUser.name"
+          [class.recieved-container]="answer.sender !== loggedUser.name">
+          <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
+            [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
+            <div><span>{{ answer.sender }}</span>
+              <div [class.sent-message]="answer.sender === loggedUser.name"
+                [class.recieved-message]="answer.sender !== loggedUser.name">
+                <span class="date">{{ answer.timeStamp * 1000 | date:
+                  'dd.MM.yyyy HH:mm' }}</span>
+                <span>{{ answer.message }}</span>
+              </div>
+            </div>
+            <img class="avatar" src={{answer.avatar}}>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

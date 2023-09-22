@@ -20,8 +20,11 @@ export class BoardThreadComponent implements OnInit {
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
+  channelChatCollection: any = collection(this.channelChat, 'channelChats')
   users: any[] = [];
   chats$ !: Observable<any>;
+  answerCollection$ !: Observable<any>;
+  answers: any[] = [];
 
   interlocutor = '# Entwicklerteam'
 
@@ -34,13 +37,12 @@ export class BoardThreadComponent implements OnInit {
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
-    private chats: ChatService,
-    private el: ElementRef
-    ) { }
+    private channelChat: Firestore) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
+    this.getAnswers()
   }
 
   ngOnDestroy(): void {
@@ -50,6 +52,23 @@ export class BoardThreadComponent implements OnInit {
   closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
   }
+
+  getAnswers() {
+    this.answerCollection$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.answerCollection$.subscribe((chats) => {
+      this.answers = []; // Array für Antworten initialisieren
+
+      chats.forEach((element) => {
+        if (element.answers) {
+          element.answers.forEach((answer) => {
+            console.log(answer);
+            this.answers.push(answer); // Antwort zum Array hinzufügen
+          });
+        }
+      });
+    });
+  }
+
 
   loadLoggedUserData() {
     const userDataString = localStorage.getItem('userData');
