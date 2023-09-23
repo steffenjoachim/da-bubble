@@ -45,7 +45,7 @@ export class BoardSidebarComponent implements OnInit {
   message: string;
   selectedRecipient = 'Entwicklerteam';
   channel = 'Entwicklerteam';
-  relevantChats = [];
+  // relevantChats = [];
 
   constructor(
     public firestore: Firestore,

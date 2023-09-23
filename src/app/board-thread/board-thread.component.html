@@ -11,25 +11,39 @@
         <mat-icon fontIcon="close"></mat-icon>
       </div>
     </div>
-    <div>
-      <div *ngFor="let answer of answers">
-        <div [class.sent-container]="answer.sender === loggedUser.name"
-          [class.recieved-container]="answer.sender !== loggedUser.name">
-          <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
-            [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
-            <div><span>{{ answer.sender }}</span>
-              <div [class.sent-message]="answer.sender === loggedUser.name"
-                [class.recieved-message]="answer.sender !== loggedUser.name">
-                <span class="date">{{ answer.timeStamp*1000| date:
-                  'dd.MM.yyyy HH:mm' }}</span>
-                <span>{{ answer.message }}</span>
-              </div>
-            </div>
-            <img class="avatar" src={{answer.avatar}}>
+    <div class="thread-content">
+      <div class="thread-answer-frame">
+        <img class="message-img" src="{{ avatarMessage }}" alt="">
+        <div>
+          <div class="name-hour">
+            <span class="sender-message">{{ senderMessage }}</span>
+            <span>{{ timestampMessage*1000| date:
+              'HH:mm' }}</span>
           </div>
+          <span class="answer-message">{{ message }}</span>
         </div>
       </div>
-
+      <hr>
+      <div *ngFor="let answer of answers">
+        <ng-container>
+          <div [class.sent-container]="answer.sender === loggedUser.name"
+            [class.recieved-container]="answer.sender !== loggedUser.name">
+            <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
+              [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
+              <div><span>{{ answer.sender }}</span>
+                <div [class.sent-message]="answer.sender === loggedUser.name"
+                  [class.recieved-message]="answer.sender !== loggedUser.name">
+                  <span class="date">{{ answer.timeStamp*1000| date:
+                    'dd.MM.yyyy HH:mm' }}</span>
+                  <span>{{ answer.message }}</span>
+                </div>
+              </div>
+              <img class="avatar" src={{answer.avatar}}>
+            </div>
+          </div>
+        </ng-container>
+      </div>
     </div>
+
   </div>
 </div>

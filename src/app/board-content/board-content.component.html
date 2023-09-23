@@ -15,7 +15,7 @@
           [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
           <div><span>{{ chat.sender }}</span>
             <div [class.sent-message]="chat.sender === loggedUser.name"
-              [class.recieved-message]="chat.sender !== loggedUser.name">
+              [class.recieved-message]="chat.sender !== loggedUser.name" (click)="openThread(chat)">
               <span class="date">{{ chat.timeStamp * 1000 | date:
                 'dd.MM.yyyy HH:mm' }}</span>
               <span>{{ chat.message }}</span>

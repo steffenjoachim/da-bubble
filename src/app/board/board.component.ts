@@ -45,7 +45,7 @@ export class BoardComponent implements OnInit {
 
   message: string;
   selectedRecipient: string;
-  relevantChats = [];
+  // relevantChats = [];
   ChatService: any;
 
   functionInParent(channel) {

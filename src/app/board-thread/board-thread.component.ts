@@ -26,11 +26,14 @@ export class BoardThreadComponent implements OnInit {
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
 
-  interlocutor = '# Entwicklerteam'
+  // interlocutor = '# Entwicklerteam'
 
   message: string;
+  timestampMessage: number;
+  avatarMessage: string;
   selectedRecipient: string;
-  relevantChats = [];
+  senderMessage: string;
+  // relevantChats = [];
   ChatService: any;
 
 
@@ -42,15 +45,11 @@ export class BoardThreadComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    this.getAnswers()
+    this.getAnswers();
   }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
-  }
-
-  closeThread() {
-    document.getElementById('thread')?.classList.add('d-none');
   }
 
   getAnswers() {
@@ -58,11 +57,16 @@ export class BoardThreadComponent implements OnInit {
     this.answerCollection$.subscribe((chats) => {
       this.answers = []; // Array für Antworten initialisieren
       chats.forEach((element) => {
+        
         if (element.answers) {
           element.answers.forEach((answer) => {
             console.log(answer);
             console.log(element.answers.length);
             console.log(element);
+            this. message = element.message;
+            this.timestampMessage  = answer.timeStamp;
+            this.avatarMessage = answer.avatar;
+            this.senderMessage = element.sender;
             this.answers.push(answer); // Antwort zum Array hinzufügen
           });
         }
@@ -70,6 +74,9 @@ export class BoardThreadComponent implements OnInit {
     });
   }
 
+  closeThread() {
+    document.getElementById('thread')?.classList.add('d-none');
+  }
 
   loadLoggedUserData() {
     const userDataString = localStorage.getItem('userData');

@@ -43,6 +43,10 @@
   }
 }
 
+.thread-content{
+  margin: 32px;
+}
+
 .sent-message {
   display: flex;
   flex-direction: column;
@@ -97,4 +101,34 @@
   justify-content: flex-end;
   flex-direction: column;
   align-items: end;
+}
+
+.thread-answer-frame{
+display: flex;
+margin-bottom: 32px;
+
+.sender-message{
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.answer-message{
+  padding: 16px;
+  background: rgb(236, 238, 254);
+  border-radius: 0 25px 25px 25px;
+}
+
+}
+
+hr{
+  margin-bottom: 32px;
+}
+
+.name-hour{
+  margin-bottom: 24px;
+}
+
+.message-img{
+height: 64px;
+width: 64px;
 }

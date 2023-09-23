@@ -35,7 +35,7 @@ export class BoardContentComponent implements OnInit {
   showChat: boolean = false;
   message: any = '';
   selectedRecipient: string = '# Entwicklerteam';
-  relevantChats = [];
+  relevantAnswers = [];
   chats: any;
   answersAmount: number;
 
@@ -108,8 +108,8 @@ export class BoardContentComponent implements OnInit {
 
   getChats() {
     this.showChannelChat = false;
-    this.showChat = true
-    this.chat = localStorage.getItem('selected-recipient')
+    this.showChat = true;
+    this.chat = localStorage.getItem('selected-recipient');
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$ = this.chats$.pipe(
       map(chats => chats.filter(chat => (chat.sender == this.loggedUser.name && chat.receiver == this.chat) || (chat.receiver == '@ ' + this.loggedUser.name && '@ ' + chat.sender == this.chat))),
@@ -145,6 +145,21 @@ export class BoardContentComponent implements OnInit {
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+  }
+
+  openThread(chat){
+    document.getElementById('thread')?.classList.remove('d-none');
+    this.selectRelevantAnswers(chat);
+  }
+
+  selectRelevantAnswers(chat){
+    this.relevantAnswers = [];
+    for (let i = 0; i < chat.answers.length; i++) {
+      const answer = chat.answers[i];
+      this.relevantAnswers.push(answer);
+      console.log(this.relevantAnswers);
+    }
+    
   }
 }
 
