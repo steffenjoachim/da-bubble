@@ -8,7 +8,7 @@
 <div class="content-frame" id="content-frame">
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
-    <div *ngFor="let chat of chatsChannel$ | async">
+    <div *ngFor="let chat of chatsChannel$ | async; let i = index">
       <div [class.sent-container]="chat.sender === loggedUser.name"
         [class.recieved-container]="chat.sender !== loggedUser.name">
         <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
@@ -19,8 +19,12 @@
               <span class="date">{{ chat.timeStamp * 1000 | date:
                 'dd.MM.yyyy HH:mm' }}</span>
               <span>{{ chat.message }}</span>
-              <span class="answer" (click)="openDialogChannelAnswer(chat)">Gib <span
-                  class="element-sender"> </span> eine Antwort</span>
+              <span class="answer" (click)="openDialogChannelAnswer(chat, i)">Gib {{ chat.sender }}<span
+                  class="element-sender"> </span>
+                eine Antwort</span>
+              <div *ngIf="chat.answers.length>0">
+                <span>Es gibt {{ chat.answers.length }} Antworten</span>
+              </div>
             </div>
           </div>
           <img class="avatar" src={{chat.avatar}}>
@@ -28,34 +32,33 @@
       </div>
     </div>
   </ng-container>
+  <!-- Chats -->
   <ng-container *ngIf="showChat">
-<div *ngFor="let chat of chats$ | async">
-  <div [class.sent-container]="chat.sender === loggedUser.name"
-  [class.recieved-container]="chat.sender !== loggedUser.name">
-  <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
-    [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
-    <div><span>{{ chat.sender }}</span>
-      <div [class.sent-message]="chat.sender === loggedUser.name"
-        [class.recieved-message]="chat.sender !== loggedUser.name">
-        <span class="date">{{ chat.timeStamp * 1000 | date:
-          'dd.MM.yyyy HH:mm' }}</span>
-        <span>{{ chat.message }}</span>
-        <span class="answer" (click)="openDialogChannelAnswer(chat)">Gib <span
-            class="element-sender"> </span> eine Antwort</span>
+    <div *ngFor="let chat of chats$ | async; let i = index">
+      <div [class.sent-container]="chat.sender === loggedUser.name"
+        [class.recieved-container]="chat.sender !== loggedUser.name">
+        <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
+          [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+          <div><span>{{ chat.sender }}</span>
+            <div [class.sent-message]="chat.sender === loggedUser.name"
+              [class.recieved-message]="chat.sender !== loggedUser.name">
+              <span class="date">{{ chat.timeStamp * 1000 | date:
+                'dd.MM.yyyy HH:mm' }}</span>
+              <span>{{ chat.message }}</span>
+              <span class="answer" (click)="openDialogChannelAnswer(chat, i)">Gib <span class="element-sender"> </span>
+                eine Antwort</span>
+            </div>
+          </div>
+          <img class="avatar" src={{chat.avatar}}>
+        </div>
       </div>
     </div>
-    <img class="avatar" src={{chat.avatar}}>
-  </div>
-</div>
-</div>
   </ng-container>
 </div>
 <div class="message-container">
   <div class="message-frame">
     <div class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37"
-        rows="9"></textarea>
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9"></textarea>
     </div>
     <div class="icon-container">
       <div class="icon-left">
@@ -70,8 +73,7 @@
         </div>
       </div>
       <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow"
-          src="./assets/img/Send icon.png" alt="submit arrow">
+        <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>

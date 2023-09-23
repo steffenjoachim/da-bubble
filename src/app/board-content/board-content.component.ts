@@ -37,7 +37,7 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string = '# Entwicklerteam';
   relevantChats = [];
   chats: any;
-  // dialog: any;
+  answersAmount: number;
 
   constructor(
     public firestore: Firestore,
@@ -54,8 +54,9 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
   }
 
-  openDialogChannelAnswer(chat) {
+  openDialogChannelAnswer(chat, i) {
     const dialogConfig = new MatDialogConfig();
+    console.log(i);
     dialogConfig.data = chat;
     this.dialog.open(DialogChannelAnswerComponent, dialogConfig);
   }
@@ -131,6 +132,11 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
+      
+      chats.forEach(element => {
+        console.log(element.answers.length);
+        this.answersAmount = element.answers.length;
+      });
       setTimeout(() => {
         this.scrollToBottom()
       }, 200);

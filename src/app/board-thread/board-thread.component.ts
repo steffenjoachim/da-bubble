@@ -57,11 +57,12 @@ export class BoardThreadComponent implements OnInit {
     this.answerCollection$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.answerCollection$.subscribe((chats) => {
       this.answers = []; // Array für Antworten initialisieren
-
       chats.forEach((element) => {
         if (element.answers) {
           element.answers.forEach((answer) => {
             console.log(answer);
+            console.log(element.answers.length);
+            console.log(element);
             this.answers.push(answer); // Antwort zum Array hinzufügen
           });
         }
