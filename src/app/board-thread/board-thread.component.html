@@ -20,7 +20,7 @@
             <div><span>{{ answer.sender }}</span>
               <div [class.sent-message]="answer.sender === loggedUser.name"
                 [class.recieved-message]="answer.sender !== loggedUser.name">
-                <span class="date">{{ answer.timeStamp * 1000 | date:
+                <span class="date">{{ answer.timeStamp*1000| date:
                   'dd.MM.yyyy HH:mm' }}</span>
                 <span>{{ answer.message }}</span>
               </div>

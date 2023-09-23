@@ -78,7 +78,7 @@ export class ChannelService {
     const newAnswer = {
       sender: sender.name,
       message: message,
-      timeStamp: timeStamp,
+      timeStamp: timeStamp.seconds,
       avatar: sender.avatar
     };
     this.updateDocOnFirebase(chat, newAnswer)
