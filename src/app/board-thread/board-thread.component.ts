@@ -3,6 +3,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
+import { ChannelService } from '../services/channels/channel.service';
 import { user } from '@angular/fire/auth';
 
 
@@ -26,21 +27,21 @@ export class BoardThreadComponent implements OnInit {
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
 
-  // interlocutor = '# Entwicklerteam'
-
   message: string;
   timestampMessage: number;
   avatarMessage: string;
   selectedRecipient: string;
   senderMessage: string;
-  // relevantChats = [];
+  relevantAnswers = [];
   ChatService: any;
 
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
-    private channelChat: Firestore) { }
+    private channelChat: Firestore,
+    private channelService: ChannelService
+    ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -72,6 +73,7 @@ export class BoardThreadComponent implements OnInit {
         }
       });
     });
+    // this.showRelevantAnswers();
   }
 
   closeThread() {
@@ -86,5 +88,10 @@ export class BoardThreadComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
+
+  // showRelevantAnswers(){
+  //   this.channelService.showRelevantAnswers();
+  //   console.log(this.relevantAnswers);
+  // }
 }
 

@@ -20,7 +20,7 @@ export class ChannelChatComponent implements OnInit {
     private parentBoard: BoardComponent) { }
 
   chatCollection: any = collection(this.firbaseChannelChat, 'channelChats');
-  // chats$: Observable<any>
+  relevantAnswers = [];
   relevantChats = [];
   loggedUser = JSON.parse(localStorage.getItem('userData'));
   chatDate = new Date();
@@ -44,6 +44,10 @@ export class ChannelChatComponent implements OnInit {
     this.getChats()
     console.log('Funktion in ChannelChatComponent aufgerufen');
   }
+
+  // showRelevantAnswers(){
+  //   console.log(this.relevantAnswers);
+  // }  
 
   getChats() {
     this.channel = localStorage.getItem('channel')
