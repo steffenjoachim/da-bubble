@@ -208,3 +208,9 @@
   }
 }
 
+.number-answers{
+  cursor: pointer;
+  &:hover{
+    text-decoration: underline;
+  }
+}

@@ -54,26 +54,27 @@ export class BoardThreadComponent implements OnInit {
   }
 
   getAnswers() {
-    this.answerCollection$ = collectionData(this.channelChatCollection, { idField: 'id' });
-    this.answerCollection$.subscribe((chats) => {
-      this.answers = []; // Array für Antworten initialisieren
-      chats.forEach((element) => {
-        
-        if (element.answers) {
-          element.answers.forEach((answer) => {
-            console.log(answer);
-            console.log(element.answers.length);
-            console.log(element);
-            this. message = element.message;
-            this.timestampMessage  = answer.timeStamp;
-            this.avatarMessage = answer.avatar;
-            this.senderMessage = element.sender;
-            this.answers.push(answer); // Antwort zum Array hinzufügen
-          });
-        }
-      });
-    });
-    // this.showRelevantAnswers();
+// Initialisiere den Index
+let i = 0;
+this.relevantAnswers = [];
+
+while (true) {
+  const key = `relevant-answer-${i}`;
+  const chatJSON = localStorage.getItem(key);
+
+  // Wenn kein Eintrag mehr mit dem aktuellen Schlüssel gefunden wird, beende die Schleife
+  if (!chatJSON) {
+    break;
+  }
+
+  const chat = JSON.parse(chatJSON);
+  this.relevantAnswers.push(chat);
+  i++; 
+}
+this.message = this.relevantAnswers[0].message;
+this.avatarMessage = this.relevantAnswers[0].avatar;
+this.senderMessage = this.relevantAnswers[0].sender;
+console.log(this.relevantAnswers[0].message);
   }
 
   closeThread() {
@@ -89,9 +90,5 @@ export class BoardThreadComponent implements OnInit {
     }
   }
 
-  // showRelevantAnswers(){
-  //   this.channelService.showRelevantAnswers();
-  //   console.log(this.relevantAnswers);
-  // }
 }
 

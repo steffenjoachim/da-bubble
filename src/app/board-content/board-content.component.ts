@@ -35,9 +35,9 @@ export class BoardContentComponent implements OnInit {
   showChat: boolean = false;
   message: any = '';
   selectedRecipient: string = '# Entwicklerteam';
-  relevantAnswers = [];
   chats: any;
   answersAmount: number;
+  keysToDelete = [];
 
   constructor(
     public firestore: Firestore,
@@ -134,7 +134,6 @@ export class BoardContentComponent implements OnInit {
     this.chatsChannel$.subscribe((chats) => {
       
       chats.forEach(element => {
-        console.log(element.answers.length);
         this.answersAmount = element.answers.length;
       });
       setTimeout(() => {
@@ -147,19 +146,23 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
-  openThread(chat){
+  openThread(chat,i){
     document.getElementById('thread')?.classList.remove('d-none');
     this.selectRelevantAnswers(chat);
+    console.log(i);
   }
 
-  selectRelevantAnswers(chat){
-    this.relevantAnswers = [];
-    for (let i = 0; i < chat.answers.length; i++) {
-      const answer = chat.answers[i];
-      this.relevantAnswers.push(answer);
-      console.log(this.relevantAnswers);
+  selectRelevantAnswers(chat) {
+    for (const keyToDelete of this.keysToDelete) {
+      localStorage.removeItem(keyToDelete);
     }
-    
+    for (let i = 0; i < chat.answers.length; i++) {
+      const key = `relevant-answer-${i}`;
+      this.keysToDelete.push(key);
+      const answer = chat.answers[i];
+      const chatJSON = JSON.stringify(chat);
+      localStorage.setItem(key, chatJSON);
+    }
   }
 }
 

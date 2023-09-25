@@ -15,7 +15,7 @@
           [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
           <div><span>{{ chat.sender }}</span>
             <div [class.sent-message]="chat.sender === loggedUser.name"
-              [class.recieved-message]="chat.sender !== loggedUser.name" (click)="openThread(chat)">
+              [class.recieved-message]="chat.sender !== loggedUser.name">
               <span class="date">{{ chat.timeStamp * 1000 | date:
                 'dd.MM.yyyy HH:mm' }}</span>
               <span>{{ chat.message }}</span>
@@ -23,7 +23,7 @@
                   class="element-sender"> </span>
                 eine Antwort</span>
               <div *ngIf="chat.answers.length>0">
-                <span>Es gibt {{ chat.answers.length }} Antworten</span>
+                <span class="number-answers c-blue" (click)="openThread(chat,i)">{{ chat.answers.length }} Antwort(en)</span>
               </div>
             </div>
           </div>
