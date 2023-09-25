@@ -15,7 +15,8 @@
         <div>
           <div class="name-hour">
             <span class="sender-message">{{ senderMessage }}</span>
-            <span></span>
+            <span>{{timestampMessage*1000| date:
+              'HH:mm'}} Uhr</span>
           </div>
           <span class="answer-message">{{ message }}</span>
         </div>

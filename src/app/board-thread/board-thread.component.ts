@@ -53,8 +53,7 @@ export class BoardThreadComponent implements OnInit {
     this.firebase.setLogoVisible(false);
   }
 
-  getAnswers() {
-// Initialisiere den Index
+getAnswers() {
 let i = 0;
 this.relevantAnswers = [];
 
@@ -74,6 +73,7 @@ while (true) {
 this.message = this.relevantAnswers[0].message;
 this.avatarMessage = this.relevantAnswers[0].avatar;
 this.senderMessage = this.relevantAnswers[0].sender;
+this.timestampMessage = this.relevantAnswers[0].timeStamp;
 console.log(this.relevantAnswers[0].message);
   }
 
