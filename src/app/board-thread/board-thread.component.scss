@@ -133,3 +133,59 @@ height: 64px;
 width: 64px;
 }
 
+.message-container {
+  display: flex;
+  justify-content: center;
+}
+
+.message-frame {
+  width: 21%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 9;
+  position: fixed;
+  bottom: 0 !important;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  .input-frame {
+    display: flex;
+    justify-content: center;
+   
+  }
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 30px;
+  z-index: 99;
+}
+
+.icon-left{
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+}
+
+.icon-right{
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.icon-div{
+  padding-top: 6px;
+  padding-right: 8px;
+}
+
+textarea {
+  padding-top: 16px;
+  padding-left: 16px;
+  border: none;
+  resize: none;
+  width: 93.4%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}

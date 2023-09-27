@@ -70,5 +70,10 @@ export class BoardThreadComponent implements OnInit {
     }
   }
 
+
+postAnswer()
+{
+console.log('answered')
+}
 }
 

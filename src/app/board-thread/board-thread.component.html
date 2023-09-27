@@ -42,9 +42,26 @@
         </ng-container>
       </div>
     </div>
-    <div class="footer">
-      <textarea name="" id="" cols="30" rows="10" placeholder="Antworten"></textarea>
-      <button>senden</button>
+    <div class="message-container">
+      <div class="message-frame">
+        <textarea name="" id="" cols="30" rows="10" placeholder="Antworten"></textarea>
+        <div class="icon-container">
+          <div class="icon-left">
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
+            </div>
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+            </div>
+            <div class="icon-div">
+              <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
+            </div>
+          </div>
+          <div class="icon-right">
+            <img (click)="postAnswer()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
-</div>
