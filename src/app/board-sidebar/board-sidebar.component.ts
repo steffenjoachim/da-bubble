@@ -132,9 +132,10 @@ export class BoardSidebarComponent implements OnInit {
   getUsers() {
     const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
     usersObservable.subscribe((usersArray) => {
-      this.users = usersArray;
+      this.users = usersArray.filter(user => user['name'] !== this.loggedUser.name && user['name'] !== this.selectedRecipient);
     });
   }
+
 
   getChannels() {
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });

@@ -3,8 +3,10 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BoardSidebarComponent } from '../board-sidebar/board-sidebar.component';
 import { BoardContentComponent } from '../board-content/board-content.component';
+import { BoardThreadComponent } from '../board-thread/board-thread.component';
 
 @Component({
   selector: 'app-board',
@@ -27,14 +29,13 @@ export class BoardComponent implements OnInit {
     name: 'Gast'
   }
 
-
   channelChatCollection: any = collection(this.channelChat, 'channelChats');
   channelChats$: Observable<any>
   chatDate = new Date();
   timeStamp = Timestamp.fromDate(this.chatDate);
   channel: any;
   showChannelChat = false;
-
+  chat: any
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
@@ -73,6 +74,10 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  onContentClicked(chat) {
+    this.chat = chat
+    console.log(chat)
+  }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);

@@ -1,10 +1,11 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { user } from '@angular/fire/auth';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
@@ -27,73 +28,41 @@ export class BoardThreadComponent implements OnInit {
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
 
-  message: string;
-  timestampMessage: number;
-  avatarMessage: string;
-  selectedRecipient: string;
-  senderMessage: string;
-  relevantAnswers = [];
-  ChatService: any;
 
+  relevantAnswers: any;
+  ChatService: any;
+  channel: string;
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
     private channelService: ChannelService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    this.getAnswers();
   }
 
-  ngAfterViewChecked(): void {
-
-   
-  }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
   }
 
-getAnswers() {
-let i = 0;
-this.relevantAnswers = [];
-
-console.log(i);
-
-while (true) {
-  const key = `relevant-answer-${i}`;
-  const chatJSON = localStorage.getItem(key);
- 
-  if (!chatJSON) {
-    break;
+  getAnswers(chat) {
+    this.relevantAnswers = [chat]
   }
 
-  const chat = JSON.parse(chatJSON);
-  this.relevantAnswers.push(chat);
-  i++; 
-  this.showAnswers(i);
-}
 
-  }
-
-showAnswers(i){
-this.message = this.relevantAnswers[0].message;
-this.avatarMessage = this.relevantAnswers[0].avatar;
-this.senderMessage = this.relevantAnswers[0].sender;
-this.timestampMessage = this.relevantAnswers[0].timeStamp;
-  console.log(this.relevantAnswers[i]);
-}
-
-closeThread() {
+  closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
   }
 
   loadLoggedUserData() {
     const userDataString = localStorage.getItem('userData');
+    const channel = localStorage.getItem('channel')
+    this.channel =  channel
     if (userDataString) {
       const userData = JSON.parse(userDataString);
       this.loggedUser.avatar = userData.avatar;
