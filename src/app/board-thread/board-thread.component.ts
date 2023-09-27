@@ -46,12 +46,12 @@ export class BoardThreadComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    
+    this.getAnswers();
   }
 
   ngAfterViewChecked(): void {
 
-    this.getAnswers();
+   
   }
 
   ngOnDestroy(): void {
