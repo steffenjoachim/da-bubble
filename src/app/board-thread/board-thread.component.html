@@ -3,7 +3,7 @@
     <div class="thread-head">
       <div class="thread-text">
         <span>Thread</span>
-        <p class="thread-blue c-blue"># Entwicklerteam</p>
+        <p class="thread-blue c-blue">{{ channel }}</p>
       </div>
       <div (click)="closeThread()">
         <mat-icon fontIcon="close"></mat-icon>
@@ -11,18 +11,18 @@
     </div>
     <div class="thread-content">
       <div class="thread-answer-frame">
-        <img class="message-img" src="{{ avatarMessage }}" alt="">
+        <img class="message-img" src="{{ relevantAnswers[0].avatar }}" alt>
         <div>
           <div class="name-hour">
-            <span class="sender-message">{{ senderMessage }}</span>
-            <span>{{timestampMessage*1000| date:
+            <span class="sender-message">{{ relevantAnswers[0].sender }}</span>
+            <span>{{relevantAnswers[0].timeStamp *1000| date:
               'HH:mm'}} Uhr</span>
           </div>
-          <span class="answer-message">{{ message }}</span>
+          <span class="answer-message">{{ relevantAnswers[0].message }}</span>
         </div>
       </div>
       <hr>
-      <div *ngFor="let answer of relevantAnswers">
+      <div *ngFor="let answer of relevantAnswers[0].answers">
         <ng-container>
           <div [class.sent-container]="answer.sender === loggedUser.name"
             [class.recieved-container]="answer.sender !== loggedUser.name">
@@ -41,6 +41,10 @@
           </div>
         </ng-container>
       </div>
+    </div>
+    <div class="footer">
+      <textarea name="" id="" cols="30" rows="10" placeholder="Antworten"></textarea>
+      <button>senden</button>
     </div>
   </div>
 </div>

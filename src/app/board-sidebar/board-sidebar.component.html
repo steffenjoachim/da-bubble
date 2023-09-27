@@ -6,9 +6,11 @@
   </div>
   <div class="channels-frame">
     <div class="channels-head">
-      <mat-icon (click)="closeChannels()" id="arrow-drop-down" class="arrow-drop-down"
+      <mat-icon (click)="closeChannels()" id="arrow-drop-down"
+        class="arrow-drop-down"
         fontIcon="arrow_drop_down"></mat-icon>
-      <mat-icon (click)="openChannels()" id="arrow-right" class="arrow-right d-none" fontIcon="arrow_right"></mat-icon>
+      <mat-icon (click)="openChannels()" id="arrow-right"
+        class="arrow-right d-none" fontIcon="arrow_right"></mat-icon>
       <mat-icon fontIcon="workspaces"></mat-icon>
       <div class="channels-headline">
         <span>Channels</span>
@@ -19,7 +21,9 @@
 
     </div>
     <div id="channels-body" class="channels-body">
-      <div *ngFor="let chanel of channel$ | async" (click)="onSidebarLinkClick(chanel)" class="channels" [ngClass]="{'active': chanel.name == selectedRecipient}">
+      <div *ngFor="let chanel of channel$ | async"
+        (click)="onSidebarLinkClick(chanel)" class="channels"
+        [ngClass]="{'active': chanel.name == selectedRecipient}">
         <span># {{ chanel.name }}</span>
       </div>
       <div class="add-channel">
@@ -29,9 +33,11 @@
     </div>
     <div class="direct-messages">
       <div class="direct-messages-frame">
-        <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2" class="arrow-drop-down"
+        <mat-icon (click)="closeDirectMessages()" id="arrow-drop-down2"
+          class="arrow-drop-down"
           fontIcon="arrow_drop_down"></mat-icon>
-        <mat-icon (click)="openDirectMessages()" id="arrow-right2" class="arrow-right d-none"
+        <mat-icon (click)="openDirectMessages()" id="arrow-right2"
+          class="arrow-right d-none"
           fontIcon="arrow_right"></mat-icon>
         <div class="channels">
           <span>Direktnachrichten</span>
@@ -40,14 +46,18 @@
       <div class="direct-messages-body" id="direct-messages-body">
         <div class="direct-message-container">
           <div class="you">
-            <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
-            <span class="current-user-name" id="current-user-name">{{ loggedUser.name }} (Du)</span>
+            <img id="current-user-img" src="{{ loggedUser.avatar }}"
+              alt="image of user">
+            <span class="current-user-name" id="current-user-name">{{
+              loggedUser.name }} (Du)</span>
           </div>
-          <div class="others" *ngFor="let user of users" [ngClass]="{'active': user.name == selectedRecipient}" (click)="OnAnotherEvent(user.name)">
-            <ng-container *ngIf="user.name !== loggedUser.name">
-              <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
-              <span class="current-user-name" id="current-user-name">{{ user.name }}</span>
-            </ng-container>
+          <div class="others" *ngFor="let user of users"
+            [ngClass]="{'active': user.name == selectedRecipient}"
+            (click)="OnAnotherEvent(user.name)">
+            <img id="current-user-img" src="{{ user.avatar }}"
+              alt="image of user">
+            <span class="current-user-name" id="current-user-name">{{
+              user.name}}</span>
           </div>
         </div>
       </div>
@@ -66,24 +76,28 @@
       <div class="input-container">
         <h3>Channel-Name</h3>
 
-        <input [(ngModel)]="channelName" type="text" required placeholder="# z.B. Kooperationsprojekte" name="name">
+        <input [(ngModel)]="channelName" type="text" required
+          placeholder="# z.B. Kooperationsprojekte" name="name">
         <div class="channel-popup-description">
           <h3>Beschreibung</h3>
           <span></span>
         </div>
-        <input [(ngModel)]="channelDescription" type="text" required="" placeholder="Dein Text hier" name="name">
+        <input [(ngModel)]="channelDescription" type="text" required
+          placeholder="Dein Text hier" name="name">
         <div class="channel-popup-btn">
           <button>Nächste Seite</button>
         </div>
       </div>
     </form>
     <div class="member-container" *ngIf="addMembers">
-      <form action=""></form>
+      <form action></form>
       <label>
-        <input type="radio" name="option" value="option1"> Alle Mitglieder von {{ channelName }} hinzufügen
+        <input type="radio" name="option" value="option1"> Alle Mitglieder von
+        {{ channelName }} hinzufügen
       </label>
       <label>
-        <input type="radio" name="option" value="option2"> Bestimmte Leute hinzufügen
+        <input type="radio" name="option" value="option2"> Bestimmte Leute
+        hinzufügen
       </label>
       <div>
         <button (click)="addChannelToFirebase()">Erstellen</button>

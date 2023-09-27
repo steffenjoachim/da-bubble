@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
@@ -6,7 +6,8 @@ import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 import { DialogChannelAnswerComponent } from '../dialog-channel-answer/dialog-channel-answer.component'
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BoardThreadComponent } from '../board-thread/board-thread.component';
 
 @Component({
   selector: 'app-board-content',
@@ -14,7 +15,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
   styleUrls: ['./board-content.component.scss']
 })
 export class BoardContentComponent implements OnInit {
+  @Output() contentClicked = new EventEmitter<string>();
+  @ViewChild('boardThread', { static: true }) boardThread: BoardThreadComponent;
 
+  @Input() chat: any
   @ViewChild('recieved') recievedElement: ElementRef;
 
   open: boolean = true;
@@ -30,7 +34,6 @@ export class BoardContentComponent implements OnInit {
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
   channel;
-  chat;
   showChannelChat: boolean = false
   showChat: boolean = false;
   message: any = '';
@@ -56,7 +59,6 @@ export class BoardContentComponent implements OnInit {
 
   openDialogChannelAnswer(chat, i) {
     const dialogConfig = new MatDialogConfig();
-    console.log(i);
     dialogConfig.data = chat;
     this.dialog.open(DialogChannelAnswerComponent, dialogConfig);
   }
@@ -132,7 +134,7 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
-      
+
       chats.forEach(element => {
         this.answersAmount = element.answers.length;
       });
@@ -146,10 +148,10 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
-  openThread(chat,i){
+  openThread(chat, i) {
+    this.contentClicked.emit(chat)
     document.getElementById('thread')?.classList.remove('d-none');
     this.selectRelevantAnswers(chat);
-    console.log(i);
   }
 
   selectRelevantAnswers(chat) {
@@ -165,4 +167,3 @@ export class BoardContentComponent implements OnInit {
     }
   }
 }
-

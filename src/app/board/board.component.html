@@ -1,18 +1,18 @@
-<!-- board.component.html -->
 <app-header></app-header>
 <div id="main-container" class="main-container">
   <div id="side-bar" class="side-bar">
     <app-board-sidebar
-  (sidebarLinkClicked)="boardContent.showFunction()"
-  (anotherEvent)="boardContent.startChat()">
-</app-board-sidebar>
+      (sidebarLinkClicked)="boardContent.showFunction()"
+      (anotherEvent)="boardContent.startChat()">
+    </app-board-sidebar>
   </div>
   <div class="content-box">
-    <app-board-content #boardContent>
+    <app-board-content #boardContent
+      (contentClicked)="boardThread.getAnswers($event)">
     </app-board-content>
   </div>
   <div id="thread" class="thread-frame d-none">
-    <app-board-thread></app-board-thread>
+    <app-board-thread #boardThread></app-board-thread>
   </div>
   <div (click)="closeSideBar()" class="close-workshop-menu">
     <mat-icon id="close-x" fontIcon="close"></mat-icon>
