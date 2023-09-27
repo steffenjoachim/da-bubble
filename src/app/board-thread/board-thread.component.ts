@@ -46,6 +46,11 @@ export class BoardThreadComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
+    
+  }
+
+  ngAfterViewChecked(): void {
+
     this.getAnswers();
   }
 
@@ -57,11 +62,12 @@ getAnswers() {
 let i = 0;
 this.relevantAnswers = [];
 
+console.log(i);
+
 while (true) {
   const key = `relevant-answer-${i}`;
   const chatJSON = localStorage.getItem(key);
-
-  // Wenn kein Eintrag mehr mit dem aktuellen Schlüssel gefunden wird, beende die Schleife
+ 
   if (!chatJSON) {
     break;
   }
@@ -69,15 +75,20 @@ while (true) {
   const chat = JSON.parse(chatJSON);
   this.relevantAnswers.push(chat);
   i++; 
+  this.showAnswers(i);
 }
+
+  }
+
+showAnswers(i){
 this.message = this.relevantAnswers[0].message;
 this.avatarMessage = this.relevantAnswers[0].avatar;
 this.senderMessage = this.relevantAnswers[0].sender;
 this.timestampMessage = this.relevantAnswers[0].timeStamp;
-console.log(this.relevantAnswers[0].message);
-  }
+  console.log(this.relevantAnswers[i]);
+}
 
-  closeThread() {
+closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
   }
 
