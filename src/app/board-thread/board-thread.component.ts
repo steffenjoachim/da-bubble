@@ -37,9 +37,8 @@ export class BoardThreadComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
-    // public channelService: ChannelService,
+    public channelService: ChannelService,
     // @Inject(MAT_DIALOG_DATA) public chat: any
-    
     ) { }
 
   ngOnInit(): void {
@@ -74,10 +73,11 @@ export class BoardThreadComponent implements OnInit {
 
 
 postAnswer(){
-console.log('answered')
-// const userDataString = localStorage.getItem('userData');
-//     const loggedUser = JSON.parse(userDataString);
-//     this.channelService.postAnswer(this.chat, loggedUser, this.message)
+console.log(this.relevantAnswers);
+console.log(this.message);
+const userDataString = localStorage.getItem('userData');
+const loggedUser = JSON.parse(userDataString);
+this.channelService.postAnswer(this.relevantAnswers, loggedUser, this.message)
 }
 }
 

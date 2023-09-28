@@ -18,6 +18,7 @@ export class DialogChannelAnswerComponent {
   message: string;
 
   updateFirebase() {
+    console.log(this.chat);
     const userDataString = localStorage.getItem('userData');
     const loggedUser = JSON.parse(userDataString);
     this.channelService.postAnswer(this.chat, loggedUser, this.message)
