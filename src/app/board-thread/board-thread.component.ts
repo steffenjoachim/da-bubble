@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, Input, Inject } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { user } from '@angular/fire/auth';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-board-thread',
@@ -27,6 +26,7 @@ export class BoardThreadComponent implements OnInit {
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
+  message: string;
 
 
   relevantAnswers: any;
@@ -37,8 +37,10 @@ export class BoardThreadComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
-    private channelService: ChannelService
-  ) { }
+    // public channelService: ChannelService,
+    // @Inject(MAT_DIALOG_DATA) public chat: any
+    
+    ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -71,9 +73,11 @@ export class BoardThreadComponent implements OnInit {
   }
 
 
-postAnswer()
-{
+postAnswer(){
 console.log('answered')
+// const userDataString = localStorage.getItem('userData');
+//     const loggedUser = JSON.parse(userDataString);
+//     this.channelService.postAnswer(this.chat, loggedUser, this.message)
 }
 }
 

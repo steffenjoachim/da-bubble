@@ -33,6 +33,8 @@ export class BoardContentComponent implements OnInit {
   users: any[] = [];
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
+  channelMembers$ !: Observable<any>;
+  channelMembers:any[] = [];
   channel;
   showChannelChat: boolean = false
   showChat: boolean = false;
@@ -105,7 +107,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   showFunction() {
-    this.getChanelChats()
+    this.getChannelChats()
   }
 
   getChats() {
@@ -124,10 +126,10 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  getChanelChats() {
+  getChannelChats() {
     this.showChat = false
     this.showChannelChat = true
-    this.channel = localStorage.getItem('channel')
+    this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.chatsChannel$ = this.chatsChannel$.pipe(
       map(chats => chats.filter(chat => chat.channel == this.channel)),
@@ -137,12 +139,23 @@ export class BoardContentComponent implements OnInit {
 
       chats.forEach(element => {
         this.answersAmount = element.answers.length;
+        console.log(element);
       });
       setTimeout(() => {
         this.scrollToBottom()
       }, 200);
     });
+    
+    this.getChannesMembers(this.chatsChannel$);
   }
+
+  getChannesMembers(channelMembers$){
+    console.log(this.channelMembers$)
+    this.channelMembers$.subscribe(data => {
+      this.channelMembers = data;
+    });
+  }
+  
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
@@ -165,5 +178,9 @@ export class BoardContentComponent implements OnInit {
       const chatJSON = JSON.stringify(chat);
       localStorage.setItem(key, chatJSON);
     }
+  }
+
+  addMember(){
+    console.log('added');
   }
 }

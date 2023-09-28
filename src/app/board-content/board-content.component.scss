@@ -8,6 +8,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-radius: 25px 25px 0 0;
   box-shadow: 0 7px 5px -4px rgba(0, 0, 0, 0.2);
 
@@ -32,7 +33,7 @@
     background: white;
     display: flex;
     align-items: center;
-    margin-left: 16px;
+    margin-left: 32px;
     padding: 8px;
     cursor: pointer;
     background: rgb(236, 238, 254);
@@ -41,6 +42,19 @@
 
   mat-icon {
     margin-left: 16px;
+  }
+}
+
+.channel-members{
+  margin-right: 32px;
+  mat-icon{
+    background: rgb(236, 238, 254);  
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover{
+      color: rgb(68, 77, 242);
+    }
   }
 }
 

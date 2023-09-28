@@ -4,6 +4,14 @@
       selectedRecipient }}</span>
     <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
   </button>
+  <div class="channel-members d-none" id="channel-members">
+    <div class="members" *ngFor="let member of channelMembers">
+      <img src="{{ member.avatar }}" alt="">
+    </div>
+    <div (click)="addMember()">
+      <mat-icon fontIcon="group_add"></mat-icon>
+    </div>
+  </div>
 </div>
 <div class="content-frame" id="content-frame">
   <!-- Channel -->
@@ -23,7 +31,8 @@
                   class="element-sender"> </span>
                 eine Antwort</span>
               <div *ngIf="chat.answers.length>0">
-                <span class="number-answers c-blue" (click)="openThread(chat,i)">{{ chat.answers.length }} Antwort(en)</span>
+                <span class="number-answers c-blue" (click)="openThread(chat,i)">{{ chat.answers.length }}
+                  Antwort(en)</span>
               </div>
             </div>
           </div>

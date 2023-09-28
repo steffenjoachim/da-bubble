@@ -159,8 +159,9 @@ width: 64px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 30px;
+  height: 36px;
   z-index: 99;
+  padding-bottom: 10px;
 }
 
 .icon-left{
@@ -188,4 +189,11 @@ textarea {
   width: 93.4%;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
+}
+
+.submit-arrow{
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 }

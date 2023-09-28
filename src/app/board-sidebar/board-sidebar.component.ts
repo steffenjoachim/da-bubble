@@ -45,7 +45,7 @@ export class BoardSidebarComponent implements OnInit {
   message: string;
   selectedRecipient = 'Entwicklerteam';
   channel = 'Entwicklerteam';
-  // relevantChats = [];
+  channelMembers: any[] = [];
 
   constructor(
     public firestore: Firestore,
@@ -65,11 +65,11 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.getChannels()
+    this.getChannels();
   }
 
   public onSidebarLinkClick(selectedData): void {
-    this.showChannel(selectedData)
+    this.showChannel(selectedData);
     this.sidebarLinkClicked.emit();
   }
 
@@ -114,10 +114,19 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel(channel) {
-    localStorage.setItem('selected-recipient', '# ' + channel.name)
-    localStorage.setItem('channel', '# ' + channel.name)
-     this.channelChat.showChannelChat(channel)
+    localStorage.setItem('selected-recipient', '# ' + channel.name);
+    localStorage.setItem('channel', '# ' + channel.name);
+    this.channelChat.showChannelChat(channel);
+    document.getElementById('channel-members').classList.remove('d-none');
+    this.showChannelMembers(channel);
   }
+
+  showChannelMembers(channel){
+    this.channelMembers = channel.members; 
+    console.log(channel.members);
+    const membersString = JSON.stringify(channel.members);
+    localStorage.setItem('chat.members', membersString); 
+}  
 
   showChat(name) {
     this.selectedRecipient = name;
@@ -127,6 +136,7 @@ export class BoardSidebarComponent implements OnInit {
       localStorage.setItem('selected-recipient', '@ ' + name)
       this.channelChat.showChannelChat(name)
     }
+    document.getElementById('channel-members').classList.add('d-none');
   }
 
   getUsers() {
