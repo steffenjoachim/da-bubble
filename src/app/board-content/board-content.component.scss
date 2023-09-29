@@ -47,8 +47,14 @@
 
 .channel-members{
   margin-right: 32px;
+  display: flex;
+  align-items: center;
+  .members {
+    display: flex;
+    align-items: center;
+  }
   mat-icon{
-    background: rgb(236, 238, 254);  
+    background: rgb(236, 238, 254);
     padding: 8px;
     border-radius: 50%;
     cursor: pointer;

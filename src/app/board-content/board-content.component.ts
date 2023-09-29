@@ -30,12 +30,12 @@ export class BoardContentComponent implements OnInit {
   channelChatCollection: any = collection(this.firestore, 'channelChats');
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
+  channelCollection: any = collection(this.firestore, 'channels')
   users: any[] = [];
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
-  channelMembers$ !: Observable<any>;
-  channelMembers: any[] = [];
-  channel;
+  channelMembers$: Observable<any>;
+  channel;//localStorage
   showChannelChat: boolean = false
   showChat: boolean = false;
   message: any = '';
@@ -49,30 +49,30 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private dialog: MatDialog,
-  ) { }
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
+    this.getMembers();
   }
 
+getMembers() {
+  this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
+  this.channelMembers$.subscribe((member) => {
+    console.log(member)
+  });
+}
+
   openDialogAddMembers() {
-    // Konfigurieren Sie den Dialog
     const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = chat; // Sie können Daten an die Dialogkomponente übergeben, falls erforderlich
-    // Öffnen Sie den Dialog
     const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
-  
-    // Verarbeiten Sie Ereignisse, die nach dem Schließen des Dialogs auftreten können
     dialogRef.afterClosed().subscribe(result => {
-      // Hier können Sie die Aktionen ausführen, die nach dem Schließen des Dialogs durchgeführt werden sollen
-      console.log('Dialog geschlossen', result);
     });
   }
-  
+
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
@@ -152,16 +152,6 @@ export class BoardContentComponent implements OnInit {
         this.scrollToBottom()
       }, 200);
     });
-
-    this.getChannesMembers(this.chatsChannel$);
-  }
-
-  getChannesMembers(channelMembers$) {
-    this.channelMembers$ = channelMembers$
-    console.log(this.channelMembers)
-    // this.channelMembers$.subscribe(data => {
-    //   this.channelMembers = data;
-    // });
   }
 
 
