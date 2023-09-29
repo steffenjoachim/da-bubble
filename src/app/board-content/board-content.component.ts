@@ -59,10 +59,20 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
   }
 
-  openDialogAddMembers(chat, i) {
+  openDialogAddMembers() {
+    // Konfigurieren Sie den Dialog
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = chat;
+    // dialogConfig.data = chat; // Sie können Daten an die Dialogkomponente übergeben, falls erforderlich
+    // Öffnen Sie den Dialog
+    const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
+  
+    // Verarbeiten Sie Ereignisse, die nach dem Schließen des Dialogs auftreten können
+    dialogRef.afterClosed().subscribe(result => {
+      // Hier können Sie die Aktionen ausführen, die nach dem Schließen des Dialogs durchgeführt werden sollen
+      console.log('Dialog geschlossen', result);
+    });
   }
+  
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
