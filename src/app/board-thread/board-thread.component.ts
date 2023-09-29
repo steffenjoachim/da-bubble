@@ -1,11 +1,13 @@
+import { BoardContentComponent } from './../board-content/board-content.component';
 import { Component, OnInit, ElementRef, AfterViewInit, Input, Inject } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, Timestamp, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, Timestamp, collection, collectionData, getDocs, where } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { user } from '@angular/fire/auth';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-board-thread',
@@ -19,6 +21,9 @@ export class BoardThreadComponent implements OnInit {
     name: 'Gast'
   }
 
+  public chatSubject = new BehaviorSubject<any>(null);
+  chat$: Observable<any> = this.chatSubject.asObservable();
+
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   channelChatCollection: any = collection(this.channelChat, 'channelChats')
@@ -27,43 +32,50 @@ export class BoardThreadComponent implements OnInit {
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
   message: string;
-
-
-  relevantAnswers: any;
+  relevantAnswers: Observable<any>;
+  chatAnswersSubject = new Subject<any[]>();
+  answers$: Observable<any>;
   ChatService: any;
   channel: string;
+  question: any
+  threadOpened: boolean = false;
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
-    public channelService: ChannelService,
-    // @Inject(MAT_DIALOG_DATA) public chat: any
-    ) { }
+    public channelService: ChannelService) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
   }
 
-
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
   }
 
   getAnswers(chat) {
-    this.relevantAnswers = [chat]
+    this.threadOpened = true;
+    this.question = chat
+    this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.answers$ = this.answers$.pipe(
+      map((chats) => chats.filter(chatItem => chatItem.id === chat.id))
+    );
+    this.answers$.subscribe(filteredData => {
+    });
   }
 
 
   closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
+    this.threadOpened = false;
   }
 
   loadLoggedUserData() {
     const userDataString = localStorage.getItem('userData');
     const channel = localStorage.getItem('channel')
-    this.channel =  channel
+    this.channel = channel
     if (userDataString) {
       const userData = JSON.parse(userDataString);
       this.loggedUser.avatar = userData.avatar;
@@ -71,13 +83,11 @@ export class BoardThreadComponent implements OnInit {
     }
   }
 
-
-postAnswer(){
-console.log(this.relevantAnswers);
-console.log(this.message);
-const userDataString = localStorage.getItem('userData');
-const loggedUser = JSON.parse(userDataString);
-this.channelService.postAnswer(this.relevantAnswers, loggedUser, this.message)
+  postAnswer() {
+    console.log(this.message);
+    const userDataString = localStorage.getItem('userData');
+    const loggedUser = JSON.parse(userDataString);
+    console.log(this.answers$)
+    this.channelService.postAnswer(this.question, loggedUser, this.message)
+  }
 }
-}
-

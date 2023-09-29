@@ -73,6 +73,7 @@ export class ChannelService {
   }
 
   postAnswer(chat, sender, message) {
+    console.log(sender)
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate);
     const newAnswer = {

@@ -95,7 +95,6 @@ export class BoardSidebarComponent implements OnInit {
     for (let i = 0; i < this.users.length; i++) {
       const element = this.users[i].name;
       this.channelsData.members.push(element);
-      console.table(this.channelsData);
     }
     addDoc(this.channelCollection, this.channelsData)
     this.addChannelPopup = false
@@ -122,11 +121,10 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannelMembers(channel){
-    this.channelMembers = channel.members; 
-    console.log(channel.members);
+    this.channelMembers = channel.members;
     const membersString = JSON.stringify(channel.members);
-    localStorage.setItem('chat.members', membersString); 
-}  
+    localStorage.setItem('chat.members', membersString);
+}
 
   showChat(name) {
     this.selectedRecipient = name;

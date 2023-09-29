@@ -2,10 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input }
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, BehaviorSubject } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
+import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-import { DialogChannelAnswerComponent } from '../dialog-channel-answer/dialog-channel-answer.component'
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BoardThreadComponent } from '../board-thread/board-thread.component';
 
@@ -34,7 +34,7 @@ export class BoardContentComponent implements OnInit {
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
   channelMembers$ !: Observable<any>;
-  channelMembers:any[] = [];
+  channelMembers: any[] = [];
   channel;
   showChannelChat: boolean = false
   showChat: boolean = false;
@@ -59,10 +59,9 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
   }
 
-  openDialogChannelAnswer(chat, i) {
+  openDialogAddMembers(chat, i) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = chat;
-    this.dialog.open(DialogChannelAnswerComponent, dialogConfig);
   }
 
   setSelectedRecipient() {
@@ -136,26 +135,25 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chatsChannel$.subscribe((chats) => {
-
       chats.forEach(element => {
         this.answersAmount = element.answers.length;
-        console.log(element);
       });
       setTimeout(() => {
         this.scrollToBottom()
       }, 200);
     });
-    
+
     this.getChannesMembers(this.chatsChannel$);
   }
 
-  getChannesMembers(channelMembers$){
-    console.log(this.channelMembers$)
-    this.channelMembers$.subscribe(data => {
-      this.channelMembers = data;
-    });
+  getChannesMembers(channelMembers$) {
+    this.channelMembers$ = channelMembers$
+    console.log(this.channelMembers)
+    // this.channelMembers$.subscribe(data => {
+    //   this.channelMembers = data;
+    // });
   }
-  
+
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
@@ -180,7 +178,4 @@ export class BoardContentComponent implements OnInit {
     }
   }
 
-  addMember(){
-    console.log('added');
-  }
 }

@@ -1,4 +1,4 @@
-<div class="thread-frame">
+<div *ngIf="threadOpened" class="thread-frame">
   <div class="thread">
     <div class="thread-head">
       <div class="thread-text">
@@ -11,32 +11,36 @@
     </div>
     <div class="thread-content">
       <div class="thread-answer-frame">
-        <img class="message-img" src="{{ relevantAnswers[0].avatar }}" alt>
+        <img class="message-img" src="{{question.avatar}}" alt>
         <div>
           <div class="name-hour">
-            <span class="sender-message">{{ relevantAnswers[0].sender }}</span>
-            <span>{{relevantAnswers[0].timeStamp *1000| date:
+            <span class="sender-message">{{question.sender}}</span>
+            <span>{{question.timeStamp *1000| date:
               'HH:mm'}} Uhr</span>
           </div>
-          <span class="answer-message">{{ relevantAnswers[0].message }}</span>
+          <span class="answer-message">{{question.message}}</span>
         </div>
       </div>
       <hr>
-      <div *ngFor="let answer of relevantAnswers[0].answers">
+      <div *ngFor="let answer of answers$ |async">
         <ng-container>
-          <div [class.sent-container]="answer.sender === loggedUser.name"
-            [class.recieved-container]="answer.sender !== loggedUser.name">
-            <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
-              [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
-              <div><span>{{ answer.sender }}</span>
-                <div [class.sent-message]="answer.sender === loggedUser.name"
-                  [class.recieved-message]="answer.sender !== loggedUser.name">
-                  <span class="date">{{ answer.timeStamp*1000| date:
-                    'dd.MM.yyyy HH:mm' }}</span>
-                  <span>{{ answer.message }}</span>
+          <div *ngFor="let subAnswer of answer.answers">
+            <div [class.sent-container]="subAnswer.sender === loggedUser.name"
+              [class.recieved-container]="subAnswer.sender !== loggedUser.name">
+              <div
+                [class.sent-name-avatar]="subAnswer.sender === loggedUser.name"
+                [class.recieved-name-avatar]="subAnswer.sender !== loggedUser.name">
+                <div><span>{{ subAnswer.sender }}</span>
+                  <div
+                    [class.sent-message]="subAnswer.sender === loggedUser.name"
+                    [class.recieved-message]="subAnswer.sender !== loggedUser.name">
+                    <span class="date">{{ subAnswer.timeStamp*1000| date:
+                      'dd.MM.yyyy HH:mm' }}</span>
+                    <span>{{ subAnswer.message }}</span>
+                  </div>
                 </div>
+                <img class="avatar" src={{subAnswer.avatar}}>
               </div>
-              <img class="avatar" src={{answer.avatar}}>
             </div>
           </div>
         </ng-container>
@@ -44,7 +48,8 @@
     </div>
     <div class="message-container">
       <div class="message-frame">
-        <textarea [(ngModel)]="message" name="" id="" cols="30" rows="9" placeholder="Antworten"></textarea>
+        <textarea [(ngModel)]="message" name id cols="30" rows="9"
+          placeholder="Antworten"></textarea>
         <div class="icon-container">
           <div class="icon-left">
             <div class="icon-div">
@@ -58,7 +63,8 @@
             </div>
           </div>
           <div class="icon-right">
-            <img (click)="postAnswer()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+            <img (click)="postAnswer()" class="submit-arrow"
+              src="./assets/img/Send icon.png" alt="submit arrow">
           </div>
 
         </div>

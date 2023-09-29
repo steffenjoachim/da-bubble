@@ -23,11 +23,11 @@ import { MatTreeModule } from '@angular/material/tree';
 import { BoardSidebarComponent } from './board-sidebar/board-sidebar.component';
 import { BoardThreadComponent } from './board-thread/board-thread.component';
 import { BoardContentComponent } from './board-content/board-content.component';
-import { DialogChannelAnswerComponent } from './dialog-channel-answer/dialog-channel-answer.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ChannelChatComponent } from './channel-chat/channel-chat.component';
+import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-members.component';
 
 
 
@@ -41,8 +41,8 @@ import { ChannelChatComponent } from './channel-chat/channel-chat.component';
     BoardSidebarComponent,
     BoardThreadComponent,
     BoardContentComponent,
-    DialogChannelAnswerComponent,
-    ChannelChatComponent
+    ChannelChatComponent,
+    DialogAddMembersComponent
   ],
   imports: [
 
