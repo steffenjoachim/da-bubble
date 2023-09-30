@@ -62,7 +62,7 @@ export class BoardContentComponent implements OnInit {
 getMembers() {
   this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
   this.channelMembers$.subscribe((member) => {
-    console.log(member)
+    console.table(member)
   });
 }
 
