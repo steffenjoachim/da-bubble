@@ -75,7 +75,7 @@ export class BoardSidebarComponent implements OnInit {
 
   public OnAnotherEvent(selectedData): void {
     this.showChat(selectedData)
-     this.anotherEvent.emit();
+    this.anotherEvent.emit();
   }
 
   addChannel() {
@@ -93,14 +93,18 @@ export class BoardSidebarComponent implements OnInit {
 
   addChannelToFirebase() {
     for (let i = 0; i < this.users.length; i++) {
-      const element = this.users[i].name;
+      const element = this.users[i];
       this.channelsData.members.push(element);
     }
+
     addDoc(this.channelCollection, this.channelsData)
     this.addChannelPopup = false
     this.popupContainer = false
     this.addMembers = false
+    this.clearChannelsData()
   }
+
+
 
   openAddChanelPopup() {
     this.addChannelPopup = true
@@ -120,11 +124,11 @@ export class BoardSidebarComponent implements OnInit {
     this.showChannelMembers(channel);
   }
 
-  showChannelMembers(channel){
+  showChannelMembers(channel) {
     this.channelMembers = channel.members;
     const membersString = JSON.stringify(channel.members);
     localStorage.setItem('chat.members', membersString);
-}
+  }
 
   showChat(name) {
     this.selectedRecipient = name;
@@ -203,6 +207,16 @@ export class BoardSidebarComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
+
+  clearChannelsData() {
+    this.channelsData = {
+      admin: '',
+      members: [],
+      name: '',
+      description: ''
+    }
+  }
+
 }
 
 

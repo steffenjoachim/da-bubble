@@ -5,11 +5,13 @@
     <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
   </button>
   <div class="channel-members" id="channel-members">
-    <div *ngFor="let member of channelMembers$ | async" class="members">
-      <div *ngFor="let avatar of member.members">
-        <img src="{{avatar.avatar}}" alt>
+    <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
+      <div *ngFor="let avatar of channel.members">
+        <!-- <span>{{channel.members.length}}</span> -->
+        <img [src]="avatar.avatar" alt>
       </div>
     </div>
+    <span>{{length}}</span>
     <div (click)="openDialogAddMembers()">
       <mat-icon fontIcon="group_add"></mat-icon>
     </div>
