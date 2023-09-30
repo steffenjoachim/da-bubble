@@ -2,16 +2,22 @@
   <h1 mat-dialog-title class="dialog-add-user-headline">Mitglied hinzufügen</h1>
   <div mat-dialog-content>
     <div>
-      <mat-form-field class="name-input" appearance="outline" class="full-width">
+      <!-- <mat-form-field class="name-input" appearance="outline" class="full-width">
         <input matInput placeholder="Name eingeben">
-      </mat-form-field>
-      <div *ngFor="let user of usersCollection$ | async">
+      </mat-form-field> -->
+      <button mat-button [matMenuTriggerFor]="menu">Namen hinzufügen</button>
+      <mat-menu #menu="matMenu">
+        <div *ngFor="let user of usersCollection$ | async" (click)="addMember(user)">
+          <button mat-menu-item><span>{{ user.name }}</span></button>
+        </div>
+      </mat-menu>
+      <!-- <div *ngFor="let user of usersCollection$ | async">
         <span>{{ user.name }}</span>
-      </div>
+      </div> -->
     </div>
     <div mat-dialog-action class="dialog-add-user-button-frame">
       <button class="cancel-button" mat-button>Cancel</button>
-      <button (click)="addMember()" mat-button cdkFocusInitial>Hinzufügen</button>
+      <!-- <button (click)="addMember(user)" mat-button cdkFocusInitial>Hinzufügen</button> -->
     </div>
   </div>
 </div>

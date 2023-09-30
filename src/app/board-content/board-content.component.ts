@@ -45,6 +45,7 @@ export class BoardContentComponent implements OnInit {
   chats: any;
   answersAmount: number;
   keysToDelete = [];
+  length: number;
 
   constructor(
     public firestore: Firestore,
@@ -59,7 +60,7 @@ export class BoardContentComponent implements OnInit {
     this.setSelectedRecipient();
     this.getUsers();
   }
-  length: number
+ 
   getMembers() {
     this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
     this.filteredChannelMembers$ = this.channelMembers$.pipe(

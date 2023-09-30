@@ -14,7 +14,7 @@ export class DialogAddMembersComponent implements OnInit {
 
   openDialog: false
   channel: string = localStorage.getItem('channel')
-  channelCollection: any = collection(this.firebase, 'channels')
+  channelCollection$: any = collection(this.firebase, 'channels')
   members$: Observable<any>;
   usersCollection$: any = collection(this.firebase, 'users')
   users$: Observable<any>[];
@@ -30,12 +30,16 @@ export class DialogAddMembersComponent implements OnInit {
     this.usersCollection$ = collectionData(this.usersCollection$, { idField: 'id' });
     this.usersCollection$.subscribe((user) => {
       console.log(user)
-    })
+    });
   }
 
 
-  addMember() {
-
+  addMember(user) {
+    console.log(user, 'added');
+    this.channelCollection$ = collectionData(this.channelCollection$, { idField: 'id' });
+    this.channelCollection$.subscribe((channel) => {
+      console.log(channel);
+    });
   }
 
 }
