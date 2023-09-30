@@ -1,10 +1,13 @@
-<div  class="dialog-add-members-frame">
+<div class="dialog-add-members-frame">
   <h1 mat-dialog-title class="dialog-add-user-headline">Mitglied hinzufügen</h1>
   <div mat-dialog-content>
     <div>
       <mat-form-field class="name-input" appearance="outline" class="full-width">
-        <input  matInput placeholder="Name eingeben">
+        <input matInput placeholder="Name eingeben">
       </mat-form-field>
+      <div *ngFor="let user of usersCollection$ | async">
+        <span>{{ user.name }}</span>
+      </div>
     </div>
     <div mat-dialog-action class="dialog-add-user-button-frame">
       <button class="cancel-button" mat-button>Cancel</button>

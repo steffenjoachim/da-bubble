@@ -35,6 +35,8 @@ export class BoardContentComponent implements OnInit {
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
   channelMembers$: Observable<any>;
+  filteredChannelMembers$: Observable<any[]>;
+  membersOfSelectedChannel$: Observable<any>;
   channel;//localStorage
   showChannelChat: boolean = false
   showChat: boolean = false;
@@ -56,15 +58,17 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
-    this.getMembers();
   }
-
-getMembers() {
-  this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
-  this.channelMembers$.subscribe((member) => {
-    console.table(member)
-  });
-}
+  length: number
+  getMembers() {
+    this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
+    this.filteredChannelMembers$ = this.channelMembers$.pipe(
+      map(channels => channels.filter(channel => '# ' + channel.name == this.channel))
+    );
+    this.filteredChannelMembers$.subscribe(data => {
+      this.length = data[0].members.length
+    });
+  }
 
   openDialogAddMembers() {
     const dialogConfig = new MatDialogConfig();
@@ -152,8 +156,8 @@ getMembers() {
         this.scrollToBottom()
       }, 200);
     });
+    this.getMembers()
   }
-
 
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;

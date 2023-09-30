@@ -28,7 +28,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-members.component';
-
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
@@ -45,7 +45,7 @@ import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-membe
     DialogAddMembersComponent
   ],
   imports: [
-
+    MatMenuModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
