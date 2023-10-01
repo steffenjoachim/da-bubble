@@ -33,13 +33,13 @@ export class DialogAddMembersComponent implements OnInit {
     });
   }
 
-
-  addMember(user) {
-    console.log(user, 'added');
+  addMember(channel, user) {
+    console.log(user, 'added to', channel);
     this.channelCollection$ = collectionData(this.channelCollection$, { idField: 'id' });
     this.channelCollection$.subscribe((channel) => {
       console.log(channel);
     });
   }
-
 }
+
+  

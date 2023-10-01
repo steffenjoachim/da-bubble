@@ -7,7 +7,7 @@
       </mat-form-field> -->
       <button mat-button [matMenuTriggerFor]="menu">Namen hinzufügen</button>
       <mat-menu #menu="matMenu">
-        <div *ngFor="let user of usersCollection$ | async" (click)="addMember(user)">
+        <div *ngFor="let user of usersCollection$ | async" (click)="addMember(channel, user)">
           <button mat-menu-item><span>{{ user.name }}</span></button>
         </div>
       </mat-menu>
