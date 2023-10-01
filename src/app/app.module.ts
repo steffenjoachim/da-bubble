@@ -29,6 +29,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-members.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { RecipientHeadInfoComponent } from './recipient-head-info/recipient-head-info.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { MatMenuModule } from '@angular/material/menu';
     BoardThreadComponent,
     BoardContentComponent,
     ChannelChatComponent,
-    DialogAddMembersComponent
+    DialogAddMembersComponent,
+    RecipientHeadInfoComponent
   ],
   imports: [
     MatMenuModule,

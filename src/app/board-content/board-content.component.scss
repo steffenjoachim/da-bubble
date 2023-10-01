@@ -45,20 +45,23 @@
   }
 }
 
-.channel-members{
+.channel-members {
   margin-right: 32px;
   display: flex;
   align-items: center;
   .members {
     display: flex;
     align-items: center;
+    img {
+      margin-left: -25px;
+    }
   }
-  mat-icon{
+  mat-icon {
     background: rgb(236, 238, 254);
     padding: 8px;
     border-radius: 50%;
     cursor: pointer;
-    &:hover{
+    &:hover {
       color: rgb(68, 77, 242);
     }
   }
@@ -228,9 +231,9 @@
   }
 }
 
-.number-answers{
+.number-answers {
   cursor: pointer;
-  &:hover{
+  &:hover {
     text-decoration: underline;
   }
 }

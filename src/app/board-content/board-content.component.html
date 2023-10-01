@@ -7,7 +7,6 @@
   <div class="channel-members" id="channel-members">
     <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
       <div *ngFor="let avatar of channel.members">
-        <!-- <span>{{channel.members.length}}</span> -->
         <img [src]="avatar.avatar" alt>
       </div>
     </div>

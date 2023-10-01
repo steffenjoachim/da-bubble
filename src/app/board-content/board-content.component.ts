@@ -60,7 +60,7 @@ export class BoardContentComponent implements OnInit {
     this.setSelectedRecipient();
     this.getUsers();
   }
- 
+
   getMembers() {
     this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
     this.filteredChannelMembers$ = this.channelMembers$.pipe(
@@ -76,6 +76,10 @@ export class BoardContentComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  openHeaderInfo() {
+
   }
 
 
