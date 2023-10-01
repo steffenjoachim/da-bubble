@@ -12,14 +12,15 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DialogAddMembersComponent implements OnInit {
 
-  openDialog: false
-  channel: string = localStorage.getItem('channel')
-  channelCollection$: any = collection(this.firebase, 'channels')
+  openDialog: false;
+  channel: string = localStorage.getItem('channel');
+  channelCollection$: any = collection(this.firebase, 'channels');
   channels$: Observable<any>;
   members$: Observable<any>;
   usersCollection$: any = collection(this.firebase, 'users')
   users$: Observable<any>[];
   filteredChannel: any[];
+  isAlreadyMember: boolean = false;
 
   constructor(private dialog: MatDialog,
     private firebase: Firestore) {
@@ -41,23 +42,36 @@ export class DialogAddMembersComponent implements OnInit {
     console.log('test')
   }
 
-  addMember(user) {
+
+  async addMember(user) {
+    this.isAlreadyMember = false;
     const documentReference = doc(this.firebase, 'channels', this.filteredChannel[0].id);
-    return getDoc(documentReference)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const currentData = docSnapshot.data();
-          console.log(currentData)
-          const updatedMembers = [...currentData['members'], user];
-          return updateDoc(documentReference, { members: updatedMembers });
+  
+    try {
+      const docSnapshot = await getDoc(documentReference);
+      if (docSnapshot.exists()) {
+        const currentData = docSnapshot.data();
+        const currentMembers = currentData['members'];
+  
+        // Überprüfen, ob der Benutzer bereits ein Mitglied ist
+        const userExists = currentMembers.some(member => member.id === user.id);
+  
+        if (!userExists) {
+          const updatedMembers = [...currentMembers, user];
+          await updateDoc(documentReference, { members: updatedMembers });
+          console.log('Benutzer wurde zum Kanal hinzugefügt.');
         } else {
-          console.error('no ', documentReference, ' on Firebase')
-          return null;
+          this.isAlreadyMember = true;
+          console.log('Der Benutzer ist bereits ein Mitglied des Kanals.');
         }
-      });
+      } else {
+        console.error('Der Kanal existiert nicht in Firebase:', documentReference);
+      }
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen des Benutzers zum Kanal:', error);
+    }
   }
-
-
+  
   getFilteredChannel() {
     this.channels$ = collectionData(this.channelCollection$, { idField: 'id' });
     this.channels$.pipe(

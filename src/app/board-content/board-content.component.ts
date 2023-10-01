@@ -8,6 +8,7 @@ import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-memb
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BoardThreadComponent } from '../board-thread/board-thread.component';
+import { DialogChannelInfoComponent } from '../dialog-channel-info/dialog-channel-info.component';
 
 @Component({
   selector: 'app-board-content',
@@ -185,6 +186,13 @@ export class BoardContentComponent implements OnInit {
       const chatJSON = JSON.stringify(chat);
       localStorage.setItem(key, chatJSON);
     }
+  }
+
+  openDialogchannelInfo(){
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
 }

@@ -29,7 +29,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-members.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { RecipientHeadInfoComponent } from './recipient-head-info/recipient-head-info.component';
+import { DialogChannelInfoComponent } from './dialog-channel-info/dialog-channel-info.component';
 
 
 @NgModule({
@@ -44,7 +44,7 @@ import { RecipientHeadInfoComponent } from './recipient-head-info/recipient-head
     BoardContentComponent,
     ChannelChatComponent,
     DialogAddMembersComponent,
-    RecipientHeadInfoComponent
+    DialogChannelInfoComponent,
   ],
   imports: [
     MatMenuModule,

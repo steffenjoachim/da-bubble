@@ -2,7 +2,9 @@
   <button>
     <span id="selected-recipient" class="selectedInterloctor">{{
       selectedRecipient }}</span>
-    <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
+    <div (click)="openDialogchannelInfo()">
+      <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
+    </div>
   </button>
   <div class="channel-members" id="channel-members">
     <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
@@ -31,8 +33,7 @@
                 'dd.MM.yyyy HH:mm' }}</span>
               <span>{{ chat.message }}</span>
               <span (click)="openThread(chat,i)" class="answer">Gib {{
-                chat.sender }}<span
-                  class="element-sender"> </span>
+                chat.sender }}<span class="element-sender"> </span>
                 eine Antwort</span>
               <div *ngIf="chat.answers.length>0">
                 <span class="number-answers c-blue" (click)="openThread(chat,i)">{{
@@ -72,8 +73,7 @@
 <div class="message-container">
   <div class="message-frame">
     <div class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37" rows="9"></textarea>
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9"></textarea>
     </div>
     <div class="icon-container">
       <div class="icon-left">
@@ -88,8 +88,7 @@
         </div>
       </div>
       <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow"
-          src="./assets/img/Send icon.png" alt="submit arrow">
+        <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>

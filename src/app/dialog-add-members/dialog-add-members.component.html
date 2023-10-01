@@ -1,6 +1,7 @@
 <div class="dialog-add-members-frame">
   <h1 mat-dialog-title class="dialog-add-user-headline">Mitglied hinzufügen</h1>
   <div mat-dialog-content>
+    <span class="is-already-member" *ngIf="isAlreadyMember">Ist schon Mitglied</span>
     <div>
       <!-- <mat-form-field class="name-input" appearance="outline" class="full-width">
         <input matInput placeholder="Name eingeben">
