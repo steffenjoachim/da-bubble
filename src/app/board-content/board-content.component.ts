@@ -79,11 +79,6 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  openHeaderInfo() {
-
-  }
-
-
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
@@ -190,6 +185,9 @@ export class BoardContentComponent implements OnInit {
 
   openDialogchannelInfo(){
     const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+
+    }
     const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });

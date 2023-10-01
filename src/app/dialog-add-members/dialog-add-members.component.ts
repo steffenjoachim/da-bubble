@@ -38,24 +38,15 @@ export class DialogAddMembersComponent implements OnInit {
     });
   }
 
-  selectedMembers() {
-    console.log('test')
-  }
-
-
   async addMember(user) {
     this.isAlreadyMember = false;
     const documentReference = doc(this.firebase, 'channels', this.filteredChannel[0].id);
-  
     try {
       const docSnapshot = await getDoc(documentReference);
       if (docSnapshot.exists()) {
         const currentData = docSnapshot.data();
         const currentMembers = currentData['members'];
-  
-        // Überprüfen, ob der Benutzer bereits ein Mitglied ist
         const userExists = currentMembers.some(member => member.id === user.id);
-  
         if (!userExists) {
           const updatedMembers = [...currentMembers, user];
           await updateDoc(documentReference, { members: updatedMembers });
@@ -71,7 +62,7 @@ export class DialogAddMembersComponent implements OnInit {
       console.error('Fehler beim Hinzufügen des Benutzers zum Kanal:', error);
     }
   }
-  
+
   getFilteredChannel() {
     this.channels$ = collectionData(this.channelCollection$, { idField: 'id' });
     this.channels$.pipe(

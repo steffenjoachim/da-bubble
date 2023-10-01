@@ -1,9 +1,55 @@
-<div class="dialog-channel-info-frame">
+<div class="outer-container">
+  <div class="dialog-channel-info-frame">
     <h1>{{ selectedChannel }}</h1>
-</div>
-<div class="channel-name">
-    <h2>Channel-Name</h2>
-    <mat-card>
-        <mat-card-content>{{ selectedChannel }}</mat-card-content>
-    </mat-card>
+    <img src="./assets/img/45. Close.png" alt>
+  </div>
+  <div *ngIf="showName" class="channel-name">
+    <div>
+      <h2>Channel-Name</h2>
+      <span (click)="editChannelName()" class="edit">Bearbeiten</span>
+    </div>
+    <span>{{ selectedChannelName }}</span>
+  </div>
+
+  <div *ngIf="editName" class="edit-channel-name">
+    <div>
+      <h2>Channel-Name</h2>
+      <span (click)="saveChannelName()" class="edit">Speichern</span>
+    </div>
+    <div>
+      <input class="channel-name-input" [(ngModel)]="newChannelName" type="text"
+        placeholder="{{ selectedChannel }}">
+    </div>
+  </div>
+
+  <div *ngIf="showDescription" class="channel-name">
+    <div>
+      <h2>Beschreibung</h2>
+      <span (click)="editChannelDescription()" class="edit">Bearbeiten</span>
+    </div>
+    <div>
+      <span>{{channelDescription}}</span>
+    </div>
+    <img src="./assets/img/Line.png" alt="line">
+    <h2 style="margin-top: 16px;">Erstellt von</h2>
+    <span class="admin">{{ channelAdmin }}</span>
+  </div>
+
+  <div *ngIf="editDescription" class="channel-name">
+    <div>
+      <h2>Beschreibung</h2>
+      <span (click)="saveChannelDescription()" class="edit">Speichern</span>
+    </div>
+    <div>
+      <input class="description-input" [(ngModel)]="newDescription" type="text"
+        placeholder="Dein Text hier">
+    </div>
+    <img src="./assets/img/Line.png" alt="line">
+    <h2 style="margin-top: 16px;">Erstellt von</h2>
+    <span class="admin">{{ channelAdmin }}</span>
+  </div>
+
+  <footer>
+    <button>Channel verlassen</button>
+  </footer>
 </div>

@@ -6,7 +6,7 @@
       <!-- <mat-form-field class="name-input" appearance="outline" class="full-width">
         <input matInput placeholder="Name eingeben">
       </mat-form-field> -->
-      <button mat-button (click)="selectedMembers()" [matMenuTriggerFor]="menu">Namen hinzufügen</button>
+      <button mat-button [matMenuTriggerFor]="menu">Namen hinzufügen</button>
       <mat-menu  #menu="matMenu">
         <div *ngFor="let user of usersCollection$ | async" (click)="addMember(user)">
           <button mat-menu-item><span>{{ user.name }}</span></button>
