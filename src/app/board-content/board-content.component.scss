@@ -250,20 +250,12 @@
 .line-left, .line-right{
   height: 1px;
   width: 48%;
-  background: black;
+  background: rgb(173, 176, 217);
   margin-top: 16px;
 }
 
-.line-left{
-margin-right: 16px;
-}
-
-.line-right{
-  margin-left: 16px;
-  }
-
 .day-frame{
-  border: 1px solid black;
+  border: 1px solid rgb(173, 176, 217);
   border-radius: 25px;
   padding: 8px 16px;
 }
