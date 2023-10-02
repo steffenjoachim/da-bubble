@@ -1,7 +1,7 @@
 <div class="outer-container">
   <div class="dialog-channel-info-frame">
     <h1>{{ selectedChannel }}</h1>
-    <img src="./assets/img/45. Close.png" alt>
+    <img (click)="closeDialogChannesInfo()" src="./assets/img/45. Close.png" alt>
   </div>
   <div *ngIf="showName" class="channel-name">
     <div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable, map, Subject } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-channel-info',
@@ -27,9 +28,9 @@ export class DialogChannelInfoComponent {
   channelAdmin: string;
   channelDescription: string;
 
-  constructor(private firestore: Firestore) {
-    this.getChannel()
-  }
+  constructor(private firestore: Firestore, private dialogRef: MatDialogRef<DialogChannelInfoComponent>) {
+     this.getChannel();
+    }
 
   getChannel() {
     this.channelCollection = collectionData(this.channelCollection, { idField: 'id' });
@@ -96,4 +97,7 @@ export class DialogChannelInfoComponent {
     }
   }
 
+  closeDialogChannesInfo(){
+    this.dialogRef.close();
+}
 }

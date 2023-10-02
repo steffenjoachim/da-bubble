@@ -30,6 +30,7 @@ import { ChannelChatComponent } from './channel-chat/channel-chat.component';
 import { DialogAddMembersComponent } from './dialog-add-members/dialog-add-members.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { DialogChannelInfoComponent } from './dialog-channel-info/dialog-channel-info.component';
+import { DialogShowEmojisComponent } from './dialog-show-emojis/dialog-show-emojis.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { DialogChannelInfoComponent } from './dialog-channel-info/dialog-channel
     ChannelChatComponent,
     DialogAddMembersComponent,
     DialogChannelInfoComponent,
+    DialogShowEmojisComponent,
   ],
   imports: [
     MatMenuModule,

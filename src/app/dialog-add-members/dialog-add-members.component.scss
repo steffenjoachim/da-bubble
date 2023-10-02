@@ -12,3 +12,28 @@ input{
     font-size: 12px;
     font-weight: 600;
 }
+
+.dialog-head-frame{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+        object-fit: contain;
+        cursor: pointer;
+        padding-right: 16px;
+    }
+}
+
+h2{
+    padding-left: 24px;
+}
+
+.add-member{
+    border: none;
+    background: rgb(104, 104, 104);
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 25px;
+}

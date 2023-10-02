@@ -21,9 +21,13 @@ export class DialogAddMembersComponent implements OnInit {
   users$: Observable<any>[];
   filteredChannel: any[];
   isAlreadyMember: boolean = false;
+  selectedChannel = localStorage.getItem('channel');
 
-  constructor(private dialog: MatDialog,
-    private firebase: Firestore) {
+  constructor(
+    private dialog: MatDialog,
+    private firebase: Firestore,
+    private firestore: Firestore, private dialogRef: MatDialogRef<DialogAddMembersComponent>
+    ) {
     this.getFilteredChannel()
   }
 
@@ -72,6 +76,10 @@ export class DialogAddMembersComponent implements OnInit {
       })
     ).subscribe(() => {
     });
+  }
+
+  closeDialogAddMembers(){
+    this.dialogRef.close();
   }
 }
 

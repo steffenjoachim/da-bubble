@@ -9,6 +9,7 @@ import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BoardThreadComponent } from '../board-thread/board-thread.component';
 import { DialogChannelInfoComponent } from '../dialog-channel-info/dialog-channel-info.component';
+import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
 
 @Component({
   selector: 'app-board-content',
@@ -75,6 +76,13 @@ export class BoardContentComponent implements OnInit {
   openDialogAddMembers() {
     const dialogConfig = new MatDialogConfig();
     const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  openDialogShowEmojis() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });
   }

@@ -6,8 +6,9 @@ import { ChatService } from '../services/chats/chat.service';
 import { BehaviorSubject, Observable, Subject, of, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { user } from '@angular/fire/auth';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { query } from '@angular/animations';
+import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
 
 @Component({
   selector: 'app-board-thread',
@@ -44,7 +45,10 @@ export class BoardThreadComponent implements OnInit {
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
-    public channelService: ChannelService) { }
+    public channelService: ChannelService,
+    private dialog: MatDialog)
+    { }
+    
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -89,5 +93,13 @@ export class BoardThreadComponent implements OnInit {
     const loggedUser = JSON.parse(userDataString);
     console.log(this.answers$)
     this.channelService.postAnswer(this.question, loggedUser, this.message)
+  }
+
+  openDialogShowEmojis() {
+    console.log('clicked');
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }
