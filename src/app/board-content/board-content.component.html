@@ -21,8 +21,8 @@
 <div class="content-frame" id="content-frame">
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
-    <div (mouseenter)="openDialogChannelReaction()" (mouseleave)="closeDialogChannelReaction()">
-      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
+    <div>
+      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first" (mouseenter)="openDialogChannelReaction()" (mouseleave)="closeDialogChannelReaction()">
         <!-- Überprüfe, ob das Datum unterschiedlich ist, außer für die erste Nachricht -->
         <div *ngIf="isFirst || isDifferentDate(chat, chatsChannel$[i - 1])" class="day-of-message">
           <div class="line-left"></div>
