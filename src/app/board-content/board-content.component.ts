@@ -6,10 +6,11 @@ import { Observable, map, BehaviorSubject } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { BoardThreadComponent } from '../board-thread/board-thread.component';
 import { DialogChannelInfoComponent } from '../dialog-channel-info/dialog-channel-info.component';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
+import { DialogChannelReactionsComponent } from '../dialog-channel-reactions/dialog-channel-reactions.component';
 
 @Component({
   selector: 'app-board-content',
@@ -48,6 +49,8 @@ export class BoardContentComponent implements OnInit {
   answersAmount: number;
   keysToDelete = [];
   length: number;
+  dialogRef: MatDialogRef<any>;
+
 
   constructor(
     public firestore: Firestore,
@@ -85,6 +88,30 @@ export class BoardContentComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  isDifferentDate(currentChat: any, previousChat: any): boolean {
+    if (!previousChat) {
+      return true; 
+    }
+
+    const currentDate = new Date(currentChat.timeStamp * 1000);
+    const previousDate = new Date(previousChat.timeStamp * 1000);
+    return (
+      currentDate.getFullYear() !== previousDate.getFullYear() ||
+      currentDate.getMonth() !== previousDate.getMonth() ||
+      currentDate.getDate() !== previousDate.getDate()
+    );
+  }
+
+  isToday(timeStamp: number): boolean {
+    const currentDate = new Date();
+    const chatDate = new Date(timeStamp * 1000);
+    return (
+      currentDate.getFullYear() === chatDate.getFullYear() &&
+      currentDate.getMonth() === chatDate.getMonth() &&
+      currentDate.getDate() === chatDate.getDate()
+    );
   }
 
   setSelectedRecipient() {
@@ -194,11 +221,26 @@ export class BoardContentComponent implements OnInit {
   openDialogchannelInfo(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-
     }
     const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });
   }
 
+  openDialogChannelReaction(){
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    // }
+    // const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
+    // dialogRef.afterClosed().subscribe(result => {
+    // });
+
+  }
+
+  closeDialogChannelReaction() {
+      // this.dialogRef.close();
+      console.log('left');
+  }
+  
 }
+

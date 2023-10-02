@@ -26,7 +26,8 @@ export class DialogAddMembersComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private firebase: Firestore,
-    private firestore: Firestore, private dialogRef: MatDialogRef<DialogAddMembersComponent>
+    private firestore: Firestore, 
+    private dialogRef: MatDialogRef<DialogAddMembersComponent>
     ) {
     this.getFilteredChannel()
   }
