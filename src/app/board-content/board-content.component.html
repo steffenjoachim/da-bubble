@@ -22,22 +22,34 @@
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
     <div>
-      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first" >
+      <div
+        *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
         <!-- Überprüfe, ob das Datum unterschiedlich ist, außer für die erste Nachricht -->
-        <div *ngIf="isFirst || isDifferentDate(chat, chatsChannel$[i - 1])" class="day-of-message">
-          <div class="line-left"></div>
-          <span class="day-frame">{{ isToday(chat.timeStamp) ? 'Heute' : (chat.timeStamp * 1000 | date: 'dd.MM.yyyy') }}</span>
-          <div class="line-right"></div>
-        </div>
-        <div [class.sent-container]="chat.sender === loggedUser.name" [class.recieved-container]="chat.sender !== loggedUser.name">
-          <div [class.sent-name-avatar]="chat.sender === loggedUser.name" [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+        <!-- <div *ngIf="isFirst || isDifferentDate(chat, chatsChannel$[i - 1])" class="day-of-message"> -->
+          <ng-container *ngIf="isFirst || isDifferentDate(chat)">
+            <div class="day-of-message">
+              <div class="line-left"></div>
+              <span class="day-frame">{{ formatDate(chat.timeStamp) }}</span>
+              <div class="line-right"></div>
+            </div>
+          </ng-container>
+        <div [class.sent-container]="chat.sender === loggedUser.name"
+          [class.recieved-container]="chat.sender !== loggedUser.name">
+          <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
+            [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
             <div><span>{{ chat.sender }}</span>
-              <div [class.sent-message]="chat.sender === loggedUser.name" [class.recieved-message]="chat.sender !== loggedUser.name">
-                <span class="date">{{ chat.timeStamp * 1000 | date: 'dd.MM.yyyy HH:mm' }}</span>
+              <div [class.sent-message]="chat.sender === loggedUser.name"
+                [class.recieved-message]="chat.sender !== loggedUser.name">
+                <span class="date">{{ chat.timeStamp * 1000 | date:
+                  'dd.MM.yyyy HH:mm' }}</span>
                 <span>{{ chat.message }}</span>
-                <span (click)="openThread(chat, i)" class="answer">Gib {{ chat.sender }}<span class="element-sender"> </span> eine Antwort</span>
+                <span (click)="openThread(chat, i)" class="answer">Gib {{
+                  chat.sender }}<span class="element-sender"> </span> eine
+                  Antwort</span>
                 <div *ngIf="chat.answers.length > 0">
-                  <span class="number-answers c-blue" (click)="openThread(chat, i)">{{ chat.answers.length }} Antwort(en)</span>
+                  <span class="number-answers c-blue"
+                    (click)="openThread(chat, i)">{{ chat.answers.length }}
+                    Antwort(en)</span>
                 </div>
               </div>
             </div>
@@ -73,7 +85,8 @@
 <div class="message-container">
   <div class="message-frame">
     <div class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9"></textarea>
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
+        cols="37" rows="9"></textarea>
     </div>
     <div class="icon-container">
       <div class="icon-left">
@@ -88,9 +101,9 @@
         </div>
       </div>
       <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+        <img (click)="postChat()" class="submit-arrow"
+          src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>
 </div>
-

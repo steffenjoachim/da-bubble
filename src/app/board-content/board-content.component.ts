@@ -50,8 +50,12 @@ export class BoardContentComponent implements OnInit {
   keysToDelete = [];
   length: number;
   dialogRef: MatDialogRef<any>;
-  groupedChats: any[] = []; 
+  groupedChats: any[] = [];
   i: number = 0;
+  lastDisplayedDate: Date | null = null;
+
+
+
 
   constructor(
     public firestore: Firestore,
@@ -95,19 +99,42 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  isDifferentDate(currentChat: any, previousChat: any): boolean {
-    if (!previousChat) {
-      return true; 
+  isDifferentDate(chat): boolean {
+    const chatDate = new Date(chat.timeStamp * 1000);
+    if (!this.lastDisplayedDate) {
+      this.lastDisplayedDate = chatDate;
+      return true;
     }
-
-    const currentDate = new Date(currentChat.timeStamp * 1000);
-    const previousDate = new Date(previousChat.timeStamp * 1000);
-    return (
-      currentDate.getFullYear() !== previousDate.getFullYear() ||
-      currentDate.getMonth() !== previousDate.getMonth() ||
-      currentDate.getDate() !== previousDate.getDate()
-    );
+    const differentDate =
+      chatDate.getFullYear() !== this.lastDisplayedDate.getFullYear() ||
+      chatDate.getMonth() !== this.lastDisplayedDate.getMonth() ||
+      chatDate.getDate() !== this.lastDisplayedDate.getDate();
+    if (differentDate) {
+      this.lastDisplayedDate = chatDate;
+    }
+    return differentDate;
   }
+
+  formatDate(timeStamp: number): string {
+    const chatDate = new Date(timeStamp * 1000);
+    const currentDate = new Date();
+    const todayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    const yesterdayDate = new Date(currentDate);
+    yesterdayDate.setDate(currentDate.getDate() - 1);
+
+    if (this.lastDisplayedDate === null || !chatDate || chatDate < yesterdayDate) {
+      this.lastDisplayedDate = chatDate;
+      return chatDate.toLocaleDateString();
+    } else if (chatDate >= yesterdayDate && chatDate < todayDate) {
+      this.lastDisplayedDate = yesterdayDate;
+      return 'Gestern';
+    } else if (chatDate >= todayDate) {
+      this.lastDisplayedDate = todayDate;
+      return 'Heute';
+    }
+    return '';
+  }
+
 
   isToday(timeStamp: number): boolean {
     const currentDate = new Date();
@@ -277,7 +304,7 @@ export class BoardContentComponent implements OnInit {
       date1.getMonth() === date2.getMonth() &&
       date1.getDate() === date2.getDate()
     );
-  }  
-  
+  }
+
 }
 
