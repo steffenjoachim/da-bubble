@@ -234,8 +234,9 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
-  openThread(chat: any, index) {
-    this.contentClicked.emit(chat.chats[index])
+  openThread(chat: any) {
+    console.log(chat);
+    this.contentClicked.emit(chat)
     document.getElementById('thread')?.classList.remove('d-none');
     this.selectRelevantAnswers(chat);
   }

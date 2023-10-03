@@ -11,14 +11,14 @@
     </div>
     <div class="thread-content">
       <div class="thread-answer-frame">
-        <img class="message-img" src="{{question.avatar}}" alt>
+        <img class="message-img" src="{{chatAvatar}}" alt>
         <div>
           <div class="name-hour">
             <span class="sender-message">{{question.sender}}</span>
             <span>{{question.timeStamp *1000| date:
               'HH:mm'}} Uhr</span>
           </div>
-          <span class="answer-message">{{question.message}}</span>
+          <span class="answer-message">{{ chatQuestion }}</span>
         </div>
       </div>
       <hr>

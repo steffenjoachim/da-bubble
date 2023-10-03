@@ -9,6 +9,8 @@ import { user } from '@angular/fire/auth';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { query } from '@angular/animations';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-board-thread',
@@ -40,15 +42,18 @@ export class BoardThreadComponent implements OnInit {
   channel: string;
   question: any
   threadOpened: boolean = false;
+  chatQuestion: string;
+  chatAvatar: string;
+  chatSender: string;
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private channelChat: Firestore,
     public channelService: ChannelService,
-    private dialog: MatDialog)
-    { }
-
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef 
+  ) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -59,17 +64,24 @@ export class BoardThreadComponent implements OnInit {
     this.firebase.setLogoVisible(false);
   }
 
-  getAnswers(channel, index) {
-    console.log(channel)
+  getAnswers(index) {
+    console.log(index)
+    this.chatQuestion = index.message;
+    this.chatAvatar = index.avatar;
+    this.chatSender = index.sender;
+    console.log(this.chatQuestion, this.chatAvatar, this.chatSender);
     this.threadOpened = true;
-    this.question = channel
-    this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
-    this.answers$ = this.answers$.pipe(
-      map((chats) => chats.filter(chatItem => chatItem.id === channel.id))
-    );
-    this.answers$.subscribe(filteredData => {
-    });
+    this.cdr.detectChanges(); 
   }
+  
+    // // this.question = channel
+    // this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    // this.answers$ = this.answers$.pipe(
+    //   // map((chats) => chats.filter(chatItem => chatItem.id === channel.id))
+    // );
+    // this.answers$.subscribe(filteredData => {
+    // });
+  // }
 
 
   closeThread() {
