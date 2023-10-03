@@ -5,12 +5,9 @@
   </div>
   <h2 class="c-blue">{{ selectedChannel }}</h2>
   <div mat-dialog-content>
-    <span class="is-already-member" *ngIf="isAlreadyMember">Ist schon Mitglied</span>
+    <span class="is-already-member" *ngIf="isAlreadyMember">{{ userName }} ist schon Mitglied</span>
     <div>
-      <!-- <mat-form-field class="name-input" appearance="outline" class="full-width">
-        <input matInput placeholder="Name eingeben">
-      </mat-form-field> -->
-      <button class="add-member">Hinzufügen</button>
+      <button class="add-member" (click)="selectedMembers()" class="add-member" [matMenuTriggerFor]="menu">Hinzufügen</button>
       <mat-menu #menu="matMenu">
         <div *ngFor="let user of usersCollection$ | async" (click)="addMember(user)">
           <button mat-menu-item><span>{{ user.name }}</span></button>

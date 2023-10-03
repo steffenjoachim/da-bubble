@@ -50,7 +50,8 @@ export class BoardContentComponent implements OnInit {
   keysToDelete = [];
   length: number;
   dialogRef: MatDialogRef<any>;
-
+  groupedChats: any[] = []; 
+  i: number = 0;
 
   constructor(
     public firestore: Firestore,
@@ -64,6 +65,10 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
+    this.chatsChannel$.subscribe(chats => {
+      // Gruppiere die Nachrichten nach Datum
+      this.groupedChats = this.groupChatsByDate(chats);
+    });
   }
 
   getMembers() {
@@ -199,7 +204,7 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
 
-  openThread(chat, i) {
+  openThread(chat: any, index: number) {
     this.contentClicked.emit(chat)
     document.getElementById('thread')?.classList.remove('d-none');
     this.selectRelevantAnswers(chat);
@@ -241,6 +246,38 @@ export class BoardContentComponent implements OnInit {
       // this.dialogRef.close();
       console.log('left');
   }
+
+  groupChatsByDate(chats: any[]): any[] {
+    const grouped = [];
+    let currentDate = null;
+
+    chats.forEach(chat => {
+      const chatDate = new Date(chat.timeStamp * 1000);
+
+      if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
+        // Wenn das Datum unterschiedlich ist oder es das erste Datum ist, füge ein neues Gruppenelement hinzu
+        grouped.push({
+          date: chatDate,
+          messages: [chat]
+        });
+        currentDate = chatDate;
+      } else {
+        // Füge die Nachricht dem aktuellen Gruppenelement hinzu
+        grouped[grouped.length - 1].messages.push(chat);
+      }
+    });
+
+    return grouped;
+  }
+
+  // Diese Funktion überprüft, ob zwei Datumswerte gleich sind (ohne Uhrzeit)
+  areDatesEqual(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }  
   
 }
 

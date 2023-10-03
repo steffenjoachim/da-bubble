@@ -22,6 +22,7 @@ export class DialogAddMembersComponent implements OnInit {
   filteredChannel: any[];
   isAlreadyMember: boolean = false;
   selectedChannel = localStorage.getItem('channel');
+  userName: string;
 
   constructor(
     private dialog: MatDialog,
@@ -58,7 +59,8 @@ export class DialogAddMembersComponent implements OnInit {
           console.log('Benutzer wurde zum Kanal hinzugefügt.');
         } else {
           this.isAlreadyMember = true;
-          console.log('Der Benutzer ist bereits ein Mitglied des Kanals.');
+          this.userName = user.name;
+          console.log('Der Benutzer ist bereits ein Mitglied des Kanals.', user.name);
         }
       } else {
         console.error('Der Kanal existiert nicht in Firebase:', documentReference);
@@ -81,6 +83,10 @@ export class DialogAddMembersComponent implements OnInit {
 
   closeDialogAddMembers(){
     this.dialogRef.close();
+  }
+
+  selectedMembers(){
+
   }
 }
 
