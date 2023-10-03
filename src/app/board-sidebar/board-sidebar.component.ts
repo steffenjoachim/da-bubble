@@ -71,7 +71,7 @@ export class BoardSidebarComponent implements OnInit {
 
   public onSidebarLinkClick(selectedData): void {
     this.showChannel(selectedData);
-    this.sidebarLinkClicked.emit();
+    this.sidebarLinkClicked.emit(selectedData);
   }
 
   public OnAnotherEvent(selectedData): void {

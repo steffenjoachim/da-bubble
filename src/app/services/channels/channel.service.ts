@@ -3,6 +3,8 @@ import { Firestore, Timestamp, collectionData, doc, getDoc, updateDoc } from '@a
 import { MatDialog } from '@angular/material/dialog';
 import { addDoc, collection } from '@firebase/firestore';
 import { Observable, map } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class ChannelService {
   constructor(private channelChat: Firestore) {
   };
 
+  uniqueId = uuidv4();
   chatCollection: any = collection(this.channelChat, 'channelChats');
+  channelsCollection: any = collection(this.channelChat, 'channels');
   chats$: Observable<any>
   private chatData$: Observable<any>;
   relevantChats: any[];
@@ -31,6 +35,7 @@ export class ChannelService {
     channel: '',
     sender: '',
     avatar: '',
+    id: '',
     answers: []
   };
 
@@ -38,7 +43,8 @@ export class ChannelService {
     return this.chatData$;
   }
 
-  postChat(message: any, selectedChannel: string) {
+  postChat(message: any, selectedChannel) {
+    let id = this.generateUniqueId(20); // Hier wird die eindeutige ID generiert
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate)
     this.channelMessage.timeStamp = timeStamp.seconds;
@@ -46,9 +52,30 @@ export class ChannelService {
     this.channelMessage.avatar = loggedUser.avatar
     this.channelMessage.sender = loggedUser.name;
     this.channelMessage.message = message;
-    this.channelMessage.channel = selectedChannel;
-    addDoc(this.chatCollection, this.channelMessage);
+    this.channelMessage.channel = selectedChannel.name;
+    this.channelMessage.id = id;
+    const firebaseFieldName = 'chats'
+    const postChat = this.channelMessage;
+
+    console.log(selectedChannel); // Anzeigen der ID in der Konsole
+    this.updateDocOnFirebase(postChat, firebaseFieldName, selectedChannel);
   }
+
+
+  // postChat(message: any, selectedChannel) {
+  //   const chatDate = new Date();
+  //   const timeStamp = Timestamp.fromDate(chatDate)
+  //   this.channelMessage.timeStamp = timeStamp.seconds;
+  //   let loggedUser = JSON.parse(localStorage.getItem('userData'));
+  //   this.channelMessage.avatar = loggedUser.avatar
+  //   this.channelMessage.sender = loggedUser.name;
+  //   this.channelMessage.message = message;
+  //   this.channelMessage.channel = selectedChannel.name;
+  //   const firebaseFieldName = 'chats'
+  //   const postChat = this.channelMessage
+  //   this.updateDocOnFirebase(postChat, firebaseFieldName);
+  //   // addDoc(this.chatCollection, this.channelMessage);
+  // }
 
   showChannelChat(channel) {
     this.showNameInBoardHead(channel);
@@ -82,24 +109,74 @@ export class ChannelService {
       timeStamp: timeStamp.seconds,
       avatar: sender.avatar
     };
-    this.updateDocOnFirebase(chat, newAnswer)
+     this.updateDocOnFirebase(chat, newAnswer, chat)
   }
 
-  updateDocOnFirebase(chat, newAnswer) {
-    const documentReference = doc(this.channelChat, 'channelChats', chat.id);
-    return getDoc(documentReference)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const currentData = docSnapshot.data();
-          const updatedAnswers = [...currentData['answers'], newAnswer];
-          return updateDoc(documentReference, { answers: updatedAnswers });
-        } else {
-          return null;
-        }
-      })
-      .catch((error) => {
-        console.error('Fehler beim Aktualisieren des Dokuments:', error);
-        throw error;
-      });
+  generateUniqueId(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let uniqueId = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      uniqueId += characters.charAt(randomIndex);
+    }
+
+    return uniqueId;
   }
+
+
+
+
+
+  async updateDocOnFirebase(newName, firebaseFieldName, selectedChannel) {
+    console.log(newName);
+    console.log(firebaseFieldName);
+    const documentReference = doc(this.channelChat, 'channels', selectedChannel.id);
+    const docSnapshot = await getDoc(documentReference);
+
+    if (docSnapshot.exists()) {
+      const currentData = docSnapshot.data();
+
+      if (currentData && Array.isArray(currentData['chats'])) {
+        const currentChats = currentData['chats'];
+
+        try {
+          const updatedChats = [...currentChats, newName];
+          const updateData = {
+            [firebaseFieldName]: updatedChats,
+          };
+
+          await updateDoc(documentReference, updateData);
+          console.log('Daten erfolgreich in Firebase aktualisiert:', updatedChats);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren der Daten in Firebase:', error);
+        }
+      } else {
+        console.error('Das Feld "chats" ist in den Daten nicht vorhanden oder kein Array.');
+      }
+    } else {
+      console.error('Das Dokument existiert in Firebase nicht.');
+    }
+  }
+
+
+
+
+  // updateDocOnFirebase(chat, newAnswer) {
+  //   const documentReference = doc(this.channelChat, 'channelChats', chat.id);
+  //   return getDoc(documentReference)
+  //     .then((docSnapshot) => {
+  //       if (docSnapshot.exists()) {
+  //         const currentData = docSnapshot.data();
+  //         const updatedAnswers = [...currentData['answers'], newAnswer];
+  //         return updateDoc(documentReference, { answers: updatedAnswers });
+  //       } else {
+  //         return null;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Fehler beim Aktualisieren des Dokuments:', error);
+  //       throw error;
+  //     });
+  // }
 }

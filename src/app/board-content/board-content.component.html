@@ -22,43 +22,40 @@
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
     <div>
-      <div
-        *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
-        <!-- Überprüfe, ob das Datum unterschiedlich ist, außer für die erste Nachricht -->
-        <!-- <div *ngIf="isFirst || isDifferentDate(chat, chatsChannel$[i - 1])" class="day-of-message"> -->
-          <ng-container *ngIf="isFirst || isDifferentDate(chat)">
+      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
+        <ng-container *ngFor="let channelChats of chat.chats; let prevChat = index">
+          <!-- Überprüfe, ob das Datum unterschiedlich ist, außer für die erste Nachricht -->
+          <ng-container *ngIf="false || isDifferentDate(channelChats)">
             <div class="day-of-message">
               <div class="line-left"></div>
-              <span class="day-frame">{{ formatDate(chat.timeStamp) }}</span>
+              <span class="day-frame">{{ formatDate(channelChats.timeStamp) }}</span>
               <div class="line-right"></div>
             </div>
           </ng-container>
-        <div [class.sent-container]="chat.sender === loggedUser.name"
-          [class.recieved-container]="chat.sender !== loggedUser.name">
-          <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
-            [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
-            <div><span>{{ chat.sender }}</span>
-              <div [class.sent-message]="chat.sender === loggedUser.name"
-                [class.recieved-message]="chat.sender !== loggedUser.name">
-                <span class="date">{{ chat.timeStamp * 1000 | date:
-                  'dd.MM.yyyy HH:mm' }}</span>
-                <span>{{ chat.message }}</span>
-                <span (click)="openThread(chat, i)" class="answer">Gib {{
-                  chat.sender }}<span class="element-sender"> </span> eine
-                  Antwort</span>
-                <div *ngIf="chat.answers.length > 0">
-                  <span class="number-answers c-blue"
-                    (click)="openThread(chat, i)">{{ chat.answers.length }}
-                    Antwort(en)</span>
+          <div [class.sent-container]="channelChats.sender === loggedUser.name"
+            [class.recieved-container]="channelChats.sender !== loggedUser.name">
+            <div [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
+              [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
+              <div>
+                <div [class.sent-message]="channelChats.sender === loggedUser.name"
+                  [class.recieved-message]="channelChats.sender !== loggedUser.name">
+                  <span class="date">{{ channelChats.timeStamp * 1000 | date: 'HH:mm' }}</span>
+                  <span>{{ channelChats.message }}</span>
+                  <span>{{ channelChats.chats }}</span>
+                  <span (click)="openThread(chat, i)" class="answer">Gib {{ chat.sender }}<span class="element-sender"> </span> eine Antwort</span>
+                  <!-- <div *ngIf="chat.answers.length > 0">
+                  <span class="number-answers c-blue" (click)="openThread(chat, i)">{{ chat.answers.length }} Antwort(en)</span>
+                  </div> -->
                 </div>
               </div>
+              <img class="avatar" [src]="channelChats.avatar">
             </div>
-            <img class="avatar" [src]="chat.avatar">
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
   </ng-container>
+
   <!-- Chats -->
   <ng-container *ngIf="showChat">
     <div *ngFor="let chat of chats$ | async; let i = index">

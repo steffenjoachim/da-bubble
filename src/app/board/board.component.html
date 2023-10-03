@@ -2,7 +2,7 @@
 <div id="main-container" class="main-container">
   <div id="side-bar" class="side-bar">
     <app-board-sidebar
-      (sidebarLinkClicked)="boardContent.showFunction()"
+      (sidebarLinkClicked)="boardContent.showFunction($event)"
       (anotherEvent)="boardContent.startChat()">
     </app-board-sidebar>
   </div>

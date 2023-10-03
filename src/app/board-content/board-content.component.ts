@@ -30,7 +30,7 @@ export class BoardContentComponent implements OnInit {
     name: 'Gast'
   }
 
-  channelChatCollection: any = collection(this.firestore, 'channelChats');
+  // channelChatCollection: any = collection(this.firestore, 'channelChats');
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.firestore, 'channels')
@@ -53,6 +53,8 @@ export class BoardContentComponent implements OnInit {
   groupedChats: any[] = [];
   i: number = 0;
   lastDisplayedDate: Date | null = null;
+  selectedChannel: any;
+  prevChat: any;
 
 
 
@@ -69,10 +71,10 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
-    this.chatsChannel$.subscribe(chats => {
-      // Gruppiere die Nachrichten nach Datum
-      this.groupedChats = this.groupChatsByDate(chats);
-    });
+    // this.chatsChannel$.subscribe(chats => {
+    //   // Gruppiere die Nachrichten nach Datum
+    //   this.groupedChats = this.groupChatsByDate(chats.chats);
+    // });
   }
 
   getMembers() {
@@ -136,15 +138,16 @@ export class BoardContentComponent implements OnInit {
   }
 
 
-  isToday(timeStamp: number): boolean {
-    const currentDate = new Date();
-    const chatDate = new Date(timeStamp * 1000);
-    return (
-      currentDate.getFullYear() === chatDate.getFullYear() &&
-      currentDate.getMonth() === chatDate.getMonth() &&
-      currentDate.getDate() === chatDate.getDate()
-    );
-  }
+
+  // isToday(timeStamp: number): boolean {
+  //   const currentDate = new Date();
+  //   const chatDate = new Date(timeStamp * 1000);
+  //   return (
+  //     currentDate.getFullYear() === chatDate.getFullYear() &&
+  //     currentDate.getMonth() === chatDate.getMonth() &&
+  //     currentDate.getDate() === chatDate.getDate()
+  //   );
+  // }
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
@@ -156,7 +159,7 @@ export class BoardContentComponent implements OnInit {
     const channel = localStorage.getItem('channel')
     const recipient = localStorage.getItem('selected-recipient');
     if (channel == recipient) {
-      this.channelService.postChat(this.message, channel)
+      this.channelService.postChat(this.message, this.selectedChannel)
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);
     }
@@ -187,7 +190,8 @@ export class BoardContentComponent implements OnInit {
     this.getChats()
   }
 
-  showFunction() {
+  showFunction(channel) {
+    this.selectedChannel = channel
     this.getChannelChats()
   }
 
@@ -211,14 +215,13 @@ export class BoardContentComponent implements OnInit {
     this.showChat = false
     this.showChannelChat = true
     this.channel = localStorage.getItem('channel');
-    this.chatsChannel$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
     this.chatsChannel$ = this.chatsChannel$.pipe(
-      map(chats => chats.filter(chat => chat.channel == this.channel)),
-      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+      map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
     );
     this.chatsChannel$.subscribe((chats) => {
       chats.forEach(element => {
-        this.answersAmount = element.answers.length;
+        // this.answersAmount = element.answers.length;
       });
       setTimeout(() => {
         this.scrollToBottom()
@@ -250,7 +253,7 @@ export class BoardContentComponent implements OnInit {
     }
   }
 
-  openDialogchannelInfo(){
+  openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
     }
@@ -259,7 +262,7 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  openDialogChannelReaction(){
+  openDialogChannelReaction() {
     // const dialogConfig = new MatDialogConfig();
     // dialogConfig.data = {
     // }
@@ -270,8 +273,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   closeDialogChannelReaction() {
-      // this.dialogRef.close();
-      console.log('left');
+    // this.dialogRef.close();
+    console.log('left');
   }
 
   groupChatsByDate(chats: any[]): any[] {
