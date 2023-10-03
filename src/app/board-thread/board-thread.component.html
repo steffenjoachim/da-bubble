@@ -22,7 +22,7 @@
         </div>
       </div>
       <hr>
-      <div *ngFor="let answer of answers$ |async">
+      <div *ngFor="let answer of answers$ |async; let i = index">
         <ng-container>
           <div *ngFor="let subAnswer of answer.answers">
             <div [class.sent-container]="subAnswer.sender === loggedUser.name"

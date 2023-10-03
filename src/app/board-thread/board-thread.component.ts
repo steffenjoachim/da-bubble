@@ -27,7 +27,7 @@ export class BoardThreadComponent implements OnInit {
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
-  channelChatCollection: any = collection(this.channelChat, 'channelChats')
+  channelChatCollection: any = collection(this.channelChat, 'channels')
   users: any[] = [];
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
@@ -48,7 +48,7 @@ export class BoardThreadComponent implements OnInit {
     public channelService: ChannelService,
     private dialog: MatDialog)
     { }
-    
+
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -59,12 +59,13 @@ export class BoardThreadComponent implements OnInit {
     this.firebase.setLogoVisible(false);
   }
 
-  getAnswers(chat) {
+  getAnswers(channel, index) {
+    console.log(channel)
     this.threadOpened = true;
-    this.question = chat
+    this.question = channel
     this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
     this.answers$ = this.answers$.pipe(
-      map((chats) => chats.filter(chatItem => chatItem.id === chat.id))
+      map((chats) => chats.filter(chatItem => chatItem.id === channel.id))
     );
     this.answers$.subscribe(filteredData => {
     });
