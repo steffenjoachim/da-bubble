@@ -45,6 +45,7 @@ export class BoardThreadComponent implements OnInit {
   chatQuestion: string;
   chatAvatar: string;
   chatSender: string;
+  chatTimeStamp: number;
 
   constructor(
     public firestore: Firestore,
@@ -52,7 +53,7 @@ export class BoardThreadComponent implements OnInit {
     private channelChat: Firestore,
     public channelService: ChannelService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -69,11 +70,12 @@ export class BoardThreadComponent implements OnInit {
     this.chatQuestion = index.message;
     this.chatAvatar = index.avatar;
     this.chatSender = index.sender;
+    this.chatTimeStamp = index.timeStamp;
     console.log(this.chatQuestion, this.chatAvatar, this.chatSender);
     this.threadOpened = true;
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
   }
-  
+
     // // this.question = channel
     // this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
     // this.answers$ = this.answers$.pipe(
