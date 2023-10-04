@@ -40,12 +40,13 @@ export class BoardThreadComponent implements OnInit {
   answers$: Observable<any>;
   ChatService: any;
   channel: string;
-  question: any
+  selectedChannel: any;
   threadOpened: boolean = false;
   chatQuestion: string;
   chatAvatar: string;
   chatSender: string;
   chatTimeStamp: number;
+  selectedChannelMessage: any
 
   constructor(
     public firestore: Firestore,
@@ -65,16 +66,35 @@ export class BoardThreadComponent implements OnInit {
     this.firebase.setLogoVisible(false);
   }
 
-  getAnswers(index) {
-    console.log(index)
-    this.chatQuestion = index.message;
-    this.chatAvatar = index.avatar;
-    this.chatSender = index.sender;
-    this.chatTimeStamp = index.timeStamp;
-    console.log(this.chatQuestion, this.chatAvatar, this.chatSender);
+  getMessage(data) {
+    const dataParse = JSON.parse(data);
+    this.selectedChannel = dataParse.selectedChannel;
+    this.selectedChannelMessage = dataParse.chat;
+    this.chatQuestion = dataParse.chat.message;
+    this.chatAvatar = dataParse.chat.avatar;
+    this.chatSender = dataParse.chat.sender;
+    this.chatTimeStamp = dataParse.chat.timeStamp;
     this.threadOpened = true;
+    this.getMessageAnswers()
   }
-  
+
+  getMessageAnswers() {
+    this.answerCollection$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.answerCollection$ = this.answerCollection$.pipe(
+      map((channels: any) => {
+        const selectedChannel = channels.find((channel: any) => channel.id === this.selectedChannel.id);
+        if (selectedChannel) {
+          const selectedMessage = selectedChannel.chats.find((chat: any) => chat.id === this.selectedChannelMessage.id);
+          if (selectedMessage) {
+            return selectedMessage.answers;
+          }
+        }
+        return [];
+      })
+    );
+    this.answerCollection$.subscribe((data: any) => {
+    });
+  }
 
   closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
@@ -93,11 +113,9 @@ export class BoardThreadComponent implements OnInit {
   }
 
   postAnswer() {
-    console.log(this.message);
     const userDataString = localStorage.getItem('userData');
     const loggedUser = JSON.parse(userDataString);
-    console.log(this.answers$)
-    this.channelService.postAnswer(this.question, loggedUser, this.message)
+    this.channelService.postAnswer(this.selectedChannelMessage, loggedUser, this.message, this.selectedChannel)
   }
 
   openDialogShowEmojis() {
@@ -111,8 +129,7 @@ export class BoardThreadComponent implements OnInit {
   insertEmojiInMessage() {
     const selectedEmoji = this.sharedEmojiServiceService.getSelectedEmoji();
     if (selectedEmoji) {
-      this.message += selectedEmoji; // Fügen Sie das ausgewählte Emoji dem Text hinzu
-      this.sharedEmojiServiceService.setSelectedEmoji(''); // Leeren Sie das ausgewählte Emoji im Dienst
-    }
+      this.message += selectedEmoji;
+      this.sharedEmojiServiceService.setSelectedEmoji('');   }
   }
 }

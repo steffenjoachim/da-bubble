@@ -235,8 +235,11 @@ export class BoardContentComponent implements OnInit {
   }
 
   openThread(chat: any) {
-    console.log(chat);
-    this.contentClicked.emit(chat)
+    const data = {
+      chat: chat,
+      selectedChannel: this.selectedChannel
+    }
+    this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
     this.selectRelevantAnswers(chat);
   }

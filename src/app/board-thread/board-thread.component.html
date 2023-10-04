@@ -22,25 +22,23 @@
         </div>
       </div>
       <hr>
-      <div *ngFor="let answer of answers$ |async; let i = index">
+      <div *ngFor="let answer of answerCollection$ |async">
         <ng-container>
-          <div *ngFor="let subAnswer of answer.answers">
-            <div [class.sent-container]="subAnswer.sender === loggedUser.name"
-              [class.recieved-container]="subAnswer.sender !== loggedUser.name">
-              <div
-                [class.sent-name-avatar]="subAnswer.sender === loggedUser.name"
-                [class.recieved-name-avatar]="subAnswer.sender !== loggedUser.name">
-                <div><span>{{ subAnswer.sender }}</span>
-                  <div
-                    [class.sent-message]="subAnswer.sender === loggedUser.name"
-                    [class.recieved-message]="subAnswer.sender !== loggedUser.name">
-                    <span class="date">{{ subAnswer.timeStamp*1000| date:
-                      'dd.MM.yyyy HH:mm' }}</span>
-                    <span>{{ subAnswer.message }}</span>
-                  </div>
+          <div [class.sent-container]="answer.sender === loggedUser.name"
+            [class.recieved-container]="answer.sender !== loggedUser.name">
+            <div
+              [class.sent-name-avatar]="answer.sender === loggedUser.name"
+              [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
+              <div><span>{{ answer.sender }}</span>
+                <div
+                  [class.sent-message]="answer.sender === loggedUser.name"
+                  [class.recieved-message]="answer.sender !== loggedUser.name">
+                  <span class="date">{{ answer.timeStamp*1000| date:
+                    'dd.MM.yyyy HH:mm' }}</span>
+                  <span>{{ answer.message }}</span>
                 </div>
-                <img class="avatar" src={{subAnswer.avatar}}>
               </div>
+              <img class="avatar" src={{answer.avatar}}>
             </div>
           </div>
         </ng-container>
@@ -55,7 +53,9 @@
             <div class="icon-div">
               <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
             </div>
-            <div class="emojis" (click)="openDialogShowEmojis(); insertEmojiInMessage();" class="icon-div">
+            <div class="emojis"
+              (click)="openDialogShowEmojis(); insertEmojiInMessage();"
+              class="icon-div">
               <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>
             <div class="icon-div">

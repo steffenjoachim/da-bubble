@@ -56,9 +56,7 @@ export class ChannelService {
     this.channelMessage.id = id;
     const firebaseFieldName = 'chats'
     const postChat = this.channelMessage;
-
-    console.log(selectedChannel); // Anzeigen der ID in der Konsole
-    this.updateDocOnFirebase(postChat, firebaseFieldName, selectedChannel);
+    this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
   }
 
 
@@ -99,17 +97,20 @@ export class ChannelService {
     }
   }
 
-  postAnswer(chat, sender, message) {
-    console.log(sender)
+  postAnswer(selectedChannelMessage, sender, message, selectedChannel) {
+    let id = this.generateUniqueId(20);
+    const answersArray = selectedChannelMessage.answers
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate);
+    const firebaseFieldName = 'answers'
     const newAnswer = {
       sender: sender.name,
       message: message,
       timeStamp: timeStamp.seconds,
-      avatar: sender.avatar
+      avatar: sender.avatar,
+      id: id
     };
-     this.updateDocOnFirebase(chat, newAnswer, chat)
+    this.updateDocOnFirebaseChannelAnswers(newAnswer, firebaseFieldName, selectedChannel, selectedChannelMessage)
   }
 
   generateUniqueId(length: number): string {
@@ -120,32 +121,21 @@ export class ChannelService {
       const randomIndex = Math.floor(Math.random() * characters.length);
       uniqueId += characters.charAt(randomIndex);
     }
-
     return uniqueId;
   }
 
-
-
-
-
-  async updateDocOnFirebase(newName, firebaseFieldName, selectedChannel) {
-    console.log(newName);
-    console.log(firebaseFieldName);
+  async updateDocOnFirebaseChannelChat(newPost, firebaseFieldName, selectedChannel) {
     const documentReference = doc(this.channelChat, 'channels', selectedChannel.id);
     const docSnapshot = await getDoc(documentReference);
-
     if (docSnapshot.exists()) {
       const currentData = docSnapshot.data();
-
       if (currentData && Array.isArray(currentData['chats'])) {
         const currentChats = currentData['chats'];
-
         try {
-          const updatedChats = [...currentChats, newName];
+          const updatedChats = [...currentChats, newPost];
           const updateData = {
             [firebaseFieldName]: updatedChats,
           };
-
           await updateDoc(documentReference, updateData);
           console.log('Daten erfolgreich in Firebase aktualisiert:', updatedChats);
         } catch (error) {
@@ -153,6 +143,7 @@ export class ChannelService {
         }
       } else {
         console.error('Das Feld "chats" ist in den Daten nicht vorhanden oder kein Array.');
+        console.log(currentData['chats'])
       }
     } else {
       console.error('Das Dokument existiert in Firebase nicht.');
@@ -160,23 +151,29 @@ export class ChannelService {
   }
 
 
+  async updateDocOnFirebaseChannelAnswers(postChat, firebaseFieldName, selectedChannel, selectedChannelMessage) {
+    const documentReference = doc(this.channelChat, 'channels', selectedChannel.id);
+    return getDoc(documentReference)
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const currentData = docSnapshot.data();
+          const updatedChats = currentData['chats'].map((chat) => {
+            if (chat.id === selectedChannelMessage.id) {
+              const updatedAnswers = [...chat.answers, postChat];
+              return { ...chat, answers: updatedAnswers };
+            } else {
+              return chat;
+            }
+          });
+          return updateDoc(documentReference, { chats: updatedChats });
+        } else {
+          return null;
+        }
+      })
+      .catch((error) => {
+        console.error('Fehler beim Aktualisieren des Dokuments:', error);
+        throw error;
+      });
+  }
 
-
-  // updateDocOnFirebase(chat, newAnswer) {
-  //   const documentReference = doc(this.channelChat, 'channelChats', chat.id);
-  //   return getDoc(documentReference)
-  //     .then((docSnapshot) => {
-  //       if (docSnapshot.exists()) {
-  //         const currentData = docSnapshot.data();
-  //         const updatedAnswers = [...currentData['answers'], newAnswer];
-  //         return updateDoc(documentReference, { answers: updatedAnswers });
-  //       } else {
-  //         return null;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Fehler beim Aktualisieren des Dokuments:', error);
-  //       throw error;
-  //     });
-  // }
 }
