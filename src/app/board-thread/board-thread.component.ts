@@ -45,7 +45,7 @@ export class BoardThreadComponent implements OnInit {
   chatQuestion: string;
   chatAvatar: string;
   chatSender: string;
-  chatTimestamp: number;
+  chatTimeStamp: number;
 
   constructor(
     public firestore: Firestore,
@@ -70,8 +70,8 @@ export class BoardThreadComponent implements OnInit {
     this.chatQuestion = index.message;
     this.chatAvatar = index.avatar;
     this.chatSender = index.sender;
-    this.chatTimestamp = index.timeStamp;
-    console.log(this.chatQuestion, this.chatAvatar, this.chatSender, this.chatTimestamp);
+    this.chatTimeStamp = index.timeStamp;
+    console.log(this.chatQuestion, this.chatAvatar, this.chatSender);
     this.threadOpened = true;
   }
   
