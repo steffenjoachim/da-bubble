@@ -21,17 +21,18 @@
           <span class="answer-message">{{ chatQuestion }}</span>
         </div>
       </div>
-      <hr>
+      <div class="number-of-answers">
+        <span>{{ answersLength }} Antwort(en)</span>
+        <div class="line"></div>
+      </div>
       <div *ngFor="let answer of answerCollection$ |async">
         <ng-container>
           <div [class.sent-container]="answer.sender === loggedUser.name"
             [class.recieved-container]="answer.sender !== loggedUser.name">
-            <div
-              [class.sent-name-avatar]="answer.sender === loggedUser.name"
+            <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
               [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
               <div><span>{{ answer.sender }}</span>
-                <div
-                  [class.sent-message]="answer.sender === loggedUser.name"
+                <div [class.sent-message]="answer.sender === loggedUser.name"
                   [class.recieved-message]="answer.sender !== loggedUser.name">
                   <span class="date">{{ answer.timeStamp*1000| date:
                     'dd.MM.yyyy HH:mm' }}</span>
@@ -46,16 +47,14 @@
     </div>
     <div class="message-container">
       <div class="message-frame">
-        <textarea [(ngModel)]="message" name id cols="30" rows="9"
+        <textarea [(ngModel)]="message" name="message" id="message" cols="30" rows="9"
           placeholder="Antworten"></textarea>
         <div class="icon-container">
           <div class="icon-left">
             <div class="icon-div">
               <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
             </div>
-            <div class="emojis"
-              (click)="openDialogShowEmojis(); insertEmojiInMessage();"
-              class="icon-div">
+            <div class="emojis" (click)="openDialogShowEmojis(); insertEmojiInMessage();" class="icon-div">
               <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>
             <div class="icon-div">
@@ -63,8 +62,7 @@
             </div>
           </div>
           <div class="icon-right">
-            <img (click)="postAnswer()" class="submit-arrow"
-              src="./assets/img/Send icon.png" alt="submit arrow">
+            <img (click)="postAnswer()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
           </div>
 
         </div>

@@ -46,7 +46,8 @@ export class BoardThreadComponent implements OnInit {
   chatAvatar: string;
   chatSender: string;
   chatTimeStamp: number;
-  selectedChannelMessage: any
+  selectedChannelMessage: any;
+  answersLength: number;
 
   constructor(
     public firestore: Firestore,
@@ -68,6 +69,8 @@ export class BoardThreadComponent implements OnInit {
 
   getMessage(data) {
     const dataParse = JSON.parse(data);
+    console.log(dataParse.chat.answers.length);
+    this.answersLength = dataParse.chat.answers.length;
     this.selectedChannel = dataParse.selectedChannel;
     this.selectedChannelMessage = dataParse.chat;
     this.chatQuestion = dataParse.chat.message;
@@ -115,8 +118,9 @@ export class BoardThreadComponent implements OnInit {
   postAnswer() {
     const userDataString = localStorage.getItem('userData');
     const loggedUser = JSON.parse(userDataString);
-    this.channelService.postAnswer(this.selectedChannelMessage, loggedUser, this.message, this.selectedChannel)
+    this.channelService.postAnswer(this.selectedChannelMessage, loggedUser, this.message, this.selectedChannel);
   }
+  
 
   openDialogShowEmojis() {
     console.log('clicked');
@@ -129,7 +133,9 @@ export class BoardThreadComponent implements OnInit {
   insertEmojiInMessage() {
     const selectedEmoji = this.sharedEmojiServiceService.getSelectedEmoji();
     if (selectedEmoji) {
-      this.message += selectedEmoji;
-      this.sharedEmojiServiceService.setSelectedEmoji('');   }
+      this.message += selectedEmoji; 
+      this.sharedEmojiServiceService.setSelectedEmoji(''); 
+    }
   }
+  
 }

@@ -204,3 +204,14 @@ textarea {
     color: rgb(68, 77, 242);
   }
 }
+
+.number-of-answers{
+  display: flex;
+  color: rgb(173, 176, 217);
+  .line{
+    height: 1px;
+    width: 50%;
+    background: rgb(173, 176, 217);
+    margin-top: 9px;
+  }
+}
