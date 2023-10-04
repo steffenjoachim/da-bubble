@@ -9,7 +9,7 @@ import { user } from '@angular/fire/auth';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { query } from '@angular/animations';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
-import { ChangeDetectorRef } from '@angular/core';
+import { SharedEmojiServiceService } from '../services/shared-emojis/shared-emoji.service.service';
 
 
 @Component({
@@ -45,6 +45,7 @@ export class BoardThreadComponent implements OnInit {
   chatQuestion: string;
   chatAvatar: string;
   chatSender: string;
+  chatTimestamp: number;
 
   constructor(
     public firestore: Firestore,
@@ -52,7 +53,7 @@ export class BoardThreadComponent implements OnInit {
     private channelChat: Firestore,
     public channelService: ChannelService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef 
+    private sharedEmojiServiceService: SharedEmojiServiceService
   ) { }
 
   ngOnInit(): void {
@@ -69,20 +70,11 @@ export class BoardThreadComponent implements OnInit {
     this.chatQuestion = index.message;
     this.chatAvatar = index.avatar;
     this.chatSender = index.sender;
-    console.log(this.chatQuestion, this.chatAvatar, this.chatSender);
+    this.chatTimestamp = index.timeStamp;
+    console.log(this.chatQuestion, this.chatAvatar, this.chatSender, this.chatTimestamp);
     this.threadOpened = true;
-    this.cdr.detectChanges(); 
   }
   
-    // // this.question = channel
-    // this.answers$ = collectionData(this.channelChatCollection, { idField: 'id' });
-    // this.answers$ = this.answers$.pipe(
-    //   // map((chats) => chats.filter(chatItem => chatItem.id === channel.id))
-    // );
-    // this.answers$.subscribe(filteredData => {
-    // });
-  // }
-
 
   closeThread() {
     document.getElementById('thread')?.classList.add('d-none');
@@ -114,5 +106,13 @@ export class BoardThreadComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  insertEmojiInMessage() {
+    const selectedEmoji = this.sharedEmojiServiceService.getSelectedEmoji();
+    if (selectedEmoji) {
+      this.message += selectedEmoji; // Fügen Sie das ausgewählte Emoji dem Text hinzu
+      this.sharedEmojiServiceService.setSelectedEmoji(''); // Leeren Sie das ausgewählte Emoji im Dienst
+    }
   }
 }

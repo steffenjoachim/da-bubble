@@ -15,7 +15,7 @@
         <div>
           <div class="name-hour">
             <span class="sender-message">{{chatSender}}</span>
-            <span>{{question.timeStamp *1000| date:
+            <span>{{chatTimestamp *1000| date:
               'HH:mm'}} Uhr</span>
           </div>
           <span class="answer-message">{{ chatQuestion }}</span>
@@ -55,7 +55,7 @@
             <div class="icon-div">
               <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
             </div>
-            <div class="emojis" (click)="openDialogShowEmojis()" class="icon-div">
+            <div class="emojis" (click)="openDialogShowEmojis(); insertEmojiInMessage();" class="icon-div">
               <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>
             <div class="icon-div">
