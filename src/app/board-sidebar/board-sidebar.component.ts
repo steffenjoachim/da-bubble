@@ -36,7 +36,7 @@ export class BoardSidebarComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.channels, 'channels')
   users: any[] = [];
-  allUsers: any [] = [];
+  allUsers: any[] = [];
   channel$: Observable<any>;
   chats$ !: Observable<any>;
   addChannelPopup: boolean = false;
@@ -144,8 +144,8 @@ export class BoardSidebarComponent implements OnInit {
   getUsers() {
     const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
     usersObservable.subscribe((usersArray) => {
-      this.users = usersArray
-      this.allUsers = usersArray
+      this.allUsers = usersArray;
+      this.users = usersArray.filter((user: any) => user.name !== this.loggedUser.name);
     });
   }
 

@@ -201,6 +201,7 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
     );
     this.chatsChannel$.subscribe((chats) => {
+      console.log(chats);
       chats.forEach(element => {
       });
       setTimeout(() => {
