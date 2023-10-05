@@ -130,7 +130,6 @@ width: 64px;
 .message-container {
   display: flex;
   justify-content: center;
-  position: absolute;
   right: 200px;
 }
 
@@ -148,7 +147,7 @@ width: 64px;
   .input-frame {
     display: flex;
     justify-content: center;
-   
+
   }
 }
 
@@ -231,7 +230,7 @@ textarea {
 
 .content-frame {
   padding: 32px;
-  height: 56vh;
+  height: 63vh;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: rgb(68, 77, 242) transparent;

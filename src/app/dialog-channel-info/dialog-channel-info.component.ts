@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Firestore, collection, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, deleteDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable, map, Subject } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class DialogChannelInfoComponent {
 
   selectedChannel = localStorage.getItem('channel');
+  loggedUser: any = localStorage.getItem('userData');
   channelCollection: any = collection(this.firestore, 'channels');
   selectedChannelName: string
   editName: boolean = false;
@@ -98,5 +99,31 @@ export class DialogChannelInfoComponent {
 
   closeDialogChannesInfo() {
     this.dialogRef.close();
+  }
+
+  async removeMemberFromFirebase() {
+    this.loggedUser = JSON.parse(this.loggedUser);
+    console.log(this.selectedChannelId, this.loggedUser.name);
+    const documentReference = doc(this.firestore, 'channels', this.selectedChannelId);
+    const docSnapshot = await getDoc(documentReference);
+    if (docSnapshot.exists()) {
+      const currentData = docSnapshot.data();
+      if (currentData && currentData['members']) {
+        const updatedMembers = currentData['members'].filter(member => member.name !== this.loggedUser.name);
+        const updatedData = {
+          members: updatedMembers
+        };
+        try {
+          await updateDoc(documentReference, updatedData);
+          console.log('Eintrag erfolgreich aus dem Array entfernt:', this.loggedUser.name);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren der Daten in Firebase:', error);
+        }
+      } else {
+        console.error('Das benötigte "members"-Array ist in den Daten nicht vorhanden.');
+      }
+    } else {
+      console.error('Das Dokument existiert in Firebase nicht.');
+    }
   }
 }
