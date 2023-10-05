@@ -46,7 +46,6 @@ export class BoardComponent implements OnInit {
 
   message: string;
   selectedRecipient: string;
-  // relevantChats = [];
   ChatService: any;
 
   functionInParent(channel) {
@@ -59,7 +58,6 @@ export class BoardComponent implements OnInit {
       this.channelChatComponent.meineFunktion();
     }
   }
-
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -137,5 +135,4 @@ export class BoardComponent implements OnInit {
       this.loggedUser.name = userData.name;
     }
   }
-
 }

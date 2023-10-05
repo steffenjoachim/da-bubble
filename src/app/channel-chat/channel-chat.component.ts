@@ -45,10 +45,6 @@ export class ChannelChatComponent implements OnInit {
     console.log('Funktion in ChannelChatComponent aufgerufen');
   }
 
-  // showRelevantAnswers(){
-  //   console.log(this.relevantAnswers);
-  // }  
-
   getChats() {
     this.channel = localStorage.getItem('channel')
     console.log(this.channel)

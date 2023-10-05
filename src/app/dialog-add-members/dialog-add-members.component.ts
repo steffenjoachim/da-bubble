@@ -27,7 +27,7 @@ export class DialogAddMembersComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private firebase: Firestore,
-    private firestore: Firestore, 
+    private firestore: Firestore,
     private dialogRef: MatDialogRef<DialogAddMembersComponent>
     ) {
     this.getFilteredChannel()
@@ -40,7 +40,6 @@ export class DialogAddMembersComponent implements OnInit {
   getMembers() {
     this.usersCollection$ = collectionData(this.usersCollection$, { idField: 'id' });
     this.usersCollection$.subscribe((user) => {
-
     });
   }
 

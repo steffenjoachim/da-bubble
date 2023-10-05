@@ -30,7 +30,6 @@ export class BoardContentComponent implements OnInit {
     name: 'Gast'
   }
 
-  // channelChatCollection: any = collection(this.firestore, 'channelChats');
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.firestore, 'channels')
@@ -57,8 +56,6 @@ export class BoardContentComponent implements OnInit {
   prevChat: any;
 
 
-
-
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
@@ -71,10 +68,6 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
-    // this.chatsChannel$.subscribe(chats => {
-    //   // Gruppiere die Nachrichten nach Datum
-    //   this.groupedChats = this.groupChatsByDate(chats.chats);
-    // });
   }
 
   getMembers() {
@@ -136,18 +129,6 @@ export class BoardContentComponent implements OnInit {
     }
     return '';
   }
-
-
-
-  // isToday(timeStamp: number): boolean {
-  //   const currentDate = new Date();
-  //   const chatDate = new Date(timeStamp * 1000);
-  //   return (
-  //     currentDate.getFullYear() === chatDate.getFullYear() &&
-  //     currentDate.getMonth() === chatDate.getMonth() &&
-  //     currentDate.getDate() === chatDate.getDate()
-  //   );
-  // }
 
   setSelectedRecipient() {
     document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
@@ -221,7 +202,6 @@ export class BoardContentComponent implements OnInit {
     );
     this.chatsChannel$.subscribe((chats) => {
       chats.forEach(element => {
-        // this.answersAmount = element.answers.length;
       });
       setTimeout(() => {
         this.scrollToBottom()
@@ -284,27 +264,21 @@ export class BoardContentComponent implements OnInit {
   groupChatsByDate(chats: any[]): any[] {
     const grouped = [];
     let currentDate = null;
-
     chats.forEach(chat => {
       const chatDate = new Date(chat.timeStamp * 1000);
-
       if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
-        // Wenn das Datum unterschiedlich ist oder es das erste Datum ist, füge ein neues Gruppenelement hinzu
         grouped.push({
           date: chatDate,
           messages: [chat]
         });
         currentDate = chatDate;
       } else {
-        // Füge die Nachricht dem aktuellen Gruppenelement hinzu
         grouped[grouped.length - 1].messages.push(chat);
       }
     });
-
     return grouped;
   }
 
-  // Diese Funktion überprüft, ob zwei Datumswerte gleich sind (ohne Uhrzeit)
   areDatesEqual(date1: Date, date2: Date): boolean {
     return (
       date1.getFullYear() === date2.getFullYear() &&
@@ -312,6 +286,5 @@ export class BoardContentComponent implements OnInit {
       date1.getDate() === date2.getDate()
     );
   }
-
 }
 

@@ -29,8 +29,8 @@ export class DialogChannelInfoComponent {
   channelDescription: string;
 
   constructor(private firestore: Firestore, private dialogRef: MatDialogRef<DialogChannelInfoComponent>) {
-     this.getChannel();
-    }
+    this.getChannel();
+  }
 
   getChannel() {
     this.channelCollection = collectionData(this.channelCollection, { idField: 'id' });
@@ -82,7 +82,6 @@ export class DialogChannelInfoComponent {
         const updatedData = {
           [firebaseFieldName]: newName
         };
-
         try {
           await updateDoc(documentReference, updatedData);
           console.log('Daten erfolgreich in Firebase aktualisiert:', updatedData);
@@ -97,7 +96,7 @@ export class DialogChannelInfoComponent {
     }
   }
 
-  closeDialogChannesInfo(){
+  closeDialogChannesInfo() {
     this.dialogRef.close();
-}
+  }
 }
