@@ -9,16 +9,22 @@
         <mat-icon fontIcon="close"></mat-icon>
       </div>
     </div>
-    <div class="thread-content">
-      <div class="thread-answer-frame">
-        <img class="message-img" src="{{chatAvatar}}" alt>
-        <div>
-          <div class="name-hour">
-            <span class="sender-message">{{chatSender}}</span>
-            <span>{{chatTimeStamp *1000| date:
-              'HH:mm'}} Uhr</span>
+    <div class="content-frame" id="content-frame">
+      <div class="thread-content">
+        <div class="thread-answer-frame">
+          <div>
+            <div class="avatar-and-message">
+              <img class="message-img" src="{{chatAvatar}}" alt>
+              <div class="right-of-avatar">
+                <div class="name-hour">
+                  <span class="sender-message">{{chatSender}}</span>
+                  <span>{{chatTimeStamp *1000| date:
+                    'HH:mm'}} Uhr</span>
+                </div>
+                <span class="answer-message">{{ chatQuestion }}</span>
+              </div>
+            </div>
           </div>
-          <span class="answer-message">{{ chatQuestion }}</span>
         </div>
       </div>
       <div class="number-of-answers">
@@ -26,23 +32,25 @@
         <div class="line"></div>
       </div>
       <div *ngFor="let answer of answerCollection$ |async">
-        <ng-container>
-          <div [class.sent-container]="answer.sender === loggedUser.name"
-            [class.recieved-container]="answer.sender !== loggedUser.name">
-            <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
-              [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
-              <div><span>{{ answer.sender }}</span>
-                <div [class.sent-message]="answer.sender === loggedUser.name"
-                  [class.recieved-message]="answer.sender !== loggedUser.name">
+        <div class="thread-content">
+          <ng-container>
+            <div [class.sent-container]="answer.sender === loggedUser.name"
+              [class.recieved-container]="answer.sender !== loggedUser.name">
+              <div [class.sent-name-avatar]="answer.sender === loggedUser.name"
+                [class.recieved-name-avatar]="answer.sender !== loggedUser.name">
+                <div><span class="sender-message">{{ answer.sender }}</span>
                   <span class="date">{{ answer.timeStamp*1000| date:
-                    'dd.MM.yyyy HH:mm' }}</span>
-                  <span>{{ answer.message }}</span>
+                    'HH:mm' }} Uhr</span>
+                  <div [class.sent-message]="answer.sender === loggedUser.name"
+                    [class.recieved-message]="answer.sender !== loggedUser.name">
+                    <span>{{ answer.message }}</span>
+                  </div>
                 </div>
               </div>
-              <img class="avatar" src={{answer.avatar}}>
+              <img class="message-img" src={{answer.avatar}}>
             </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
     <div class="message-container">
@@ -69,3 +77,4 @@
       </div>
     </div>
   </div>
+</div>

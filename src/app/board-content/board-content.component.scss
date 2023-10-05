@@ -195,6 +195,10 @@
   margin-bottom: 8px;
   text-align: end;
   width: fit-content;
+  .message-sender{
+    font-weight: 700;
+    margin-right: 8px;
+  }
 }
 
 .sent-name-avatar {
@@ -202,6 +206,14 @@
   justify-content: flex-end;
   img {
     object-fit: contain;
+  }
+  .message-sender{
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  .name-hour{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -234,6 +246,10 @@
   img {
     object-fit: contain;
   }
+  .message-sender{
+    font-weight: 700;
+    margin-right: 8px;
+  }
 }
 
 .number-answers {
@@ -259,3 +275,4 @@
   border-radius: 25px;
   padding: 8px 16px;
 }
+

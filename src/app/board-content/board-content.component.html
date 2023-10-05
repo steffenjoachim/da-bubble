@@ -22,10 +22,8 @@
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
     <div>
-      <div
-        *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
-        <ng-container
-          *ngFor="let channelChats of chat.chats">
+      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
+        <ng-container *ngFor="let channelChats of chat.chats">
           <ng-container *ngIf="false || isDifferentDate(channelChats)">
             <div class="day-of-message">
               <div class="line-left"></div>
@@ -35,17 +33,17 @@
           </ng-container>
           <div [class.sent-container]="channelChats.sender === loggedUser.name"
             [class.recieved-container]="channelChats.sender !== loggedUser.name">
-            <div
-              [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
+            <div [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
               [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
-              <div><span>{{ channelChats.sender }}</span>
-                <div
-                  [class.sent-message]="channelChats.sender === loggedUser.name"
-                  [class.recieved-message]="channelChats.sender !== loggedUser.name">
+              <div>
+                <div class="name-hour">
+                  <span class="message-sender">{{ channelChats.sender }}</span>
                   <span class="date">{{ channelChats.timeStamp * 1000 | date:
                     'HH:mm' }}</span>
+                </div>
+                <div [class.sent-message]="channelChats.sender === loggedUser.name"
+                  [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span>{{ channelChats.message }}</span>
-                  <!-- <span>{{ channelChats.chats }}</span> -->
                   <span (click)="openThread(channelChats)" class="answer">Gib {{
                     channelChats.sender }}<span class="element-sender"> </span>
                     eine Antwort</span>
@@ -85,8 +83,7 @@
 <div class="message-container">
   <div class="message-frame">
     <div class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37" rows="9"></textarea>
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9"></textarea>
     </div>
     <div class="icon-container">
       <div class="icon-left">
@@ -101,8 +98,7 @@
         </div>
       </div>
       <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow"
-          src="./assets/img/Send icon.png" alt="submit arrow">
+        <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>

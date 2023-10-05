@@ -61,7 +61,11 @@ export class BoardThreadComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-  }
+    }
+
+  // ngAfterViewInit(): void {
+  //     this.scrollToBottom();
+  //   }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
@@ -69,8 +73,6 @@ export class BoardThreadComponent implements OnInit {
 
   getMessage(data) {
     const dataParse = JSON.parse(data);
-    console.log(dataParse.chat.answers.length);
-    this.answersLength = dataParse.chat.answers.length;
     this.selectedChannel = dataParse.selectedChannel;
     this.selectedChannelMessage = dataParse.chat;
     this.chatQuestion = dataParse.chat.message;
@@ -79,6 +81,9 @@ export class BoardThreadComponent implements OnInit {
     this.chatTimeStamp = dataParse.chat.timeStamp;
     this.threadOpened = true;
     this.getMessageAnswers()
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 2000);
   }
 
   getMessageAnswers() {
@@ -96,7 +101,12 @@ export class BoardThreadComponent implements OnInit {
       })
     );
     this.answerCollection$.subscribe((data: any) => {
+      this.answersLength = data.length;
+      console.log(data.length)
     });
+    // setTimeout(() => {
+    //   this.scrollToBottom()
+    // }, 2000);
   }
 
   closeThread() {
@@ -119,6 +129,7 @@ export class BoardThreadComponent implements OnInit {
     const userDataString = localStorage.getItem('userData');
     const loggedUser = JSON.parse(userDataString);
     this.channelService.postAnswer(this.selectedChannelMessage, loggedUser, this.message, this.selectedChannel);
+    this.message = '';
   }
   
 
@@ -135,7 +146,13 @@ export class BoardThreadComponent implements OnInit {
     if (selectedEmoji) {
       this.message += selectedEmoji; 
       this.sharedEmojiServiceService.setSelectedEmoji(''); 
+      console.log(selectedEmoji);
     }
+  }
+
+  scrollToBottom() {
+    console.log('called')
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
   }
   
 }
