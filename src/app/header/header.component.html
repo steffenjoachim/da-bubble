@@ -1,19 +1,20 @@
 <div class="header-frame">
-    <div class="logo-frame">
-        <img src="./assets/img/Logo.png" alt="DABubble logo">
-        <h1>DABubble</h1>
-    </div>
-    <div class="search-frame">
-        <input type="text" placeholder="Code learning durchsuchen">
-        <mat-icon fontIcon="search"></mat-icon>
-    </div>
-    <div class="user-frame">
-        <span class="current-user-name" id="current-user-name">{{ loggedUser.name }}</span>
-        <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
-        <mat-icon (click)="openPopup()" fontIcon="keyboard_arrow_down">
-          <div *ngIf="popup" class="popup">
-            <h2 (click)="logout()">log out</h2>
-          </div>
-        </mat-icon>
-    </div>
+  <div class="logo-frame">
+    <img src="./assets/img/Logo.png" alt="DABubble logo">
+    <h1>DABubble</h1>
+  </div>
+  <div class="search-frame">
+    <input type="text" placeholder="Code learning durchsuchen">
+    <mat-icon fontIcon="search"></mat-icon>
+  </div>
+  <div class="user-frame">
+    <span class="current-user-name" id="current-user-name">{{ loggedUser.name }}</span>
+    <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
+    <mat-icon (click)="openPopup()" fontIcon="keyboard_arrow_down"></mat-icon>
+      <div class="popup-frame" *ngIf="popup" (click)="closePopup()">
+        <div class="popup">
+          <h2 (click)="logout()">log out</h2>
+        </div>
+      </div>
+  </div>
 </div>

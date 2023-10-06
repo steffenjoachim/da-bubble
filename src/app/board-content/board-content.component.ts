@@ -206,7 +206,8 @@ export class BoardContentComponent implements OnInit {
        this.chatsChannel$.subscribe((chats) => {
       console.log(chats);
       this.channel = '# ' + chats[1].name;
-      this.selectedRecipient = chats[1].name;
+      this.selectedRecipient = '# ' + chats[1].name;
+      console.log(this.selectedRecipient)
       // chats.forEach(element => {
       });
       this.chatsChannel$ = this.chatsChannel$.pipe(

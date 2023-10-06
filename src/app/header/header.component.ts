@@ -36,6 +36,10 @@ export class HeaderComponent implements OnInit {
     this.popup = true;
   }
 
+  closePopup() {
+    this.popup = false;
+  }
+
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
