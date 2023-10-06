@@ -43,7 +43,7 @@ export class BoardContentComponent implements OnInit {
   showChannelChat: boolean = false
   showChat: boolean = false;
   message: any = '';
-  selectedRecipient: string = '# Entwicklerteam';
+  selectedRecipient: string = '';
   chats: any;
   answersAmount: number;
   keysToDelete = [];
@@ -68,6 +68,7 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.setSelectedRecipient();
     this.getUsers();
+    this. getChannelChats();
   }
 
   getMembers() {
@@ -197,17 +198,28 @@ export class BoardContentComponent implements OnInit {
     this.showChannelChat = true
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
-    this.chatsChannel$ = this.chatsChannel$.pipe(
-      map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
-    );
-    this.chatsChannel$.subscribe((chats) => {
+    if (this.channel) {
+      this.chatsChannel$ = this.chatsChannel$.pipe(
+        map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
+      );
+    } else {
+       this.chatsChannel$.subscribe((chats) => {
       console.log(chats);
-      chats.forEach(element => {
+      this.channel = '# ' + chats[1].name;
+      this.selectedRecipient = chats[1].name;
+      // chats.forEach(element => {
       });
-      setTimeout(() => {
+      this.chatsChannel$ = this.chatsChannel$.pipe(
+        map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
+        
+      );
+    }
+   
+  
+    setTimeout(() => {
         this.scrollToBottom()
       }, 200);
-    });
+    // });
     this.getMembers()
   }
 
