@@ -66,7 +66,6 @@ export class BoardContentComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    // this.setSelectedRecipient();
     this.getUsers();
     this.getChannelChats();
   }
@@ -193,32 +192,35 @@ export class BoardContentComponent implements OnInit {
   }
 
   getChannelChats() {
-    this.showChat = false
-    this.showChannelChat = true
+    document.getElementById('thread')?.classList.add('d-none');
+    this.showChat = false;
+    this.showChannelChat = true;
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
-    if (this.channel) {
-      this.selectedRecipient = this.channel
-      this.chatsChannel$ = this.chatsChannel$.pipe(
-        map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
-      );
-      this.setSelectedRecipient();
-    } else {
-      this.chatsChannel$.subscribe((chats) => {
-        this.channel = '# ' + chats[0].name;
-        this.selectedRecipient = '# ' + chats[0].name;
-        console.log(this.selectedRecipient)
-        this.setSelectedRecipient();
-      });
-      this.chatsChannel$ = this.chatsChannel$.pipe(
-        map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
-      );
-    }
 
-    setTimeout(() => {
-      this.scrollToBottom()
-    }, 200);
-    this.getMembers()
+    this.chatsChannel$.subscribe((chats) => {
+      if (this.channel) {
+        this.selectChannel(chats, this.channel);
+      } else if (chats.length > 0) {
+        this.channel = '# ' + chats[0].name;
+        this.selectChannel(chats, this.channel);
+      }
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 200);
+      this.getMembers();
+    });
+  }
+
+  selectChannel(chats, selectedChannel) {
+    localStorage.setItem('channel', selectedChannel);
+    this.selectedRecipient = selectedChannel;
+    this.chatsChannel$ = this.chatsChannel$.pipe(
+      map(chats => chats.filter(chat => '# ' + chat.name == selectedChannel)),
+    );
+    this.chatsChannel$.subscribe((chats) => {
+      this.selectedChannel = chats[0];
+    });
   }
 
   scrollToBottom() {
@@ -230,23 +232,26 @@ export class BoardContentComponent implements OnInit {
       chat: chat,
       selectedChannel: this.selectedChannel
     }
+    if (!this.selectedChannel) {
+      data.selectedChannel = this.selectedChannel
+    }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
-    this.selectRelevantAnswers(chat);
+   // this.selectRelevantAnswers(chat);
   }
 
-  selectRelevantAnswers(chat) {
-    for (const keyToDelete of this.keysToDelete) {
-      localStorage.removeItem(keyToDelete);
-    }
-    for (let i = 0; i < chat.answers.length; i++) {
-      const key = `relevant-answer-${i}`;
-      this.keysToDelete.push(key);
-      const answer = chat.answers[i];
-      const chatJSON = JSON.stringify(chat);
-      localStorage.setItem(key, chatJSON);
-    }
-  }
+  // selectRelevantAnswers(chat) {
+  //   for (const keyToDelete of this.keysToDelete) {
+  //     localStorage.removeItem(keyToDelete);
+  //   }
+  //   for (let i = 0; i < chat.answers.length; i++) {
+  //     const key = `relevant-answer-${i}`;
+  //     this.keysToDelete.push(key);
+  //     const answer = chat.answers[i];
+  //     const chatJSON = JSON.stringify(chat);
+  //     localStorage.setItem(key, chatJSON);
+  //   }
+  // }
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();

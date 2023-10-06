@@ -55,13 +55,12 @@ export class BoardThreadComponent implements OnInit {
     private channelChat: Firestore,
     public channelService: ChannelService,
     private dialog: MatDialog,
-    private sharedEmojiServiceService: SharedEmojiServiceService
-  ) { }
+    private sharedEmojiServiceService: SharedEmojiServiceService) { }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    }
+  }
 
   // ngAfterViewInit(): void {
   //     this.scrollToBottom();
@@ -81,9 +80,6 @@ export class BoardThreadComponent implements OnInit {
     this.chatTimeStamp = dataParse.chat.timeStamp;
     this.threadOpened = true;
     this.getMessageAnswers()
-    setTimeout(() => {
-      this.scrollToBottom()
-    }, 2000);
   }
 
   getMessageAnswers() {
@@ -99,14 +95,13 @@ export class BoardThreadComponent implements OnInit {
         }
         return [];
       })
-    );
+    )
     this.answerCollection$.subscribe((data: any) => {
       this.answersLength = data.length;
-      console.log(data.length)
     });
-    // setTimeout(() => {
-    //   this.scrollToBottom()
-    // }, 2000);
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 2000);
   }
 
   closeThread() {
@@ -131,7 +126,7 @@ export class BoardThreadComponent implements OnInit {
     this.channelService.postAnswer(this.selectedChannelMessage, loggedUser, this.message, this.selectedChannel);
     this.message = '';
   }
-  
+
 
   openDialogShowEmojis() {
     console.log('clicked');
@@ -144,15 +139,15 @@ export class BoardThreadComponent implements OnInit {
   insertEmojiInMessage() {
     const selectedEmoji = this.sharedEmojiServiceService.getSelectedEmoji();
     if (selectedEmoji) {
-      this.message += selectedEmoji; 
-      this.sharedEmojiServiceService.setSelectedEmoji(''); 
+      this.message += selectedEmoji;
+      this.sharedEmojiServiceService.setSelectedEmoji('');
       console.log(selectedEmoji);
     }
   }
 
   scrollToBottom() {
     console.log('called')
-    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame-thread').scrollHeight;
   }
-  
+
 }

@@ -3,13 +3,13 @@
     <div class="thread-head">
       <div class="thread-text">
         <span>Thread</span>
-        <p class="thread-blue c-blue">{{ channel }}</p>
+        <p class="thread-blue c-blue"># {{ selectedChannel.name }}</p>
       </div>
       <div (click)="closeThread()">
         <mat-icon fontIcon="close"></mat-icon>
       </div>
     </div>
-    <div class="content-frame" id="content-frame">
+    <div class="content-frame" id="content-frame-thread">
       <div class="thread-content">
         <div class="thread-answer-frame">
           <div>
