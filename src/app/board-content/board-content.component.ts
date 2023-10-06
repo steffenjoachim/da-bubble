@@ -43,7 +43,7 @@ export class BoardContentComponent implements OnInit {
   showChannelChat: boolean = false
   showChat: boolean = false;
   message: any = '';
-  selectedRecipient: string = '';
+  selectedRecipient: string;
   chats: any;
   answersAmount: number;
   keysToDelete = [];
@@ -66,9 +66,9 @@ export class BoardContentComponent implements OnInit {
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
-    this.setSelectedRecipient();
+    // this.setSelectedRecipient();
     this.getUsers();
-    this. getChannelChats();
+    this.getChannelChats();
   }
 
   getMembers() {
@@ -132,9 +132,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   setSelectedRecipient() {
-    document.getElementById('selected-recipient').innerHTML = this.selectedRecipient;
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = `Nachricht an # Entwicklerteam`
+    chatField.placeholder = 'Nachricht an ' + this.selectedRecipient;
   }
 
   postChat() {
@@ -199,27 +198,26 @@ export class BoardContentComponent implements OnInit {
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
     if (this.channel) {
+      this.selectedRecipient = this.channel
       this.chatsChannel$ = this.chatsChannel$.pipe(
         map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
       );
+      this.setSelectedRecipient();
     } else {
-       this.chatsChannel$.subscribe((chats) => {
-      console.log(chats);
-      this.channel = '# ' + chats[1].name;
-      this.selectedRecipient = chats[1].name;
-      // chats.forEach(element => {
+      this.chatsChannel$.subscribe((chats) => {
+        this.channel = '# ' + chats[0].name;
+        this.selectedRecipient = '# ' + chats[0].name;
+        console.log(this.selectedRecipient)
+        this.setSelectedRecipient();
       });
       this.chatsChannel$ = this.chatsChannel$.pipe(
         map(chats => chats.filter(chat => '# ' + chat.name == this.channel)),
-        
       );
     }
-   
-  
+
     setTimeout(() => {
-        this.scrollToBottom()
-      }, 200);
-    // });
+      this.scrollToBottom()
+    }, 200);
     this.getMembers()
   }
 
@@ -271,7 +269,6 @@ export class BoardContentComponent implements OnInit {
 
   closeDialogChannelReaction() {
     // this.dialogRef.close();
-    console.log('left');
   }
 
   groupChatsByDate(chats: any[]): any[] {
