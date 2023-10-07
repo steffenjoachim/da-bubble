@@ -24,7 +24,7 @@
     <div>
       <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
         <ng-container *ngFor="let channelChats of chat.chats">
-          <ng-container *ngIf="false || isDifferentDate(channelChats)">
+          <ng-container *ngIf="isFirst || isDifferentDate(channelChats)">
             <div class="day-of-message">
               <div class="line-left"></div>
               <span class="day-frame">{{ formatDate(channelChats.timeStamp) }}</span>
