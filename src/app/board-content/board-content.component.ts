@@ -68,6 +68,10 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.getUsers();
     this.getChannelChats();
+    this.lastDisplayedDate = null;
+    this.chatsChannel$.subscribe(chats => {
+      this.groupedChats = this.groupChatsByDate(chats);
+    });
   }
 
   getMembers() {
@@ -95,7 +99,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   isDifferentDate(chat): boolean {
-    const chatDate = new Date(chat.timeStamp * 1000);
+    const chatDate = new Date(chat.timeStamp);
     if (!this.lastDisplayedDate) {
       this.lastDisplayedDate = chatDate;
       return true;
@@ -116,10 +120,15 @@ export class BoardContentComponent implements OnInit {
     const todayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
+    const dayBeforeYesterday = new Date(currentDate);
+    dayBeforeYesterday.setDate(currentDate.getDate() - 2);
 
-    if (this.lastDisplayedDate === null || !chatDate || chatDate < yesterdayDate) {
+    if (this.lastDisplayedDate === null || !chatDate || chatDate < dayBeforeYesterday) {
       this.lastDisplayedDate = chatDate;
       return chatDate.toLocaleDateString();
+    } else if (chatDate >= dayBeforeYesterday && chatDate < yesterdayDate) {
+      this.lastDisplayedDate = dayBeforeYesterday;
+      return 'Vorgestern';
     } else if (chatDate >= yesterdayDate && chatDate < todayDate) {
       this.lastDisplayedDate = yesterdayDate;
       return 'Gestern';
@@ -129,6 +138,7 @@ export class BoardContentComponent implements OnInit {
     }
     return '';
   }
+
 
   setSelectedRecipient() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
@@ -237,7 +247,21 @@ export class BoardContentComponent implements OnInit {
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
+    // this.selectRelevantAnswers(chat);
   }
+
+  // selectRelevantAnswers(chat) {
+  //   for (const keyToDelete of this.keysToDelete) {
+  //     localStorage.removeItem(keyToDelete);
+  //   }
+  //   for (let i = 0; i < chat.answers.length; i++) {
+  //     const key = `relevant-answer-${i}`;
+  //     this.keysToDelete.push(key);
+  //     const answer = chat.answers[i];
+  //     const chatJSON = JSON.stringify(chat);
+  //     localStorage.setItem(key, chatJSON);
+  //   }
+  // }
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();
@@ -266,19 +290,22 @@ export class BoardContentComponent implements OnInit {
     const grouped = [];
     let currentDate = null;
     chats.forEach(chat => {
-      const chatDate = new Date(chat.timeStamp * 1000);
-      if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
-        grouped.push({
-          date: chatDate,
-          messages: [chat]
-        });
-        currentDate = chatDate;
-      } else {
-        grouped[grouped.length - 1].messages.push(chat);
-      }
+      chat.chats.forEach(element => {
+        const chatDate = new Date(element.timeStamp * 1000);
+        if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
+          grouped.push({
+            date: chatDate,
+            messages: [chat]
+          });
+          currentDate = chatDate;
+        } else {
+          grouped[grouped.length - 1].messages.push(chat);
+        }
+      });
     });
     return grouped;
   }
+
 
   areDatesEqual(date1: Date, date2: Date): boolean {
     return (
