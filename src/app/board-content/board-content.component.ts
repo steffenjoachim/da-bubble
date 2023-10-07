@@ -54,7 +54,7 @@ export class BoardContentComponent implements OnInit {
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
-
+  private chatCount = 0;
 
   constructor(
     public firestore: Firestore,
@@ -63,16 +63,16 @@ export class BoardContentComponent implements OnInit {
     private channelService: ChannelService,
     private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.firebase.setLogoVisible(true);
-    this.loadLoggedUserData();
-    this.getUsers();
-    this.getChannelChats();
-    this.lastDisplayedDate = null;
-    this.chatsChannel$.subscribe(chats => {
-      this.groupedChats = this.groupChatsByDate(chats);
-    });
-  }
+    ngOnInit(): void {
+      this.firebase.setLogoVisible(true);
+      this.loadLoggedUserData();
+      this.getUsers();
+      this.getChannelChats();
+      this.lastDisplayedDate = null;
+      this.chatsChannel$.subscribe(chats => {
+        this.groupedChats = this.groupChatsByDate(chats);
+      });
+    }
 
   getMembers() {
     this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
@@ -98,46 +98,55 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  isDifferentDate(chat): boolean {
-    const chatDate = new Date(chat.timeStamp);
-    if (!this.lastDisplayedDate) {
-      this.lastDisplayedDate = chatDate;
+  isDifferentDate(chat, index): boolean {
+    console.log(chat);
+  
+    if (index === 0) {
+      this.chatCount++; // Erhöhen Sie den Zähler für den ersten Chat
       return true;
     }
+  
+    const chatDate = new Date(chat.timeStamp);
+    const prevChatDate = new Date(this.chatsChannel$[index - 1].chats[0].timeStamp); // Zeitstempel des vorherigen Chats
+    console.log('Chat Date:', chatDate);
+    console.log('Previous Chat Date:', prevChatDate);
+  
     const differentDate =
-      chatDate.getFullYear() !== this.lastDisplayedDate.getFullYear() ||
-      chatDate.getMonth() !== this.lastDisplayedDate.getMonth() ||
-      chatDate.getDate() !== this.lastDisplayedDate.getDate();
-    if (differentDate) {
-      this.lastDisplayedDate = chatDate;
-    }
+      chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+      chatDate.getMonth() !== prevChatDate.getMonth() ||
+      chatDate.getDate() !== prevChatDate.getDate();
+  
     return differentDate;
   }
+  
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
     const currentDate = new Date();
-    const todayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    const todayDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
     const dayBeforeYesterday = new Date(currentDate);
     dayBeforeYesterday.setDate(currentDate.getDate() - 2);
-
-    if (this.lastDisplayedDate === null || !chatDate || chatDate < dayBeforeYesterday) {
-      this.lastDisplayedDate = chatDate;
-      return chatDate.toLocaleDateString();
-    } else if (chatDate >= dayBeforeYesterday && chatDate < yesterdayDate) {
-      this.lastDisplayedDate = dayBeforeYesterday;
-      return 'Vorgestern';
-    } else if (chatDate >= yesterdayDate && chatDate < todayDate) {
-      this.lastDisplayedDate = yesterdayDate;
-      return 'Gestern';
+  
+    if (!chatDate) {
+      return '';
     } else if (chatDate >= todayDate) {
       this.lastDisplayedDate = todayDate;
       return 'Heute';
+    } else if (chatDate >= yesterdayDate) {
+      this.lastDisplayedDate = yesterdayDate;
+      return 'Gestern';
+    } else {
+      this.lastDisplayedDate = chatDate;
+      return chatDate.toLocaleDateString();
     }
-    return '';
   }
+  
 
 
   setSelectedRecipient() {
@@ -247,7 +256,7 @@ export class BoardContentComponent implements OnInit {
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
-    // this.selectRelevantAnswers(chat);
+   // this.selectRelevantAnswers(chat);
   }
 
   // selectRelevantAnswers(chat) {

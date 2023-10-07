@@ -22,9 +22,9 @@
   <!-- Channel -->
   <ng-container *ngIf="showChannelChat">
     <div>
-      <div *ngFor="let chat of chatsChannel$ | async; let i = index; let isFirst = first">
+      <div *ngFor="let chat of chatsChannel$ | async; let i = index">
         <ng-container *ngFor="let channelChats of chat.chats">
-          <ng-container *ngIf="isFirst || isDifferentDate(channelChats)">
+          <ng-container *ngIf="isDifferentDate(chat, i)">
             <div class="day-of-message">
               <div class="line-left"></div>
               <span *ngIf="channelChats.timeStamp" class="day-frame">{{ formatDate(channelChats.timeStamp) }}</span>

@@ -137,7 +137,6 @@ export class ChannelService {
             [firebaseFieldName]: updatedChats,
           };
           await updateDoc(documentReference, updateData);
-          console.log('Daten erfolgreich in Firebase aktualisiert:', updatedChats);
         } catch (error) {
           console.error('Fehler beim Aktualisieren der Daten in Firebase:', error);
         }
