@@ -68,11 +68,10 @@ export class BoardContentComponent implements OnInit {
     this.loadLoggedUserData();
     this.getUsers();
     this.getChannelChats();
+    this.lastDisplayedDate = null;
     this.chatsChannel$.subscribe(chats => {
-      // Gruppiere die Nachrichten nach Datum
       this.groupedChats = this.groupChatsByDate(chats);
     });
-
   }
 
   getMembers() {
@@ -306,6 +305,7 @@ export class BoardContentComponent implements OnInit {
     });
     return grouped;
   }
+
 
   areDatesEqual(date1: Date, date2: Date): boolean {
     return (
