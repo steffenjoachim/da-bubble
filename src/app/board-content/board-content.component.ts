@@ -237,21 +237,7 @@ export class BoardContentComponent implements OnInit {
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
-   // this.selectRelevantAnswers(chat);
   }
-
-  // selectRelevantAnswers(chat) {
-  //   for (const keyToDelete of this.keysToDelete) {
-  //     localStorage.removeItem(keyToDelete);
-  //   }
-  //   for (let i = 0; i < chat.answers.length; i++) {
-  //     const key = `relevant-answer-${i}`;
-  //     this.keysToDelete.push(key);
-  //     const answer = chat.answers[i];
-  //     const chatJSON = JSON.stringify(chat);
-  //     localStorage.setItem(key, chatJSON);
-  //   }
-  // }
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();
