@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <!-- Wochentage -->
+      <trans-unit id="date.weekday.long.Sunday">
+        <source>Sunday</source>
+        <target>Sonntag</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Monday">
+        <source>Monday</source>
+        <target>Montag</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Tuesday">
+        <source>Tuesday</source>
+        <target>Dienstag</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Wednesday">
+        <source>Wednesday</source>
+        <target>Mittwoch</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Thursday">
+        <source>Thursday</source>
+        <target>Donnerstag</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Friday">
+        <source>Friday</source>
+        <target>Freitag</target>
+      </trans-unit>
+      <trans-unit id="date.weekday.long.Saturday">
+        <source>Saturday</source>
+        <target>Samstag</target>
+      </trans-unit>
+
+      <!-- Monate -->
+      <trans-unit id="date.month.long.January">
+        <source>January</source>
+        <target>Januar</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.February">
+        <source>February</source>
+        <target>Februar</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.March">
+        <source>March</source>
+        <target>März</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.April">
+        <source>April</source>
+        <target>April</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.May">
+        <source>May</source>
+        <target>Mai</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.June">
+        <source>June</source>
+        <target>Juni</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.July">
+        <source>July</source>
+        <target>Juli</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.August">
+        <source>August</source>
+        <target>August</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.September">
+        <source>September</source>
+        <target>September</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.October">
+        <source>October</source>
+        <target>Oktober</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.November">
+        <source>November</source>
+        <target>November</target>
+      </trans-unit>
+      <trans-unit id="date.month.long.December">
+        <source>December</source>
+        <target>Dezember</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

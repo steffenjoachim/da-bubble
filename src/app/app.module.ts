@@ -32,7 +32,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DialogChannelInfoComponent } from './dialog-channel-info/dialog-channel-info.component';
 import { DialogShowEmojisComponent } from './dialog-show-emojis/dialog-show-emojis.component';
 import { DialogChannelReactionsComponent } from './dialog-channel-reactions/dialog-channel-reactions.component';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 
+registerLocaleData(localeDe);
 
 @NgModule({
   declarations: [
@@ -72,7 +76,7 @@ import { DialogChannelReactionsComponent } from './dialog-channel-reactions/dial
     provideMessaging(() => getMessaging()),
 
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'de' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

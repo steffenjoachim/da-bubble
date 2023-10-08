@@ -4,6 +4,12 @@
   "newProjectRoot": "projects",
   "projects": {
     "da-bubble": {
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "de": "src/locale/messages.de.xlf"
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
