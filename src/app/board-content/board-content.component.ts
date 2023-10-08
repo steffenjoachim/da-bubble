@@ -99,7 +99,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   isDifferentDate(chat, index): boolean {
-    console.log(chat);
+    // console.log(chat);
   
     if (index === 0) {
       this.chatCount++; // Erhöhen Sie den Zähler für den ersten Chat
@@ -282,17 +282,18 @@ export class BoardContentComponent implements OnInit {
   }
 
   openDialogChannelReaction() {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.data = {
-    // }
-    // const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
-
+    console.log('opened');
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+    }
+    const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
   closeDialogChannelReaction() {
-    // this.dialogRef.close();
+    this.dialogRef.close();
+    console.log('closed');
   }
 
   groupChatsByDate(chats: any[]): any[] {

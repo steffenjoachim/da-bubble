@@ -44,10 +44,13 @@
                 <div [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span>{{ channelChats.message }}</span>
-                  <span (click)="openThread(channelChats)" class="answer">Gib {{
+                  <span (click)="openThread(channelChats); openDialogChannelReaction()" class="answer">Gib {{
                     channelChats.sender }}<span class="element-sender"> </span>
                     eine Antwort</span>
                     <span (click)="openThread(channelChats)" class="number-answers" *ngIf="channelChats.answers.length">Es gibt {{channelChats.answers.length}} Antwort(en) </span>
+                </div>
+                <div class="channel-reaction-popup">
+                  
                 </div>
               </div>
               <img class="avatar" [src]="channelChats.avatar">
