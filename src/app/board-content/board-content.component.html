@@ -26,7 +26,7 @@
         <ng-container *ngFor="let channelChats of chat.chats; let i = index">
           <ng-container *ngIf="isDifferentDate(chat, i)">
             <div class="day-of-message">
-              <div class="line-left">{{i}}</div>
+              <div class="line-left"></div>
               <span *ngIf="channelChats.timeStamp" class="day-frame">{{channelChats.timeStamp * 1000 | date: 'EEEE, dd MMM' }}
               </span>
               <div class="line-right"></div>

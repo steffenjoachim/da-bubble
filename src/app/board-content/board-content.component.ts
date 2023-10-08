@@ -100,28 +100,19 @@ export class BoardContentComponent implements OnInit {
   }
 
   isDifferentDate(chat, index): boolean {
-    console.log(chat, index);
-
     if (index === 0) {
-      console.log('testIF')
-      this.chatCount++; // Erhöhen Sie den Zähler für den ersten Chat
-       return true;
+      this.chatCount++; 
+      return true;
     }
-
-     const chatDate = new Date(chat.chats[index -1].timeStamp);
-     const prevChatDate = new Date(chat.chats[index].timeStamp);
-     console.log(prevChatDate);// Zeitstempel des vorherigen Chats
-     console.log('Chat Date:', chatDate);
-     console.log('Previous Chat Date:', prevChatDate);
-
-     const differentDate =
-       chatDate.getFullYear() !== prevChatDate.getFullYear() ||
-       chatDate.getMonth() !== prevChatDate.getMonth() ||
-       chatDate.getDate() !== prevChatDate.getDate();
-
+    const chatDate = new Date(chat.chats[index].timeStamp * 1000);
+    const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
+    const differentDate =
+      chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+      chatDate.getMonth() !== prevChatDate.getMonth() ||
+      chatDate.getDate() !== prevChatDate.getDate();
     return differentDate;
   }
-
+  
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
@@ -133,24 +124,18 @@ export class BoardContentComponent implements OnInit {
     );
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
-    const dayBeforeYesterday = new Date(currentDate);
-    dayBeforeYesterday.setDate(currentDate.getDate() - 2);
-
+  
     if (!chatDate) {
       return '';
     } else if (chatDate >= todayDate) {
-      this.lastDisplayedDate = todayDate;
       return 'Heute';
     } else if (chatDate >= yesterdayDate) {
-      this.lastDisplayedDate = yesterdayDate;
       return 'Gestern';
     } else {
-      this.lastDisplayedDate = chatDate;
-      return chatDate.toLocaleDateString();
+      return chatDate.toLocaleDateString(); // Hier können Sie die Darstellung des Datums nach Ihren Wünschen anpassen
     }
   }
-
-
+  
 
   setSelectedRecipient() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
@@ -259,21 +244,8 @@ export class BoardContentComponent implements OnInit {
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
-    // this.selectRelevantAnswers(chat);
   }
 
-  // selectRelevantAnswers(chat) {
-  //   for (const keyToDelete of this.keysToDelete) {
-  //     localStorage.removeItem(keyToDelete);
-  //   }
-  //   for (let i = 0; i < chat.answers.length; i++) {
-  //     const key = `relevant-answer-${i}`;
-  //     this.keysToDelete.push(key);
-  //     const answer = chat.answers[i];
-  //     const chatJSON = JSON.stringify(chat);
-  //     localStorage.setItem(key, chatJSON);
-  //   }
-  // }
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();
