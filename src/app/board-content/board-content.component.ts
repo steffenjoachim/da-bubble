@@ -47,7 +47,6 @@ export class BoardContentComponent implements OnInit {
   selectedRecipient: string;
   chats: any;
   answersAmount: number;
-  keysToDelete = [];
   length: number;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
@@ -166,8 +165,9 @@ export class BoardContentComponent implements OnInit {
   }
 
   setSelectedRecipient() {
+    console.log('selected');
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = 'Nachricht an ' + this.selectedRecipient;
+    chatField.placeholder = 'Nachricht an ' + this.channel;
   }
 
   postChat() {
@@ -245,6 +245,7 @@ export class BoardContentComponent implements OnInit {
       }, 200);
       this.getMembers();
     });
+    this.setSelectedRecipient();
   }
 
   selectChannel(chats, selectedChannel) {

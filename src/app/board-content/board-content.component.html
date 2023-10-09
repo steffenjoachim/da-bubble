@@ -27,7 +27,7 @@
           <ng-container *ngIf="isDifferentDate(chat, i)">
             <div class="day-of-message">
               <div class="line-left"></div>
-              <span *ngIf="channelChats.timeStamp" class="day-frame">{{channelChats.timeStamp * 1000 | date: 'EEEE, dd MMM' }}
+              <span *ngIf="channelChats.timeStamp" class="day-frame">{{formatDate(channelChats.timeStamp)| date: 'EEEE, dd MMM' }}
               </span>
               <div class="line-right"></div>
             </div>
@@ -39,7 +39,7 @@
               <div>
                 <div class="name-hour">
                   <span class="message-sender">{{ channelChats.sender }}</span>
-                  <span class="date"></span>
+                  <span class="date">{{channelChats.timeStamp * 1000 | date: 'HH:MM '}}Uhr</span>
                 </div>
                 <div [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">

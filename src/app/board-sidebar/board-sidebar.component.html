@@ -45,12 +45,12 @@
             <span class="current-user-name" id="current-user-name">{{
               loggedUser.name }} (Du)</span>
           </div>
-          <div class="others" *ngFor="let user of users" [ngClass]="{'active': user.name == selectedRecipient}"
+          <div class="others" *ngFor="let user of users; let i = index" [ngClass]="{'active': user.name == selectedRecipient}"
             (click)="OnAnotherEvent(user.name)">
             <div class="image-frame">
               <img id="current-user-img" src="{{ user.avatar }}" alt="image of user">
-              <div class="online-indication d-none"></div>
-              <div class="offline-indication"></div>
+              <div class="online-indication d-none" id="online-indication{{i}}"></div>
+              <div class="offline-indication"  id="offline-indication{{i}}"></div>
             </div>
             <span class="current-user-name" id="current-user-name">{{
               user.name}}</span>
