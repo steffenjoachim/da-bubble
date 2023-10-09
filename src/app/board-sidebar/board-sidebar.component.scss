@@ -253,3 +253,30 @@ h3 {
     }
   }
 }
+
+.image-frame{
+  position: relative;
+}
+
+.online-indication{
+  position: absolute;
+  left: 32px;
+  bottom: 8px;
+  height: 8px;
+  width: 8px;
+  background: rgb(146, 200, 62);
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+
+.offline-indication{
+  position: absolute;
+  left: 32px;
+  bottom: 8px;
+  height: 8px;
+  width: 8px;
+  background: grey;
+  border: 2px solid rgb(213, 208, 208);
+  border-radius: 50%;
+}

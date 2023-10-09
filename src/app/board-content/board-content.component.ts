@@ -135,7 +135,35 @@ export class BoardContentComponent implements OnInit {
       return chatDate.toLocaleDateString(); // Hier können Sie die Darstellung des Datums nach Ihren Wünschen anpassen
     }
   }
-  
+
+  groupChatsByDate(chats: any[]): any[] {
+    const grouped = [];
+    let currentDate = null;
+    chats.forEach(chat => {
+      chat.chats.forEach(element => {
+        const chatDate = new Date(element.timeStamp * 1000);
+        if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
+          grouped.push({
+            date: chatDate,
+            messages: [chat]
+          });
+          currentDate = chatDate;
+        } else {
+          grouped[grouped.length - 1].messages.push(chat);
+        }
+      });
+    });
+    return grouped;
+  }
+
+
+  areDatesEqual(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
 
   setSelectedRecipient() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
@@ -271,33 +299,5 @@ export class BoardContentComponent implements OnInit {
     console.log('closed');
   }
 
-  groupChatsByDate(chats: any[]): any[] {
-    const grouped = [];
-    let currentDate = null;
-    chats.forEach(chat => {
-      chat.chats.forEach(element => {
-        const chatDate = new Date(element.timeStamp * 1000);
-        if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
-          grouped.push({
-            date: chatDate,
-            messages: [chat]
-          });
-          currentDate = chatDate;
-        } else {
-          grouped[grouped.length - 1].messages.push(chat);
-        }
-      });
-    });
-    return grouped;
-  }
-
-
-  areDatesEqual(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  }
 }
 
