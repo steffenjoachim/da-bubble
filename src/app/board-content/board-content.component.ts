@@ -69,9 +69,9 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
     this.getChannelChats();
     this.lastDisplayedDate = null;
-    this.chatsChannel$.subscribe(chats => {
-      this.groupedChats = this.groupChatsByDate(chats);
-    });
+    // this.chatsChannel$.subscribe(chats => {
+    //   this.groupedChats = this.groupChatsByDate(chats);
+    // });
   }
 
   getMembers() {
@@ -100,7 +100,7 @@ export class BoardContentComponent implements OnInit {
 
   isDifferentDate(chat, index): boolean {
     if (index === 0) {
-      this.chatCount++; 
+      this.chatCount++;
       return true;
     }
     const chatDate = new Date(chat.chats[index].timeStamp * 1000);
@@ -111,61 +111,67 @@ export class BoardContentComponent implements OnInit {
       chatDate.getDate() !== prevChatDate.getDate();
     return differentDate;
   }
-  
+
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
     const currentDate = new Date();
-    const todayDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate()
-    );
+    currentDate.setHours(0, 0, 0, 0); // Setze Zeit auf Mitternacht
+    const todayDate = new Date(currentDate);
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
-  
-    if (!chatDate) {
-      return '';
-    } else if (chatDate >= todayDate) {
+    if (chatDate >= todayDate) {
       return 'Heute';
     } else if (chatDate >= yesterdayDate) {
       return 'Gestern';
     } else {
-      return chatDate.toLocaleDateString(); // Hier können Sie die Darstellung des Datums nach Ihren Wünschen anpassen
+      const day = chatDate.getDate();
+      const monthNames = [
+        'Jan', 'Feb', 'März', 'Apr', 'Mai', 'Jun',
+        'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez'
+      ];
+      const dayNames = [
+        'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'
+      ];
+      const month = monthNames[chatDate.getMonth()];
+      const dayName = dayNames[chatDate.getDay()];
+      return `${dayName}, ${day} ${month}`;
     }
   }
 
-  groupChatsByDate(chats: any[]): any[] {
-    const grouped = [];
-    let currentDate = null;
-    chats.forEach(chat => {
-      chat.chats.forEach(element => {
-        const chatDate = new Date(element.timeStamp * 1000);
-        if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
-          grouped.push({
-            date: chatDate,
-            messages: [chat]
-          });
-          currentDate = chatDate;
-        } else {
-          grouped[grouped.length - 1].messages.push(chat);
-        }
-      });
-    });
-    return grouped;
-  }
 
 
-  areDatesEqual(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  }
+
+  // groupChatsByDate(chats: any[]): any[] {
+  //   const grouped = [];
+  //   let currentDate = null;
+  //   chats.forEach(chat => {
+  //     chat.chats.forEach(element => {
+  //       const chatDate = new Date(element.timeStamp * 1000);
+  //       if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
+  //         grouped.push({
+  //           date: chatDate,
+  //           messages: [chat]
+  //         });
+  //         currentDate = chatDate;
+  //       } else {
+  //         grouped[grouped.length - 1].messages.push(chat);
+  //       }
+  //     });
+  //   });
+  //   return grouped;
+  // }
+
+
+  // areDatesEqual(date1: Date, date2: Date): boolean {
+  //   return (
+  //     date1.getFullYear() === date2.getFullYear() &&
+  //     date1.getMonth() === date2.getMonth() &&
+  //     date1.getDate() === date2.getDate()
+  //   );
+  // }
 
   setSelectedRecipient() {
-    console.log('selected');
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
     chatField.placeholder = 'Nachricht an ' + this.channel;
   }
@@ -260,7 +266,10 @@ export class BoardContentComponent implements OnInit {
   }
 
   scrollToBottom() {
-    document.getElementById('content-frame').scrollTop = document.getElementById('content-frame').scrollHeight;
+    const contentFrame = document.getElementById('content-frame');
+    if (contentFrame) {
+      contentFrame.scrollTop = contentFrame.scrollHeight;
+    }
   }
 
   openThread(chat: any) {

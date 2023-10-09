@@ -19,6 +19,8 @@ export class AppComponent implements OnDestroy {
     });
   }
 
+
+
   ngOnDestroy(): void {
     this.logoVisibleSubscription.unsubscribe();
   }

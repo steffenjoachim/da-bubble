@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { getAuth, signOut } from "firebase/auth";
+import { onAuthStateChanged } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-header',
@@ -43,10 +44,17 @@ export class HeaderComponent implements OnInit {
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
-      localStorage.removeItem('userData');
-      localStorage.removeItem('selected-recipient');
-      localStorage.removeItem('channel');
-      this.router.navigate(['/login']);
+      // Überwachen Sie den Authentifizierungsstatus, um sicherzustellen, dass der Benutzer abgemeldet ist
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          // Benutzer ist ausgeloggt, führen Sie die Navigation aus
+          this.router.navigate(['login']);
+          // Entfernen Sie lokale Speicherdaten nach dem Logout
+          localStorage.removeItem('userData');
+          localStorage.removeItem('selected-recipient');
+          localStorage.removeItem('channel');
+        }
+      });
     }).catch((error) => {
       console.log(error)
     });

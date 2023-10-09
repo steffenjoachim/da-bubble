@@ -7,6 +7,8 @@ import { ChannelService } from '../services/channels/channel.service';
 import { BoardComponent } from '../board/board.component';
 import { BoardContentComponent } from '../board-content/board-content.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
+import { getAuth } from '@angular/fire/auth';
+import { onAuthStateChanged } from '@firebase/auth';
 
 @Component({
   selector: 'app-board-sidebar',

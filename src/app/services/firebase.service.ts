@@ -1,9 +1,12 @@
 import { Router } from '@angular/router';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, Auth, authState, User, user } from '@angular/fire/auth';
+import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { Firestore, addDoc, collection, collectionData, doc } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable, Subscription, map, switchMap, tap } from 'rxjs';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { onValue } from 'firebase/database';
+import { getDatabase, ref } from '@angular/fire/database';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +16,8 @@ export class FirebaseService implements OnDestroy {
   logoVisible$ = this.logoVisibility.asObservable();
   usersCollection: any = collection(this.firebase, 'users');
   users$ !: Observable<any>;
-
   private usersSubscription: Subscription
+  filteredUser: Observable<any>;
 
   loggedUser: any = {
     avatar: './assets/img/avatarinteractionmobile3.png',
@@ -55,6 +58,7 @@ export class FirebaseService implements OnDestroy {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        this.checkIfUserOnline(userCredential.user)
         this.users$ = collectionData(this.usersCollection, { idField: 'id' });
         this.usersSubscription = this.users$.subscribe(async (usersArray) => {
           const userWithEmail = usersArray.find(user => user.email === userCredential.user.email);
@@ -70,6 +74,38 @@ export class FirebaseService implements OnDestroy {
         this.wrongPassword()
       });
   }
+
+  checkIfUserOnline(incommingUser) {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+
+        console.log(user, 'user is signed in')
+      } else {
+
+        console.log(incommingUser, 'user is signed out')
+      }
+    });
+    this.setState(incommingUser)
+  }
+
+
+  filteredUsers: any[] = [];
+
+  setState(incomingUser) {
+    this.users$ = collectionData(this.usersCollection, { idField: 'id' });
+
+    this.users$.subscribe(users => {
+      console.log(users)
+      this.filteredUsers = users.filter(user => user[0].email === incomingUser.email);
+      // Verwenden Sie die gefilterten Benutzer in this.filteredUsers
+    });
+    console.log(this.filteredUsers)
+  }
+
+
+
 
   setLocalStorage(userData) {
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -87,6 +123,7 @@ export class FirebaseService implements OnDestroy {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
+        this.checkIfUserOnline(user)
         this.loggedUser.name = user.displayName;
         this.setLocalStorage(this.loggedUser);
         this.router.navigate(['/board']);
@@ -95,6 +132,8 @@ export class FirebaseService implements OnDestroy {
         console.error('Fehler bei der Google-Authentifizierung:', error);
       });
   }
+
+
 
   getUsers() {
     this.users$ = collectionData(this.usersCollection, { idField: 'id' })
