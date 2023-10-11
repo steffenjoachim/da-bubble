@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, Auth, authState, User, user } from '@angular/fire/auth';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, doc } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, Subscription, map, switchMap, tap } from 'rxjs';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { onValue } from 'firebase/database';
@@ -18,11 +18,20 @@ export class FirebaseService implements OnDestroy {
   users$ !: Observable<any>;
   private usersSubscription: Subscription
   filteredUser: Observable<any>;
+  userWithEmail: any;
+
 
   loggedUser: any = {
     avatar: './assets/img/avatarinteractionmobile3.png',
     name: ''
   }
+
+  user = {
+    name: '',
+    email: '',
+    avatar: '',
+    online: true
+  };
 
   constructor(public firebase: Firestore,
     private router: Router) {
@@ -76,35 +85,37 @@ export class FirebaseService implements OnDestroy {
   }
 
   checkIfUserOnline(incommingUser) {
+    let state: boolean
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        state = true;
         const uid = user.uid;
-
-        console.log(user, 'user is signed in')
+        this.setState(incommingUser, state)
       } else {
-
-        console.log(incommingUser, 'user is signed out')
+        state = false;
+        this.setState(incommingUser, state)
       }
     });
-    this.setState(incommingUser)
   }
 
-
-  filteredUsers: any[] = [];
-
-  setState(incomingUser) {
+  async setState(incomingUser, state) {
     this.users$ = collectionData(this.usersCollection, { idField: 'id' });
-
-    this.users$.subscribe(users => {
-      console.log(users)
-      this.filteredUsers = users.filter(user => user[0].email === incomingUser.email);
-      // Verwenden Sie die gefilterten Benutzer in this.filteredUsers
+    this.users$ = this.users$.pipe(
+      map(users => users.filter(user => user.email == incomingUser.email)),
+    );
+    let firstSubscribe = true;
+    this.usersSubscription = this.users$.subscribe(async (usersArray) => {
+      this.userWithEmail = usersArray.find(user => user.email === incomingUser.email);
+      if (firstSubscribe) {
+        firstSubscribe = false
+        const userRef = doc(this.firebase, 'users', this.userWithEmail.id);
+        if (this.userWithEmail) {
+          await setDoc(userRef, { online: state }, { merge: true });
+        }
+      }
     });
-    console.log(this.filteredUsers)
   }
-
-
 
 
   setLocalStorage(userData) {
@@ -116,12 +127,24 @@ export class FirebaseService implements OnDestroy {
     wrongPassword.innerHTML = 'E-Mail oder Passwort ungültig'
   }
 
+  checkIfalreadyUser(googleUser) {
+    this.users$ = collectionData(this.usersCollection, { idField: 'id' });
+    this.users$.subscribe(users => {
+      const userWithEmail = users.find(user => user.email === googleUser.email);
+      if (!userWithEmail) {
+        console.log('user not found')
+        this.addUserToFirebaseFromGoogleAccount(googleUser)
+      }
+    });
+  }
+
   loginWithGoogle() {
     const auth = getAuth();
     auth.languageCode = 'de';
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
+        this.checkIfalreadyUser(result.user)
         const user = result.user;
         this.checkIfUserOnline(user)
         this.loggedUser.name = user.displayName;
@@ -133,6 +156,18 @@ export class FirebaseService implements OnDestroy {
       });
   }
 
+  async addUserToFirebaseFromGoogleAccount(user) {
+    try {
+      this.user.name = user.displayName;
+      this.user.email = user.email;
+      console.log(this.user)
+      const docRef = await addDoc(this.usersCollection, this.user);
+
+      console.log(`Benutzer wurde erfolgreich zu Firestore hinzugefügt mit ID: ${docRef.id}`);
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen des Benutzers zu Firestore:', error);
+    }
+  }
 
 
   getUsers() {
