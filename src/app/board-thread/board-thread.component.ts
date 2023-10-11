@@ -146,7 +146,6 @@ export class BoardThreadComponent implements OnInit {
   }
 
   scrollToBottom() {
-    console.log('called')
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame-thread').scrollHeight;
   }
 

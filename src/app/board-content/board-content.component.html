@@ -27,32 +27,41 @@
           <ng-container *ngIf="isDifferentDate(chat, i)">
             <div class="day-of-message">
               <div class="line-left"></div>
-              <span *ngIf="channelChats.timeStamp" class="day-frame">{{ formatDate(channelChats.timeStamp) }}</span>
-
+              <span *ngIf="channelChats.timeStamp" class="day-frame">{{
+                formatDate(channelChats.timeStamp) }}</span>
 
               <div class="line-right"></div>
             </div>
           </ng-container>
-          <div (mouseover)="showChatIcons(i)" (mouseout)="hideChatIcons(i)" [class.sent-container]="channelChats.sender === loggedUser.name"
-            [class.recieved-container]="channelChats.sender !== loggedUser.name">
+          <div (mouseover)="showChatIcons(channelChats)" (mouseout)="hideChatIcons()"
+          [class.sent-container]="channelChats.sender === loggedUser.name"
+          [class.recieved-container]="channelChats.sender !== loggedUser.name">
 
-            <div [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
+            <div
+              [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
               [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
               <div>
                 <div class="name-hour">
                   <span class="message-sender">{{ channelChats.sender }}</span>
-                  <span class="date">{{channelChats.timeStamp * 1000 | date: 'HH:MM '}}Uhr</span>
+                  <span class="date">{{channelChats.timeStamp * 1000 | date:
+                    'HH:MM '}}Uhr</span>
                 </div>
-                <div [class.sent-message]="channelChats.sender === loggedUser.name"
+                <div
+                  [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span>{{ channelChats.message }}</span>
-                  <span (click)="openThread(channelChats); openDialogChannelReaction()" class="answer">Gib {{
+                  <span
+                    (click)="openThread(channelChats); openDialogChannelReaction()"
+                    class="answer">Gib {{
                     channelChats.sender }}eine Antwort</span>
-                    <span (click)="openThread(channelChats)" class="number-answers" *ngIf="channelChats.answers.length">Es gibt {{channelChats.answers.length}} Antwort(en)</span>
+                  <span (click)="openThread(channelChats)"
+                    class="number-answers" *ngIf="channelChats.answers.length">Es
+                    gibt {{channelChats.answers.length}} Antwort(en)</span>
                 </div>
               </div>
               <img class="avatar" [src]="channelChats.avatar">
-              <div *ngIf="isHovered[i]" class="chat-icon-frame">
+              <div *ngIf="isHovered && selectedChannelChat === channelChats" class="chat-icon-frame">
+
                 <div>
                   <mat-icon class="mat-icons" fontIcon="delete"></mat-icon>
                 </div>
@@ -60,7 +69,7 @@
                   <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                 </div>
                 <div>
-                  <mat-icon class="mat-icons" fontIcon="chat"></mat-icon>
+                  <mat-icon (click)="openThread(channelChats)" class="mat-icons" fontIcon="chat"></mat-icon>
                 </div>
               </div>
             </div>
@@ -96,7 +105,8 @@
 <div class="message-container">
   <div class="message-frame">
     <div class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9"></textarea>
+      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
+        cols="37" rows="9"></textarea>
     </div>
     <div class="icon-container">
       <div class="icon-left">
@@ -111,7 +121,8 @@
         </div>
       </div>
       <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+        <img (click)="postChat()" class="submit-arrow"
+          src="./assets/img/Send icon.png" alt="submit arrow">
       </div>
     </div>
   </div>

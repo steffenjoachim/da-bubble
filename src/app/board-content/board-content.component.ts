@@ -56,6 +56,8 @@ export class BoardContentComponent implements OnInit {
   prevChat: any;
   isHovered: boolean = false;
   private chatCount = 0;
+  public selectedChannelChat: any = null;
+
 
   constructor(
     public firestore: Firestore,
@@ -266,13 +268,16 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-showChatIcons(i) {
-this.isHovered[i] = true;
-}
+  showChatIcons(channelChats: any) {
+    this.selectedChannelChat = channelChats;
+    this.isHovered = true;
+  }
 
-hideChatIcons(i) {
-  this.isHovered[i] = false;
-}
+  hideChatIcons() {
+    this.selectedChannelChat = null;
+    this.isHovered = false;
+  }
+
 
   scrollToBottom() {
     const contentFrame = document.getElementById('content-frame');
