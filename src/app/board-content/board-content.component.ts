@@ -54,6 +54,7 @@ export class BoardContentComponent implements OnInit {
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
+  isHovered: boolean = false;
   private chatCount = 0;
 
   constructor(
@@ -264,6 +265,14 @@ export class BoardContentComponent implements OnInit {
       this.selectedChannel = chats[0];
     });
   }
+
+showChatIcons(i) {
+this.isHovered[i] = true;
+}
+
+hideChatIcons(i) {
+  this.isHovered[i] = false;
+}
 
   scrollToBottom() {
     const contentFrame = document.getElementById('content-frame');

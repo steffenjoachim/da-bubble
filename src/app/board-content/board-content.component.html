@@ -33,8 +33,9 @@
               <div class="line-right"></div>
             </div>
           </ng-container>
-          <div [class.sent-container]="channelChats.sender === loggedUser.name"
+          <div (mouseover)="showChatIcons(i)" (mouseout)="hideChatIcons(i)" [class.sent-container]="channelChats.sender === loggedUser.name"
             [class.recieved-container]="channelChats.sender !== loggedUser.name">
+
             <div [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
               [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
               <div>
@@ -49,12 +50,22 @@
                     channelChats.sender }}eine Antwort</span>
                     <span (click)="openThread(channelChats)" class="number-answers" *ngIf="channelChats.answers.length">Es gibt {{channelChats.answers.length}} Antwort(en)</span>
                 </div>
-                <div class="channel-reaction-popup">
-                </div>
               </div>
               <img class="avatar" [src]="channelChats.avatar">
+              <div *ngIf="isHovered[i]" class="chat-icon-frame">
+                <div>
+                  <mat-icon class="mat-icons" fontIcon="delete"></mat-icon>
+                </div>
+                <div>
+                  <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                </div>
+                <div>
+                  <mat-icon class="mat-icons" fontIcon="chat"></mat-icon>
+                </div>
+              </div>
             </div>
           </div>
+
         </ng-container>
       </div>
     </div>

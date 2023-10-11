@@ -123,14 +123,14 @@ export class BoardSidebarComponent implements OnInit {
     localStorage.setItem('channel', '# ' + channel.name);
     this.channelChat.showChannelChat(channel);
     document.getElementById('channel-members').classList.remove('d-none');
-    this.showChannelMembers(channel);
+    //this.showChannelMembers(channel);
   }
 
-  showChannelMembers(channel) {
-    this.channelMembers = channel.members;
-    const membersString = JSON.stringify(channel.members);
-    localStorage.setItem('chat.members', membersString);
-  }
+  // showChannelMembers(channel) {
+  //   this.channelMembers = channel.members;
+  //   const membersString = JSON.stringify(channel.members);
+  //   localStorage.setItem('chat.members', membersString);
+  // }
 
   showChat(name) {
     this.selectedRecipient = name;
