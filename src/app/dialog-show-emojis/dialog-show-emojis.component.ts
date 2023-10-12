@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as emojione from 'emojione';
 import { SharedEmojiServiceService } from '../services/shared-emojis/shared-emoji.service.service';
 import { MatDialogRef } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-dialog-show-emojis',
@@ -17,19 +16,23 @@ export class DialogShowEmojisComponent {
     "🥰", "😅", "🥳", "😤", "😴", "🤯", "😪", "🤕", "🤒", "😮",
     "😬", "😵", "🥴", "🤐", "🤨", "😐", "😑", "😕", "🤓", "🎉",
   ];
-  
+
+  @ViewChild('emojiTextArea') emojiTextArea: ElementRef; // Verbindung zum Textarea-Element
+
   constructor(private sharedEmojiServiceService: SharedEmojiServiceService,
     private dialogRef: MatDialogRef<DialogShowEmojisComponent>
-    ) {}
+  ) { }
 
   emojiSelected(emoji: string) {
-    console.log('Ausgewähltes Emoji:', emoji);
-    this.sharedEmojiServiceService.setSelectedEmoji(emoji);
-    this.closeDialog();  }
+    const textarea = this.emojiTextArea.nativeElement;
 
-    closeDialog() {
-      this.dialogRef.close();
-    }
+    // Füge das ausgewählte Emoji in das <textarea> ein
+    textarea.value += emoji;
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
 
   emojione = emojione;
 }
