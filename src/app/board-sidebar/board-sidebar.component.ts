@@ -29,7 +29,8 @@ export class BoardSidebarComponent implements OnInit {
     admin: '',
     members: [],
     name: '',
-    description: ''
+    description: '',
+    chats: []
   }
 
   channelName: any;

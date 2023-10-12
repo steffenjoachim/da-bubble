@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, collection, collectionData, Timestamp } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, Timestamp, deleteDoc, doc, getDoc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map, BehaviorSubject } from 'rxjs';
+import { Observable, map, BehaviorSubject, of } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
@@ -141,6 +141,29 @@ export class BoardContentComponent implements OnInit {
       return `${dayName}, ${day} ${month}`;
     }
   }
+
+  async deleteChat(channelChats) {
+    const channelId = this.selectedChannel.id;
+    const chatToRemove = channelChats;
+    if (this.loggedUser.name === chatToRemove.sender) {
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+      const channelDocSnapshot = await getDoc(channelDocRef);
+      if (channelDocSnapshot.exists()) {
+        const chatsArray = channelDocSnapshot.data()['chats'];
+        if (chatsArray) {
+          const updatedChatsArray = chatsArray.filter(chat => chat.id !== chatToRemove.id);
+          await setDoc(channelDocRef, { chats: updatedChatsArray }, { merge: true });
+          this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
+        }
+      }
+    }
+  }
+
+
+
+
+
+
 
 
 

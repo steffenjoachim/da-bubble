@@ -62,7 +62,7 @@
               <img class="avatar" [src]="channelChats.avatar">
               <!-- <div *ngIf="isHovered && selectedChannelChat === channelChats" (mouseover)="showChatIcons(channelChats)" (mouseout)="hideChatIcons()"> -->
                 <div class="chat-icon-frame" [ngClass]="{'show': isHovered && selectedChannelChat === channelChats}">
-                  <mat-icon class="mat-icons" fontIcon="delete"></mat-icon>
+                  <mat-icon *ngIf="loggedUser.name == channelChats.sender" class="mat-icons" fontIcon="delete" (click)="deleteChat(channelChats)"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="chat" (click)="openThread(channelChats)"></mat-icon>
                 </div>

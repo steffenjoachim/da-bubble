@@ -32,6 +32,7 @@ export class FirebaseService implements OnDestroy {
     avatar: '',
     online: true
   };
+  collection: any;
 
   constructor(public firebase: Firestore,
     private router: Router) {
