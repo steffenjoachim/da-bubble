@@ -280,11 +280,8 @@
 
 .chat-icon-frame {
   display: flex; 
-  position: absolute;
+  visibility: hidden;
   background: white;
-  right: 50px;
-  top: 0;
-  z-index: 999; 
 }
 
 

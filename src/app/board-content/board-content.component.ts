@@ -291,14 +291,13 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  showChatIcons(channelChats: any) {
-    this.selectedChannelChat = channelChats;
-    this.isHovered = true;
+  showChatIcons(i: number) {
+    document.getElementById(`chat-icon-frame${i}`).style.visibility = 'visible';
   }
 
-  hideChatIcons() {
-    this.selectedChannelChat = null;
-    this.isHovered = false;
+  hideChatIcons(i: number) {
+    document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
+
   }
 
 
