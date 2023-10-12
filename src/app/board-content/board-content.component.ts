@@ -287,6 +287,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   openThread(chat: any) {
+    console.log('opened')
     const data = {
       chat: chat,
       selectedChannel: this.selectedChannel
@@ -296,6 +297,7 @@ export class BoardContentComponent implements OnInit {
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
+    event.stopPropagation()
   }
 
 

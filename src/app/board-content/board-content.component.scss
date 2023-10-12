@@ -202,6 +202,7 @@
 }
 
 .sent-name-avatar {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   img {
@@ -241,6 +242,7 @@
 }
 
 .recieved-name-avatar {
+  position: relative;
   display: flex;
   flex-direction: row-reverse;
   img {
@@ -276,3 +278,25 @@
   padding: 8px 16px;
 }
 
+.chat-icon-frame {
+  display: flex; 
+  position: absolute;
+  background: white;
+  right: 50px;
+  top: 0;
+  z-index: 999; 
+}
+
+
+
+// .chat-icon-frame.show {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   padding: 16px;
+//   border: 1px solid black;
+//   border-radius: 25px 25px 25px 0;
+//   mat-icon{
+//     padding-right: 8px;
+//   }
+// }

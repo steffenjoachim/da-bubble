@@ -60,18 +60,13 @@
                 </div>
               </div>
               <img class="avatar" [src]="channelChats.avatar">
-              <div *ngIf="isHovered && selectedChannelChat === channelChats" class="chat-icon-frame">
-
-                <div>
+              <!-- <div *ngIf="isHovered && selectedChannelChat === channelChats" (mouseover)="showChatIcons(channelChats)" (mouseout)="hideChatIcons()"> -->
+                <div class="chat-icon-frame" [ngClass]="{'show': isHovered && selectedChannelChat === channelChats}">
                   <mat-icon class="mat-icons" fontIcon="delete"></mat-icon>
-                </div>
-                <div>
                   <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                  <mat-icon class="mat-icons" fontIcon="chat" (click)="openThread(channelChats)"></mat-icon>
                 </div>
-                <div>
-                  <mat-icon (click)="openThread(channelChats)" class="mat-icons" fontIcon="chat"></mat-icon>
-                </div>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
 
