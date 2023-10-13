@@ -43,18 +43,21 @@ export class BoardContentComponent implements OnInit {
   channel;//localStorage
   showChannelChat: boolean = false
   showChat: boolean = false;
+  emojisContainerVisible: boolean = false;
+  isHovered: boolean = false;
   message: any = '';
   selectedRecipient: string;
   chats: any;
   answersAmount: number;
   length: number;
+  i: number = 0;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
-  i: number = 0;
+
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
-  isHovered: boolean = false;
+
   private chatCount = 0;
   public selectedChannelChat: any = null;
   emojis: string[] = [
@@ -65,8 +68,6 @@ export class BoardContentComponent implements OnInit {
     "😬", "😵", "🥴", "🤐", "🤨", "😐", "😑", "😕", "🤓", "🎉",
   ];
 
-
-  @ViewChild('emojiTextArea') emojiTextArea: ElementRef;
 
   constructor(
     public firestore: Firestore,
@@ -81,9 +82,6 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
     this.getChannelChats();
     this.lastDisplayedDate = null;
-    // this.chatsChannel$.subscribe(chats => {
-    //   this.groupedChats = this.groupChatsByDate(chats);
-    // });
   }
 
   getMembers() {
@@ -104,17 +102,15 @@ export class BoardContentComponent implements OnInit {
   }
 
   openDialogShowEmojis() {
-   document.getElementById('emojis-container').classList.remove('d-none');
+    this.emojisContainerVisible = !this.emojisContainerVisible;
   }
 
   closeDialogEmoji(){
-    // document.getElementById('emojis-container').classList.add('d-none');
-  }
+    this.emojisContainerVisible = false;
+     }
 
   emojiSelected(emoji: string) {
-    console.log('emoji')
-    const textarea = this.emojiTextArea.nativeElement;
-    textarea.value += emoji;
+    this.message += emoji;
   }
 
   isDifferentDate(chat, index): boolean {
@@ -130,7 +126,6 @@ export class BoardContentComponent implements OnInit {
       chatDate.getDate() !== prevChatDate.getDate();
     return differentDate;
   }
-
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);

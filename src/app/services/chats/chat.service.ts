@@ -49,7 +49,7 @@ export class ChatService {
     this.getChats(name);
     this.showNameInBoardHead();
     this.showNameAsPlaceholderOfTextarea();
-  }  
+  }
 
   showNameInBoardHead() {
     document.getElementById('selected-recipient').innerHTML = `@ ` + this.selectedRecipient

@@ -34,8 +34,8 @@
             </div>
           </ng-container>
           <div (mouseover)="showChatIcons(i)" (mouseout)="hideChatIcons(i)"
-          [class.sent-container]="channelChats.sender === loggedUser.name"
-          [class.recieved-container]="channelChats.sender !== loggedUser.name">
+            [class.sent-container]="channelChats.sender === loggedUser.name"
+            [class.recieved-container]="channelChats.sender !== loggedUser.name">
 
             <div
               [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
@@ -62,9 +62,12 @@
               <img class="avatar" [src]="channelChats.avatar">
               <div>
                 <div class="chat-icon-frame" id="chat-icon-frame{{i}}">
-                  <mat-icon *ngIf="loggedUser.name == channelChats.sender" class="mat-icons" fontIcon="delete" (click)="deleteChat(channelChats)"></mat-icon>
+                  <mat-icon *ngIf="loggedUser.name == channelChats.sender"
+                    class="mat-icons" fontIcon="delete"
+                    (click)="deleteChat(channelChats)"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
-                  <mat-icon class="mat-icons" fontIcon="chat" (click)="openThread(channelChats)"></mat-icon>
+                  <mat-icon class="mat-icons" fontIcon="chat"
+                    (click)="openThread(channelChats)"></mat-icon>
                 </div>
               </div>
             </div>
@@ -99,9 +102,9 @@
 </div>
 <div class="message-container">
   <div class="message-frame">
-    <div class="input-frame">
+    <div (click)="closeDialogEmoji()" class="input-frame">
       <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37" rows="9"  #emojiTextArea>
+        cols="37" rows="9" #emojiTextArea>
       </textarea>
     </div>
     <div class="icon-container">
@@ -123,9 +126,12 @@
     </div>
   </div>
 </div>
-<div class="emojis-container d-none" id="emojis-container">
-  <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
-      <div class="selected-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
+<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer" (click)="closeDialogEmoji()">
+  <div class="emojis-container" id="emojis-container">
+    <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
+      <div class="selected-emoji" [innerHTML]="emoji"
+        style="width: 16px; height: 16px;"></div>
+    </div>
   </div>
 </div>
 <!-- <div (click)="closeDialogEmoji()">

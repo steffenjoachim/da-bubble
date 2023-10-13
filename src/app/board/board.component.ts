@@ -19,8 +19,7 @@ export class BoardComponent implements OnInit {
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
-    private channelChat: Firestore
-  ) { }
+    private channelChat: Firestore) { }
 
 
   open: boolean = true;

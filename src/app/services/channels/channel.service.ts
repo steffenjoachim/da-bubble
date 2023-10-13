@@ -44,36 +44,25 @@ export class ChannelService {
   }
 
   postChat(message: any, selectedChannel) {
-    let id = this.generateUniqueId(20); // Hier wird die eindeutige ID generiert
+    if (message.includes('😀') || message.includes('😎') || message.includes('👍')) {
+console.log('emoji');
+    }
+    console.log(message);
+    let id = this.generateUniqueId(20);
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate)
     this.channelMessage.timeStamp = timeStamp.seconds;
     let loggedUser = JSON.parse(localStorage.getItem('userData'));
-    this.channelMessage.avatar = loggedUser.avatar
+    this.channelMessage.avatar = loggedUser.avatar;
     this.channelMessage.sender = loggedUser.name;
     this.channelMessage.message = message;
     this.channelMessage.channel = selectedChannel.name;
     this.channelMessage.id = id;
-    const firebaseFieldName = 'chats'
+    const firebaseFieldName = 'chats';
     const postChat = this.channelMessage;
     this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
   }
 
-
-  // postChat(message: any, selectedChannel) {
-  //   const chatDate = new Date();
-  //   const timeStamp = Timestamp.fromDate(chatDate)
-  //   this.channelMessage.timeStamp = timeStamp.seconds;
-  //   let loggedUser = JSON.parse(localStorage.getItem('userData'));
-  //   this.channelMessage.avatar = loggedUser.avatar
-  //   this.channelMessage.sender = loggedUser.name;
-  //   this.channelMessage.message = message;
-  //   this.channelMessage.channel = selectedChannel.name;
-  //   const firebaseFieldName = 'chats'
-  //   const postChat = this.channelMessage
-  //   this.updateDocOnFirebase(postChat, firebaseFieldName);
-  //   // addDoc(this.chatCollection, this.channelMessage);
-  // }
 
   showChannelChat(channel) {
     this.showNameInBoardHead(channel);
@@ -116,7 +105,6 @@ export class ChannelService {
   generateUniqueId(length: number): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let uniqueId = '';
-
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       uniqueId += characters.charAt(randomIndex);
@@ -142,7 +130,6 @@ export class ChannelService {
         }
       } else {
         console.error('Das Feld "chats" ist in den Daten nicht vorhanden oder kein Array.');
-        console.log(currentData['chats'])
       }
     } else {
       console.error('Das Dokument existiert in Firebase nicht.');

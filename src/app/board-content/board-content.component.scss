@@ -279,7 +279,7 @@
 }
 
 .chat-icon-frame {
-  display: flex; 
+  display: flex;
   visibility: hidden;
   background: white;
 }
@@ -311,4 +311,10 @@
   }
 }
 
+.emoji-outer {
+  height: 100vh;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
 
