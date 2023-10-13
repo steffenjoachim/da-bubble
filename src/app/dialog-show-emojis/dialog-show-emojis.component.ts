@@ -25,8 +25,6 @@ export class DialogShowEmojisComponent {
 
   emojiSelected(emoji: string) {
     const textarea = this.emojiTextArea.nativeElement;
-
-    // Füge das ausgewählte Emoji in das <textarea> ein
     textarea.value += emoji;
   }
 
