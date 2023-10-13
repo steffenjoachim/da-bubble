@@ -78,6 +78,6 @@ registerLocaleData(localeDe);
 
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'de' }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

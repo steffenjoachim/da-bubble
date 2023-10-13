@@ -5,9 +5,17 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 8px;
+    position: absolute;
+    bottom: 235px;
+    border: 1px solid black;
+    border-radius: 25px 25px 0 25px;
+    background: white;
 }
 
 .selected-emoji {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #e0e0e0;
     border-radius: 8px;
     padding: 8px;
