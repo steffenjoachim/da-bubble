@@ -57,7 +57,16 @@ export class BoardContentComponent implements OnInit {
   isHovered: boolean = false;
   private chatCount = 0;
   public selectedChannelChat: any = null;
+  emojis: string[] = [
+    "❤️", "😀", "😍", "👍", "👎", "👌", "🙌", "👏", "😂", "😊",
+    "😎", "😜", "😋", "😘", "😆", "🤣", "😇", "😉", "🤗", "🤔",
+    "🙄", "😒", "😳", "😌", "😢", "😭", "😩", "😡", "😱", "🤩",
+    "🥰", "😅", "🥳", "😤", "😴", "🤯", "😪", "🤕", "🤒", "😮",
+    "😬", "😵", "🥴", "🤐", "🤨", "😐", "😑", "😕", "🤓", "🎉",
+  ];
 
+
+  @ViewChild('emojiTextArea') emojiTextArea: ElementRef;
 
   constructor(
     public firestore: Firestore,
@@ -95,10 +104,17 @@ export class BoardContentComponent implements OnInit {
   }
 
   openDialogShowEmojis() {
-    const dialogConfig = new MatDialogConfig();
-    const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
+   document.getElementById('emojis-container').classList.remove('d-none');
+  }
+
+  closeDialogEmoji(){
+    // document.getElementById('emojis-container').classList.add('d-none');
+  }
+
+  emojiSelected(emoji: string) {
+    console.log('emoji')
+    const textarea = this.emojiTextArea.nativeElement;
+    textarea.value += emoji;
   }
 
   isDifferentDate(chat, index): boolean {
@@ -158,44 +174,6 @@ export class BoardContentComponent implements OnInit {
       }
     }
   }
-
-
-
-
-
-
-
-
-
-
-  // groupChatsByDate(chats: any[]): any[] {
-  //   const grouped = [];
-  //   let currentDate = null;
-  //   chats.forEach(chat => {
-  //     chat.chats.forEach(element => {
-  //       const chatDate = new Date(element.timeStamp * 1000);
-  //       if (!currentDate || !this.areDatesEqual(currentDate, chatDate)) {
-  //         grouped.push({
-  //           date: chatDate,
-  //           messages: [chat]
-  //         });
-  //         currentDate = chatDate;
-  //       } else {
-  //         grouped[grouped.length - 1].messages.push(chat);
-  //       }
-  //     });
-  //   });
-  //   return grouped;
-  // }
-
-
-  // areDatesEqual(date1: Date, date2: Date): boolean {
-  //   return (
-  //     date1.getFullYear() === date2.getFullYear() &&
-  //     date1.getMonth() === date2.getMonth() &&
-  //     date1.getDate() === date2.getDate()
-  //   );
-  // }
 
   setSelectedRecipient() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;

@@ -1,6 +1,6 @@
-<div class="emojis-container">
+<div class="emojis-container d-none" id="emojis-container">
   <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
-      <div class="selected-emoji" [innerHTML]="emojione.toImage(emoji)" style="width: 32px; height: 32px;"></div>
+      <div class="selected-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
   </div>
 </div>
-<textarea #emojiTextArea></textarea>
+<!-- <textarea #emojiTextArea></textarea> -->

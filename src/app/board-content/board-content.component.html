@@ -101,7 +101,7 @@
   <div class="message-frame">
     <div class="input-frame">
       <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37" rows="9">
+        cols="37" rows="9"  #emojiTextArea>
       </textarea>
     </div>
     <div class="icon-container">
@@ -123,3 +123,11 @@
     </div>
   </div>
 </div>
+<div class="emojis-container d-none" id="emojis-container">
+  <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
+      <div class="selected-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
+  </div>
+</div>
+<!-- <div (click)="closeDialogEmoji()">
+<app-dialog-show-emojis #showEmojis (openEmojis)="dialogShowEmojis.emojiSelected()"></app-dialog-show-emojis>
+</div> -->
