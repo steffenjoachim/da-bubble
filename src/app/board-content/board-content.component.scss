@@ -184,6 +184,7 @@
 }
 
 .sent-message {
+  min-width: 40px;
   display: flex;
   flex-direction: column;
   border: none;
@@ -219,6 +220,7 @@
 }
 
 .recieved-message {
+  min-width: 40px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
