@@ -61,7 +61,7 @@ export class BoardContentComponent implements OnInit {
   private chatCount = 0;
   public selectedChannelChat: any = null;
   emojis: string[] = [
-    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", 
+    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
     "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
     "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
     "😖", "😢", "😭", "😓", "😪", "😥", "😰", "😩", "😫", "😤",
@@ -116,6 +116,7 @@ export class BoardContentComponent implements OnInit {
 
   emojiSelected(emoji: string) {
     this.message += emoji;
+    this.emojisContainerVisible = true;
   }
 
   isDifferentDate(chat, index): boolean {
