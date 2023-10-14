@@ -24,6 +24,7 @@
     height: 62vh;
     border-radius: 25px;
     margin-bottom: 16px;
+    
   }
   h1 {
     font-size: 32px;
@@ -166,6 +167,13 @@
 a {
   font-family: Nunito, "Helvetica Neue", sans-serif;
   z-index: 9;
+}
+
+.registration-frame{
+  margin-top: 32px;
+  span{
+    padding-right: 16px;
+  }
 }
 
 @media (min-height: 800px) {

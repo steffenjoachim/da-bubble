@@ -53,7 +53,7 @@
                   <span
                     (click)="openThread(channelChats); openDialogChannelReaction()"
                     class="answer">Gib {{
-                    channelChats.sender }}eine Antwort</span>
+                    channelChats.sender }} eine Antwort</span>
                   <span (click)="openThread(channelChats)"
                     class="number-answers" *ngIf="channelChats.answers.length">Es
                     gibt {{channelChats.answers.length}} Antwort(en)</span>
@@ -90,8 +90,6 @@
               <span class="date">{{ chat.timeStamp * 1000 | date:
                 'HH:mm' }}</span>
               <span>{{ chat.message }}</span>
-              <span class="answer">Gib <span class="element-sender"> </span>
-                eine Antwort</span>
             </div>
           </div>
           <img class="avatar" src={{chat.avatar}}>

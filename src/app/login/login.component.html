@@ -9,16 +9,13 @@
                         verwendest.</span>
                     <div class="input-frame">
                         <mat-icon fontIcon="email"></mat-icon>
-                        <input [(ngModel)]="loginData.email" type="email"
-                            name="email" required
+                        <input [(ngModel)]="loginData.email" type="email" name="email" required
                             placeholder="beispielname@email.com" #emailField>
                     </div>
                     <div class="input-frame">
                         <mat-icon fontIcon="lock"></mat-icon>
-                        <input id="input" [(ngModel)]="loginData.password"
-                            name="password" required
-                            type="{{ passwordVisible ? 'text' : 'password' }}"
-                            placeholder="Passwort" #passwordField>
+                        <input id="input" [(ngModel)]="loginData.password" name="password" required
+                            type="{{ passwordVisible ? 'text' : 'password' }}" placeholder="Passwort" #passwordField>
                         <img (click)="togglePasswordVisibility()" src="{{ icon ? show : hide }}" alt>
                     </div>
                     <span id="wrong"></span>
@@ -30,22 +27,21 @@
                     <div class="line"></div>
                 </div>
                 <div id="google-login" class="button-container">
-                    <a (click)="loginGoogle()" href="#"
-                        class="google-btn c-blue">
-                        <img class="google-logo" src="./assets/img/Google.png"
-                            alt="Google logo">
+                    <a (click)="loginGoogle()" href="#" class="google-btn c-blue">
+                        <img class="google-logo" src="./assets/img/Google.png" alt="Google logo">
                         <p class="login-with-google">Anmelden mit Google</p>
                     </a>
                     <div class="login-btn">
                         <button class="login bg-blue fz-16-fw-700" #button>Anmelden</button>
-                        <a (click)="guestLogin()"
-                            class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
+                        <a (click)="guestLogin()" class="guest-login c-blue fz-16-fw-700"> Gäste-Login</a>
                     </div>
                 </div>
             </form>
         </mat-card-content>
     </mat-card>
-    <span class=" new fw-400">Neu bei DABubble?</span>
-    <a routerLink="/registration" class="create-account c-blue fz-16-fw-700">Konto
-        erstellen</a>
+    <div class="registration-frame">
+        <span class=" new fw-400">Neu bei DABubble?</span>
+        <a routerLink="/registration" class="create-account c-blue fz-16-fw-700">Konto
+            erstellen</a>
+    </div>
 </div>
