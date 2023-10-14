@@ -70,7 +70,7 @@ export class BoardContentComponent implements OnInit {
     "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "😎", "🤓", "🧐", "😕",
     "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧",
     "😨", "😰", "😥", "😪", "😓", "😔", "😞", "😒", "😩", "😫",
-    "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧", "😊", "😇",
+    "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧","😊", "😇",
   ];
 
 
@@ -116,6 +116,10 @@ export class BoardContentComponent implements OnInit {
 
   emojiSelected(emoji: string) {
     this.message += emoji;
+    setTimeout(() => {
+      this.emojisContainerVisible = true;
+    }, 1);
+    
   }
 
   isDifferentDate(chat, index): boolean {
@@ -323,6 +327,10 @@ export class BoardContentComponent implements OnInit {
   closeDialogChannelReaction() {
     this.dialogRef.close();
     console.log('closed');
+  }
+
+  addChatReaction(){
+    console.log('added');
   }
 
 }

@@ -44,16 +44,13 @@
                 <div class="name-hour">
                   <span class="message-sender">{{ channelChats.sender }}</span>
                   <span class="date">{{channelChats.timeStamp * 1000 | date:
-                    'HH:MM '}}Uhr</span>
+                    'HH:mm'}}Uhr</span>
                 </div>
                 <div
                   [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span>{{ channelChats.message }}</span>
-                  <span
-                    (click)="openThread(channelChats); openDialogChannelReaction()"
-                    class="answer">Gib {{
-                    channelChats.sender }} eine Antwort</span>
+  
                   <span (click)="openThread(channelChats)"
                     class="number-answers" *ngIf="channelChats.answers.length">Es
                     gibt {{channelChats.answers.length}} Antwort(en)</span>
@@ -65,7 +62,7 @@
                   <mat-icon *ngIf="loggedUser.name == channelChats.sender"
                     class="mat-icons" fontIcon="delete"
                     (click)="deleteChat(channelChats)"></mat-icon>
-                  <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                  <mat-icon (click)="openDialogShowEmojis()" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="chat"
                     (click)="openThread(channelChats)"></mat-icon>
                 </div>
@@ -107,15 +104,15 @@
     </div>
     <div class="icon-container">
       <div class="icon-left">
-        <div class="icon-div">
+        <!-- <div class="icon-div">
           <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
-        </div>
+        </div> -->
         <div (click)="openDialogShowEmojis()" class="icon-div">
           <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
         </div>
-        <div class="icon-div">
+        <!-- <div class="icon-div">
           <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
-        </div>
+        </div> -->
       </div>
       <div class="icon-right">
         <img (click)="postChat()" class="submit-arrow"
