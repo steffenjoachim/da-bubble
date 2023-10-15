@@ -245,3 +245,44 @@ textarea {
   background-color: rgb(68, 77, 242); /* Farbe des Scrollbalken-Thumb */
   border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
 }
+
+.emojis-container{
+  width: 300px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: absolute;
+  bottom: 220px;
+  left: 24px;
+  border: 1px solid black;
+  border-radius: 25px 25px 0 25px;
+  background: white;
+}
+
+.selected-emoji {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+      background-color: #d0d0d0;
+  }
+}
+
+.emoji-outer {
+  height: 100vh;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+@media (max-height: 800px) {
+  .message-frame{
+      height: 165px;
+  }
+}

@@ -50,7 +50,6 @@
                   [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span>{{ channelChats.message }}</span>
-
                   <span (click)="openThread(channelChats)"
                     class="number-answers" *ngIf="channelChats.answers.length">Es
                     gibt {{channelChats.answers.length}} Antwort(en)</span>
@@ -62,15 +61,22 @@
                   <mat-icon *ngIf="loggedUser.name == channelChats.sender"
                     class="mat-icons" fontIcon="delete"
                     (click)="deleteChat(channelChats)"></mat-icon>
-                  <mat-icon (click)="openDialogShowEmojis()" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                  <mat-icon (click)="openShowReaction()" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="chat"
                     (click)="openThread(channelChats)"></mat-icon>
                 </div>
               </div>
             </div>
           </div>
-
         </ng-container>
+      </div>
+    </div>
+    <div *ngIf="emojisReactionContainerVisible" class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction()">
+      <div class="emojis-reaction-container" id="emojis-container">
+        <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
+          <div class="selected-reaction-emoji" [innerHTML]="emoji"
+            style="width: 16px; height: 16px;"></div>
+        </div>
       </div>
     </div>
   </ng-container>

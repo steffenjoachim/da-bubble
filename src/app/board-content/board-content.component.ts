@@ -44,6 +44,7 @@ export class BoardContentComponent implements OnInit {
   showChannelChat: boolean = false
   showChat: boolean = false;
   emojisContainerVisible: boolean = false;
+  emojisReactionContainerVisible: boolean = false;
   isHovered: boolean = false;
   message: any = '';
   selectedRecipient: string;
@@ -72,7 +73,6 @@ export class BoardContentComponent implements OnInit {
     "😨", "😰", "😥", "😪", "😓", "😔", "😞", "😒", "😩", "😫",
     "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧","😊", "😇",
   ];
-
 
   constructor(
     public firestore: Firestore,
@@ -119,7 +119,6 @@ export class BoardContentComponent implements OnInit {
     setTimeout(() => {
       this.emojisContainerVisible = true;
     }, 1);
-
   }
 
   isDifferentDate(chat, index): boolean {
@@ -314,24 +313,28 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-  openDialogChannelReaction() {
-    console.log('opened');
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-    }
-    const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
+  // openDialogChannelReaction() {
+  //   console.log('opened');
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.data = {
+  //   }
+  //   const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
+  //   dialogRef.afterClosed().subscribe(result => {
+  //   });
+  // }
+
+  // closeDialogChannelReaction() {
+  //   this.dialogRef.close();
+  //   console.log('closed');
+  // }
+
+  openShowReaction(){
+    this.emojisReactionContainerVisible = !this.emojisReactionContainerVisible;
   }
 
-  closeDialogChannelReaction() {
-    this.dialogRef.close();
-    console.log('closed');
-  }
-
-  addChatReaction(){
-    console.log('added');
-  }
+  closeShowReaction(){
+    this.emojisReactionContainerVisible = false;
+     }
 
 }
 

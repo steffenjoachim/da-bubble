@@ -34,7 +34,7 @@ export class BoardThreadComponent implements OnInit {
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
-  message: string;
+  message: string ='';
   relevantAnswers: Observable<any>;
   chatAnswersSubject = new Subject<any[]>();
   answers$: Observable<any>;
@@ -48,6 +48,19 @@ export class BoardThreadComponent implements OnInit {
   chatTimeStamp: number;
   selectedChannelMessage: any;
   answersLength: number;
+  emojisContainerVisible: boolean = false;
+  emojis: string[] = [
+    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", 
+    "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
+    "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
+    "😖", "😢", "😭", "😓", "😪", "😥", "😰", "😩", "😫", "😤",
+    "😠", "😡", "🤬", "🤯", "😳", "🥺", "😨", "😰", "😥", "😓",
+    "🤗", "🙄", "😬", "😐", "😯", "😦", "😧", "😮", "😲", "🥴",
+    "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "🤓", "🧐", "😕",
+    "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧",
+    "😥", "😪", "😓", "😔", "😒", "😩", "😫",
+    "😤", "😠",  "🤯", "🤢", "🤮", "🤧","😊", "😇",
+  ];
 
   constructor(
     public firestore: Firestore,
@@ -127,26 +140,23 @@ export class BoardThreadComponent implements OnInit {
     this.message = '';
   }
 
-
-  openDialogShowEmojis() {
-    console.log('clicked');
-    const dialogConfig = new MatDialogConfig();
-    const dialogRef = this.dialog.open(DialogShowEmojisComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
-
-  insertEmojiInMessage() {
-    const selectedEmoji = this.sharedEmojiServiceService.getSelectedEmoji();
-    if (selectedEmoji) {
-      this.message += selectedEmoji;
-      this.sharedEmojiServiceService.setSelectedEmoji('');
-      console.log(selectedEmoji);
-    }
-  }
-
   scrollToBottom() {
     document.getElementById('content-frame').scrollTop = document.getElementById('content-frame-thread').scrollHeight;
+  }
+
+  openDialogShowEmojis() {
+    this.emojisContainerVisible = !this.emojisContainerVisible;
+  }
+
+  closeDialogEmoji(){
+    this.emojisContainerVisible = false;
+     }
+
+  emojiSelected(emoji: string) {
+    this.message += emoji;
+    setTimeout(() => {
+      this.emojisContainerVisible = true;
+    }, 1);
   }
 
 }

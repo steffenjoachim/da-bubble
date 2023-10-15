@@ -313,6 +313,33 @@
   }
 }
 
+.emojis-reaction-container{
+  width: 58%;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 25px 0 25px 25px;
+  background: white;
+  z-index: 99;
+}
+
+.selected-reaction-emoji {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+      background-color: #d0d0d0;
+  }
+}
+
 .emoji-outer {
   height: 100vh;
   position: absolute;
@@ -320,3 +347,17 @@
   bottom: 0;
 }
 
+.emoji-reaction-outer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
+
+@media (max-height: 800px) {
+  .message-frame{
+    .input-frame{
+      height: 120px;
+    }
+  }
+}
