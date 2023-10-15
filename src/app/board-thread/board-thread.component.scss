@@ -281,3 +281,8 @@ textarea {
   bottom: 0;
 }
 
+@media (max-height: 800px) {
+  .message-frame{
+      height: 165px;
+  }
+}
