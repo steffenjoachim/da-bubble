@@ -54,7 +54,7 @@ export class BoardContentComponent implements OnInit {
   i: number = 0;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
-
+  directMessageDates: number[] = [];
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
@@ -71,15 +71,20 @@ export class BoardContentComponent implements OnInit {
     "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "😎", "🤓", "🧐", "😕",
     "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧",
     "😨", "😰", "😥", "😪", "😓", "😔", "😞", "😒", "😩", "😫",
-    "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧","😊", "😇",
+    "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧", "😊", "😇",
   ];
+
+  displayedEmojis: string[] = [];
 
   constructor(
     public firestore: Firestore,
     private firebase: FirebaseService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog) {
+    this.loadMoreEmojis();
+    this.directMessageDates = [];
+  }
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -110,9 +115,9 @@ export class BoardContentComponent implements OnInit {
     this.emojisContainerVisible = !this.emojisContainerVisible;
   }
 
-  closeDialogEmoji(){
+  closeDialogEmoji() {
     this.emojisContainerVisible = false;
-     }
+  }
 
   emojiSelected(emoji: string) {
     this.message += emoji;
@@ -121,24 +126,42 @@ export class BoardContentComponent implements OnInit {
     }, 1);
   }
 
-  isDifferentDate(chat, index): boolean {
-    if (index === 0) {
-      this.chatCount++;
-      return true;
+  isDifferentDate(chat, index) {
+    if (chat.receiver || chat.sender) {
+      const timeStampInSeconds = chat.timeStamp;
+      if (!this.directMessageDates.includes(timeStampInSeconds)) {
+        this.directMessageDates.push(timeStampInSeconds);
+      }
+      if (index > 0) {
+        const chatDate = new Date(timeStampInSeconds * 1000);
+        const prevTimeStampInSeconds = this.directMessageDates[index - 1];
+        const prevChatDate = new Date(prevTimeStampInSeconds * 1000);
+        const differentDate =
+          chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+          chatDate.getMonth() !== prevChatDate.getMonth() ||
+          chatDate.getDate() !== prevChatDate.getDate();
+        return differentDate;
+      } else {
+        if (index === 0) {
+          this.chatCount++;
+          return true;
+        }
+        const chatDate = new Date(chat.chats[index].timeStamp * 1000);
+        const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
+        const differentDate =
+          chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+          chatDate.getMonth() !== prevChatDate.getMonth() ||
+          chatDate.getDate() !== prevChatDate.getDate();
+        return differentDate;
+      }
     }
-    const chatDate = new Date(chat.chats[index].timeStamp * 1000);
-    const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
-    const differentDate =
-      chatDate.getFullYear() !== prevChatDate.getFullYear() ||
-      chatDate.getMonth() !== prevChatDate.getMonth() ||
-      chatDate.getDate() !== prevChatDate.getDate();
-    return differentDate;
+    return false;
   }
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Setze Zeit auf Mitternacht
+    currentDate.setHours(0, 0, 0, 0);
     const todayDate = new Date(currentDate);
     const yesterdayDate = new Date(currentDate);
     yesterdayDate.setDate(currentDate.getDate() - 1);
@@ -161,9 +184,9 @@ export class BoardContentComponent implements OnInit {
     }
   }
 
-  async deleteChat(channelChats) {
+  async deleteChat(selectedChat) {
     const channelId = this.selectedChannel.id;
-    const chatToRemove = channelChats;
+    const chatToRemove = selectedChat;
     if (this.loggedUser.name === chatToRemove.sender) {
       const channelDocRef = doc(this.firestore, 'channels', channelId);
       const channelDocSnapshot = await getDoc(channelDocRef);
@@ -175,6 +198,7 @@ export class BoardContentComponent implements OnInit {
           this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
         }
       }
+      await deleteDoc(doc(this.chatCollection, selectedChat.id));
     }
   }
 
@@ -328,13 +352,24 @@ export class BoardContentComponent implements OnInit {
   //   console.log('closed');
   // }
 
-  openShowReaction(){
+  openShowReaction() {
+    console.log('opened');
     this.emojisReactionContainerVisible = !this.emojisReactionContainerVisible;
   }
 
-  closeShowReaction(){
+  closeShowReaction() {
+    console.log('closed');
     this.emojisReactionContainerVisible = false;
-     }
+  }
 
+  loadMoreEmojis() {
+    const startIndex = this.displayedEmojis.length;
+    const endIndex = startIndex + 10;
+
+    if (startIndex < this.emojis.length) {
+      const newEmojis = this.emojis.slice(startIndex, endIndex);
+      this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
+    }
+  }
 }
 

@@ -44,22 +44,18 @@ export class ChannelService {
   }
 
   postChat(message: any, selectedChannel) {
-    if (message.includes('😀') || message.includes('😎') || message.includes('👍')) {
-console.log('emoji');
-    }
-    console.log(message);
-    let id = this.generateUniqueId(20);
+    const loggedUser = JSON.parse(localStorage.getItem('userData'));
+    const id = this.generateUniqueId(20);
     const chatDate = new Date();
-    const timeStamp = Timestamp.fromDate(chatDate)
+    const timeStamp = Timestamp.fromDate(chatDate);
+    const firebaseFieldName = 'chats';
+    const postChat = this.channelMessage;
     this.channelMessage.timeStamp = timeStamp.seconds;
-    let loggedUser = JSON.parse(localStorage.getItem('userData'));
     this.channelMessage.avatar = loggedUser.avatar;
     this.channelMessage.sender = loggedUser.name;
     this.channelMessage.message = message;
     this.channelMessage.channel = selectedChannel.name;
     this.channelMessage.id = id;
-    const firebaseFieldName = 'chats';
-    const postChat = this.channelMessage;
     this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
   }
 

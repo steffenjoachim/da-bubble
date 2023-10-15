@@ -7,8 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ChatService {
 
-  chatDate = new Date();
-  timeStamp = Timestamp.fromDate(this.chatDate);
+  // chatDate = new Date();
+  // timeStamp = Timestamp.fromDate(this.chatDate);
 
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
@@ -16,7 +16,7 @@ export class ChatService {
     sender: '',
     receiver: '',
     message: '',
-    timeStamp: this.timeStamp.seconds,
+    timeStamp: 0,
     avatar: ''
   }
 
@@ -35,6 +35,9 @@ export class ChatService {
   }
 
   postChat(message, sender, recipient) {
+    const chatDate = new Date();
+    const timeStamp = Timestamp.fromDate(chatDate)
+    this.chats.timeStamp = timeStamp.seconds;
     this.chats.message = message;
     this.chats.sender = sender.name;
     this.chats.receiver = recipient;
