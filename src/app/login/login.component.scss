@@ -284,7 +284,7 @@ a {
   }
 }
 
-@media (min-height: 700px) {
+@media (max-height: 800px) {
 
   .login-frame {
     mat-card {
@@ -313,5 +313,9 @@ a {
   
   .login-with-google{
     padding-top: 10px;
+  }
+
+  .registration-frame{
+    margin-top: 24px;
   }
 }
