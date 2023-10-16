@@ -133,6 +133,21 @@ export class BoardContentComponent implements OnInit {
         this.directMessageDates.push(timeStampInSeconds);
       }
       if (index > 0) {
+        return this.checkDateDirectChat(chat, index);
+      } else if (index === 0) {
+        this.chatCount++;
+        return true;
+      }
+    }
+    return this.checkDateChannelChat(chat, index);
+  }
+
+  checkDateDirectChat(chat, index){
+    const timeStampInSeconds = chat.timeStamp;
+      if (!this.directMessageDates.includes(timeStampInSeconds)) {
+        this.directMessageDates.push(timeStampInSeconds);
+      }
+      if (index > 0) {
         const chatDate = new Date(timeStampInSeconds * 1000);
         const prevTimeStampInSeconds = this.directMessageDates[index - 1];
         const prevChatDate = new Date(prevTimeStampInSeconds * 1000);
@@ -141,22 +156,23 @@ export class BoardContentComponent implements OnInit {
           chatDate.getMonth() !== prevChatDate.getMonth() ||
           chatDate.getDate() !== prevChatDate.getDate();
         return differentDate;
-      } else {
-        if (index === 0) {
-          this.chatCount++;
-          return true;
-        }
-        const chatDate = new Date(chat.chats[index].timeStamp * 1000);
-        const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
-        const differentDate =
-          chatDate.getFullYear() !== prevChatDate.getFullYear() ||
-          chatDate.getMonth() !== prevChatDate.getMonth() ||
-          chatDate.getDate() !== prevChatDate.getDate();
-        return differentDate;
-      }
-    }
-    return false;
   }
+  return false;
+}
+
+checkDateChannelChat(chat, index) {
+  if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
+    const chatDate = new Date(chat.chats[index].timeStamp * 1000);
+    const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
+    const differentDate =
+      chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+      chatDate.getMonth() !== prevChatDate.getMonth() ||
+      chatDate.getDate() !== prevChatDate.getDate();
+    return differentDate;
+  }
+  return false;
+}
+
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
@@ -336,21 +352,6 @@ export class BoardContentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-
-  // openDialogChannelReaction() {
-  //   console.log('opened');
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.data = {
-  //   }
-  //   const dialogRef = this.dialog.open(DialogChannelReactionsComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe(result => {
-  //   });
-  // }
-
-  // closeDialogChannelReaction() {
-  //   this.dialogRef.close();
-  //   console.log('closed');
-  // }
 
   openShowReaction() {
     console.log('opened');
