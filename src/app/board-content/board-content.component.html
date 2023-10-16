@@ -61,7 +61,7 @@
                   <mat-icon *ngIf="loggedUser.name == channelChats.sender"
                     class="mat-icons" fontIcon="delete"
                     (click)="deleteChat(channelChats)"></mat-icon>
-                  <mat-icon (click)="openShowReaction()" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                  <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="chat"
                     (click)="openThread(channelChats)"></mat-icon>
                 </div>
@@ -89,6 +89,14 @@
         [class.recieved-container]="chat.sender !== loggedUser.name">
         <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
           [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+          <div class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction(i)">
+            <div class="emojis-reaction-container" id="emojis-container-chat{{i}}">
+              <div *ngFor="let emoji of displayedEmojis" (click)="emojiSelectedReactionChat(emoji, chat)">
+                <div class="selected-reaction-emoji" [innerHTML]="emoji"
+                  style="width: 16px; height: 16px;">+</div>
+              </div>
+            </div>
+          </div>
           <div><span>{{ chat.sender }} </span>
             <span class="date">{{ chat.timeStamp * 1000 | date: 'HH:mm '}}Uhr</span>
             <div [class.sent-message]="chat.sender === loggedUser.name"
@@ -102,20 +110,13 @@
               <mat-icon *ngIf="loggedUser.name == chat.sender"
                 class="mat-icons" fontIcon="delete"
                 (click)="deleteChat(chat)"></mat-icon>
-              <mat-icon (click)="openShowReaction()" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+              <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="emojisReactionContainerVisible" class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction()">
-      <div class="emojis-reaction-container" id="emojis-container">
-        <div *ngFor="let emoji of displayedEmojis" (click)="emojiSelected(emoji)">
-          <div class="selected-reaction-emoji" [innerHTML]="emoji"
-            style="width: 16px; height: 16px;">+</div>
-        </div>
-      </div>
-    </div>
+
   </ng-container>
 </div>
 <div class="message-container">
@@ -143,7 +144,6 @@
       </div>
     </div>
   </div>
-
 </div>
 <div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer" (click)="closeDialogEmoji()">
   <div class="emojis-container" id="emojis-container">
@@ -156,4 +156,3 @@
 <!-- <div (click)="closeDialogEmoji()">
 <app-dialog-show-emojis #showEmojis (openEmojis)="dialogShowEmojis.emojiSelected()"></app-dialog-show-emojis>
 </div> -->
-

@@ -31,6 +31,12 @@ export class BoardContentComponent implements OnInit {
     name: 'Gast'
   }
 
+  reaction: any = {
+    emoji: [],
+    sender: '',
+    timeStamp: 0
+  }
+
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.firestore, 'channels')
@@ -58,7 +64,6 @@ export class BoardContentComponent implements OnInit {
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
-
   private chatCount = 0;
   public selectedChannelChat: any = null;
   emojis: string[] = [
@@ -142,36 +147,36 @@ export class BoardContentComponent implements OnInit {
     return this.checkDateChannelChat(chat, index);
   }
 
-  checkDateDirectChat(chat, index){
+  checkDateDirectChat(chat, index) {
     const timeStampInSeconds = chat.timeStamp;
-      if (!this.directMessageDates.includes(timeStampInSeconds)) {
-        this.directMessageDates.push(timeStampInSeconds);
-      }
-      if (index > 0) {
-        const chatDate = new Date(timeStampInSeconds * 1000);
-        const prevTimeStampInSeconds = this.directMessageDates[index - 1];
-        const prevChatDate = new Date(prevTimeStampInSeconds * 1000);
-        const differentDate =
-          chatDate.getFullYear() !== prevChatDate.getFullYear() ||
-          chatDate.getMonth() !== prevChatDate.getMonth() ||
-          chatDate.getDate() !== prevChatDate.getDate();
-        return differentDate;
+    if (!this.directMessageDates.includes(timeStampInSeconds)) {
+      this.directMessageDates.push(timeStampInSeconds);
+    }
+    if (index > 0) {
+      const chatDate = new Date(timeStampInSeconds * 1000);
+      const prevTimeStampInSeconds = this.directMessageDates[index - 1];
+      const prevChatDate = new Date(prevTimeStampInSeconds * 1000);
+      const differentDate =
+        chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+        chatDate.getMonth() !== prevChatDate.getMonth() ||
+        chatDate.getDate() !== prevChatDate.getDate();
+      return differentDate;
+    }
+    return false;
   }
-  return false;
-}
 
-checkDateChannelChat(chat, index) {
-  if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
-    const chatDate = new Date(chat.chats[index].timeStamp * 1000);
-    const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
-    const differentDate =
-      chatDate.getFullYear() !== prevChatDate.getFullYear() ||
-      chatDate.getMonth() !== prevChatDate.getMonth() ||
-      chatDate.getDate() !== prevChatDate.getDate();
-    return differentDate;
+  checkDateChannelChat(chat, index) {
+    if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
+      const chatDate = new Date(chat.chats[index].timeStamp * 1000);
+      const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
+      const differentDate =
+        chatDate.getFullYear() !== prevChatDate.getFullYear() ||
+        chatDate.getMonth() !== prevChatDate.getMonth() ||
+        chatDate.getDate() !== prevChatDate.getDate();
+      return differentDate;
+    }
+    return false;
   }
-  return false;
-}
 
 
   formatDate(timeStamp: number): string {
@@ -291,6 +296,8 @@ checkDateChannelChat(chat, index) {
         this.selectChannel(chats, this.channel);
       } else if (chats.length > 0) {
         this.channel = '# ' + chats[0].name;
+        localStorage.setItem('selected-recipient', this.channel);
+        this.setSelectedRecipient();
         this.selectChannel(chats, this.channel);
       }
       setTimeout(() => {
@@ -321,6 +328,14 @@ checkDateChannelChat(chat, index) {
 
   }
 
+  emojiSelectedReactionChat(emoji, chat) {
+    this.reaction.emoji = [];
+    const date = new Date();
+    this.reaction.timeStamp = date.getTime();
+    this.reaction.emoji.push(emoji);
+    this.reaction.sender = this.loggedUser.name;
+    this.chatService.postReaction(this.reaction, chat);
+  }
 
   scrollToBottom() {
     const contentFrame = document.getElementById('content-frame');
@@ -353,14 +368,12 @@ checkDateChannelChat(chat, index) {
     });
   }
 
-  openShowReaction() {
-    console.log('opened');
-    this.emojisReactionContainerVisible = !this.emojisReactionContainerVisible;
+  openShowReaction(i) {
+    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
   }
 
-  closeShowReaction() {
-    console.log('closed');
-    this.emojisReactionContainerVisible = false;
+  closeShowReaction(i) {
+    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
   }
 
   loadMoreEmojis() {

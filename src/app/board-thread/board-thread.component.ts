@@ -50,7 +50,7 @@ export class BoardThreadComponent implements OnInit {
   answersLength: number;
   emojisContainerVisible: boolean = false;
   emojis: string[] = [
-    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", 
+    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
     "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
     "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
     "😖", "😢", "😭", "😓", "😪", "😥", "😰", "😩", "😫", "😤",
@@ -74,10 +74,6 @@ export class BoardThreadComponent implements OnInit {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
   }
-
-  // ngAfterViewInit(): void {
-  //     this.scrollToBottom();
-  //   }
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
