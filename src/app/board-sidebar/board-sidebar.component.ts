@@ -142,6 +142,7 @@ export class BoardSidebarComponent implements OnInit {
       this.channelChat.showChannelChat(name)
     }
     document.getElementById('channel-members').classList.add('d-none');
+    document.getElementById('thread')?.classList.add('d-none');
   }
 
   getUsers() {

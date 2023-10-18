@@ -166,7 +166,10 @@ export class BoardContentComponent implements OnInit {
   }
 
   checkDateChannelChat(chat, index) {
-    if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
+    if ( index == 0){
+      const chatDate = new Date(chat.chats[index].timeStamp * 1000);
+      return chatDate;
+    } else if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
       const chatDate = new Date(chat.chats[index].timeStamp * 1000);
       const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
       const differentDate =
@@ -221,6 +224,7 @@ export class BoardContentComponent implements OnInit {
       }
       await deleteDoc(doc(this.chatCollection, selectedChat.id));
     }
+    document.getElementById('thread')?.classList.add('d-none');
   }
 
   setSelectedRecipient() {
