@@ -166,6 +166,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   checkDateChannelChat(chat, index) {
+    console.log(chat)
+    debugger
     if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
       const chatDate = new Date(chat.chats[index].timeStamp * 1000);
       const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
@@ -325,7 +327,6 @@ export class BoardContentComponent implements OnInit {
 
   hideChatIcons(i: number) {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
-
   }
 
   emojiSelectedReactionChat(emoji, chat) {
@@ -357,7 +358,6 @@ export class BoardContentComponent implements OnInit {
     document.getElementById('thread')?.classList.remove('d-none');
     event.stopPropagation()
   }
-
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();

@@ -7,10 +7,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChatService {
-
-  // chatDate = new Date();
-  // timeStamp = Timestamp.fromDate(this.chatDate);
-
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   chats: any = {
@@ -29,7 +25,6 @@ export class ChatService {
   selectedRecipient = '# Entwicklerteam';
   relevantChats: any[];
   chats$: Observable<import("@angular/fire/firestore").DocumentData[]>;
-
   chatCollection: any = collection(this.firebase, 'chats');
   constructor(private firebase: Firestore) {
     this.loggedUser = JSON.parse(localStorage.getItem('userData'))
@@ -49,22 +44,17 @@ export class ChatService {
   async postReaction(reaction, chat) {
     console.log('postReaction', reaction, chat);
     const documentReference = doc(this.chatCollection, chat.id);
-
     return getDoc(documentReference).then((doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        const reactions = data['reactions'] || []; // Falls 'reactions' nicht existiert, erstelle ein leeres Array
+        const reactions = data['reactions'] || [];
         reactions.push(reaction);
-
         return updateDoc(documentReference, { reactions });
       } else {
-        // Das Dokument existiert nicht. Du kannst es erstellen und das Array 'reactions' mit einem Eintrag initialisieren.
         return setDoc(documentReference, { reactions: [reaction] });
       }
     });
   }
-
-
 
     showChat(name) {
       this.selectedRecipient = name;
@@ -107,7 +97,6 @@ export class ChatService {
       });
       let content = document.getElementById('message-content');
       content.innerHTML = "";
-
       for (let i = 0; i < this.relevantChats.length; i++) {
         let element = this.relevantChats[i];
         if (this.loggedUser.name == element.sender) {
@@ -146,7 +135,6 @@ export class ChatService {
       </div>
     `;
     }
-
 
     returnRecievedMessageChat(element) {
       const unixTimestamp = element.timeStamp;
