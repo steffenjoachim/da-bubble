@@ -364,64 +364,91 @@ export class BoardContentComponent implements OnInit {
           if (chat.reactions && chat.reactions.length > 0) {
             const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emojiToFind);
             if (matchingReactions.length > 0 && chat.message === messageToFind.message) {
-              return { ...chat, reactions: matchingReactions };
+              matchingReactions.forEach(reaction => {
+                if (reaction.userReaction.length > 0) {
+                  if (reaction.userReaction[0].sender == this.loggedUser.name) {
+                    reaction.counter -= 1;
+                     reaction.userReaction.splice(0, 1)
+                    console.log('test')
+                  }
+                } else {
+                  reaction.counter += 1;
+                  reaction.userReaction.push({
+                    sender: this.loggedUser.name,
+                    timeStamp: new Date().getTime()
+                  });
+                }
+              });
+
+              return chat;
             }
           }
           return null;
         }).filter(chat => chat !== null);
       })
     );
+    let stopRepeat = false;
     this.emojis$.subscribe((filteredReactions) => {
-      console.log(filteredReactions);
+      filteredReactions.forEach(chat => {
+        if (!stopRepeat) {
+          stopRepeat = true;
+          this.updateReactionsInFirebase(chat.id, chat.reactions);
+        }
+      });
     });
   }
 
-
-scrollToBottom() {
-  const contentFrame = document.getElementById('content-frame');
-  if (contentFrame) {
-    contentFrame.scrollTop = contentFrame.scrollHeight;
+  async updateReactionsInFirebase(docId, updatedReactions) {
+    console.log(docId, updatedReactions);
+    const document = doc(this.firestore, 'chats', docId);
+    await updateDoc(document, { reactions: updatedReactions });
   }
-}
 
-openThread(chat: any) {
-  const data = {
-    chat: chat,
-    selectedChannel: this.selectedChannel
+  scrollToBottom() {
+    const contentFrame = document.getElementById('content-frame');
+    if (contentFrame) {
+      contentFrame.scrollTop = contentFrame.scrollHeight;
+    }
   }
-  if (!this.selectedChannel) {
-    data.selectedChannel = this.selectedChannel
+
+  openThread(chat: any) {
+    const data = {
+      chat: chat,
+      selectedChannel: this.selectedChannel
+    }
+    if (!this.selectedChannel) {
+      data.selectedChannel = this.selectedChannel
+    }
+    this.contentClicked.emit(JSON.stringify(data));
+    document.getElementById('thread')?.classList.remove('d-none');
+    event.stopPropagation()
   }
-  this.contentClicked.emit(JSON.stringify(data));
-  document.getElementById('thread')?.classList.remove('d-none');
-  event.stopPropagation()
-}
 
-openDialogchannelInfo() {
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.data = {
+  openDialogchannelInfo() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+    }
+    const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
-  const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
-  dialogRef.afterClosed().subscribe(result => {
-  });
-}
 
-openShowReaction(i) {
-  document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
-}
-
-closeShowReaction(i) {
-  document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
-}
-
-loadMoreEmojis() {
-  const startIndex = this.displayedEmojis.length;
-  const endIndex = startIndex + 10;
-
-  if (startIndex < this.emojis.length) {
-    const newEmojis = this.emojis.slice(startIndex, endIndex);
-    this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
+  openShowReaction(i) {
+    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
   }
-}
+
+  closeShowReaction(i) {
+    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
+  }
+
+  loadMoreEmojis() {
+    const startIndex = this.displayedEmojis.length;
+    const endIndex = startIndex + 10;
+
+    if (startIndex < this.emojis.length) {
+      const newEmojis = this.emojis.slice(startIndex, endIndex);
+      this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
+    }
+  }
 }
 
