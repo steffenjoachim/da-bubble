@@ -102,11 +102,13 @@
               [class.recieved-message]="chat.sender !== loggedUser.name">
               <span>{{ chat.message }}</span>
             </div>
-            <div>
-              <h3>{{chat.reactions[0].emoji}}</h3>
-              <!-- <h3>{{chat.reactions[1].emoji[0]}}</h3>
-              <h3>{{chat.reactions[0].emoji.length}}</h3> -->
+            <div class="reaction-emojis">
+            <div *ngFor="let reaction of chat.reactions">
+              <div class="emoji" (click)="emojiLikeChat(reaction.emoji, chat)">{{reaction.emoji}}
+                <span class="emoji-counter">{{reaction.counter}}</span>
+              </div>
             </div>
+          </div>
           </div>
           <img class="avatar" src={{chat.avatar}}>
           <div>
@@ -118,7 +120,7 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
     </div>
 
   </ng-container>

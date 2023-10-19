@@ -30,6 +30,16 @@ export class ChatService {
     this.loggedUser = JSON.parse(localStorage.getItem('userData'))
   }
 
+  generateUniqueId(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let uniqueId = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      uniqueId += characters.charAt(randomIndex);
+    }
+    return uniqueId;
+  }
+
   postChat(message, sender, recipient) {
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate)
@@ -42,7 +52,6 @@ export class ChatService {
   }
 
   async postReaction(reaction, chat) {
-    console.log('postReaction', reaction, chat);
     const documentReference = doc(this.chatCollection, chat.id);
     return getDoc(documentReference).then((doc) => {
       if (doc.exists()) {

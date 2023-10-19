@@ -354,6 +354,21 @@
   bottom: 0;
 }
 
+.reaction-emojis{
+  display: flex;
+  gap: 8px;
+  .emoji{
+    display: flex;
+    cursor: pointer;
+    border: solid 1px black;
+    border-radius: 25px;
+    padding:6px 8px;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
 
 @media (max-height: 800px) {
   .message-frame{

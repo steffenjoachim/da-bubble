@@ -32,9 +32,14 @@ export class BoardContentComponent implements OnInit {
   }
 
   reaction: any = {
-    emoji: [],
-    sender: '',
-    timeStamp: 0
+    counter: 1,
+    emoji: '',
+    userReaction: [
+      {
+        sender: '',
+        timeStamp: 0
+      }
+    ]
   }
 
   chatCollection: any = collection(this.firestore, 'chats');
@@ -46,6 +51,7 @@ export class BoardContentComponent implements OnInit {
   channelMembers$: Observable<any>;
   filteredChannelMembers$: Observable<any[]>;
   membersOfSelectedChannel$: Observable<any>;
+  emojis$: Observable<any>;
   channel;//localStorage
   showChannelChat: boolean = false
   showChat: boolean = false;
@@ -58,6 +64,7 @@ export class BoardContentComponent implements OnInit {
   answersAmount: number;
   length: number;
   i: number = 0;
+  emojiCounter: number = 0;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
   directMessageDates: number[] = [];
@@ -97,6 +104,16 @@ export class BoardContentComponent implements OnInit {
     this.getUsers();
     this.getChannelChats();
     this.lastDisplayedDate = null;
+  }
+
+  generateUniqueId(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let uniqueId = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      uniqueId += characters.charAt(randomIndex);
+    }
+    return uniqueId;
   }
 
   getMembers() {
@@ -166,7 +183,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   checkDateChannelChat(chat, index) {
-    if ( index == 0){
+    if (index == 0) {
       const chatDate = new Date(chat.chats[index].timeStamp * 1000);
       return chatDate;
     } else if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
@@ -332,60 +349,79 @@ export class BoardContentComponent implements OnInit {
   }
 
   emojiSelectedReactionChat(emoji, chat) {
-    this.reaction.emoji = [];
     const date = new Date();
-    this.reaction.timeStamp = date.getTime();
-    this.reaction.emoji.push(emoji);
-    this.reaction.sender = this.loggedUser.name;
+    this.reaction.userReaction[0].timeStamp = date.getTime();
+    this.reaction.emoji = emoji;
+    this.reaction.userReaction[0].sender = this.loggedUser.name;
     this.chatService.postReaction(this.reaction, chat);
   }
 
-  scrollToBottom() {
-    const contentFrame = document.getElementById('content-frame');
-    if (contentFrame) {
-      contentFrame.scrollTop = contentFrame.scrollHeight;
-    }
-  }
-
-  openThread(chat: any) {
-    console.log('opened')
-    const data = {
-      chat: chat,
-      selectedChannel: this.selectedChannel
-    }
-    if (!this.selectedChannel) {
-      data.selectedChannel = this.selectedChannel
-    }
-    this.contentClicked.emit(JSON.stringify(data));
-    document.getElementById('thread')?.classList.remove('d-none');
-    event.stopPropagation()
-  }
-
-  openDialogchannelInfo() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-    }
-    const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
+  emojiLikeChat(emojiToFind, messageToFind) {
+    this.emojis$ = collectionData(this.chatCollection, { idField: 'id' });
+    this.emojis$ = this.emojis$.pipe(
+      map(emojis => {
+        return emojis.map(chat => {
+          if (chat.reactions && chat.reactions.length > 0) {
+            const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emojiToFind);
+            if (matchingReactions.length > 0 && chat.message === messageToFind.message) {
+              return { ...chat, reactions: matchingReactions };
+            }
+          }
+          return null;
+        }).filter(chat => chat !== null);
+      })
+    );
+    this.emojis$.subscribe((filteredReactions) => {
+      console.log(filteredReactions);
     });
   }
 
-  openShowReaction(i) {
-    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
-  }
 
-  closeShowReaction(i) {
-    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
+scrollToBottom() {
+  const contentFrame = document.getElementById('content-frame');
+  if (contentFrame) {
+    contentFrame.scrollTop = contentFrame.scrollHeight;
   }
+}
 
-  loadMoreEmojis() {
-    const startIndex = this.displayedEmojis.length;
-    const endIndex = startIndex + 10;
-
-    if (startIndex < this.emojis.length) {
-      const newEmojis = this.emojis.slice(startIndex, endIndex);
-      this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
-    }
+openThread(chat: any) {
+  const data = {
+    chat: chat,
+    selectedChannel: this.selectedChannel
   }
+  if (!this.selectedChannel) {
+    data.selectedChannel = this.selectedChannel
+  }
+  this.contentClicked.emit(JSON.stringify(data));
+  document.getElementById('thread')?.classList.remove('d-none');
+  event.stopPropagation()
+}
+
+openDialogchannelInfo() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.data = {
+  }
+  const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
+  dialogRef.afterClosed().subscribe(result => {
+  });
+}
+
+openShowReaction(i) {
+  document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
+}
+
+closeShowReaction(i) {
+  document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
+}
+
+loadMoreEmojis() {
+  const startIndex = this.displayedEmojis.length;
+  const endIndex = startIndex + 10;
+
+  if (startIndex < this.emojis.length) {
+    const newEmojis = this.emojis.slice(startIndex, endIndex);
+    this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
+  }
+}
 }
 
