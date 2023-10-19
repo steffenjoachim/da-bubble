@@ -356,7 +356,7 @@ export class BoardContentComponent implements OnInit {
     this.chatService.postReaction(this.reaction, chat);
   }
 
-  emojiLikeChat(emojiToFind, messageToFind) {
+  emojiLikeChat(emojiToFind, messageToFind, selectedUserReaction) {
     this.emojis$ = collectionData(this.chatCollection, { idField: 'id' });
     this.emojis$ = this.emojis$.pipe(
       map(emojis => {
@@ -365,21 +365,23 @@ export class BoardContentComponent implements OnInit {
             const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emojiToFind);
             if (matchingReactions.length > 0 && chat.message === messageToFind.message) {
               matchingReactions.forEach(reaction => {
-                if (reaction.userReaction.length > 0) {
-                  if (reaction.userReaction[0].sender == this.loggedUser.name) {
-                    reaction.counter -= 1;
-                     reaction.userReaction.splice(0, 1)
-                    console.log('test')
+                if (reaction.userReaction && reaction.userReaction.length > 0) {
+                  for (let i = 0; i < reaction.userReaction.length; i++) {
+                    const reactionItem = reaction.userReaction[i];
+                    if (reactionItem.sender === selectedUserReaction) {
+                      reaction.counter -= 1;
+                      reaction.userReaction.splice(i, 1);
+                    }
                   }
                 } else {
                   reaction.counter += 1;
-                  reaction.userReaction.push({
-                    sender: this.loggedUser.name,
+                  reaction.userReaction = [{
+                    sender: selectedUserReaction,
                     timeStamp: new Date().getTime()
-                  });
+                  }];
                 }
               });
-
+  
               return chat;
             }
           }
@@ -387,6 +389,7 @@ export class BoardContentComponent implements OnInit {
         }).filter(chat => chat !== null);
       })
     );
+  
     let stopRepeat = false;
     this.emojis$.subscribe((filteredReactions) => {
       filteredReactions.forEach(chat => {
@@ -397,7 +400,7 @@ export class BoardContentComponent implements OnInit {
       });
     });
   }
-
+  
   async updateReactionsInFirebase(docId, updatedReactions) {
     console.log(docId, updatedReactions);
     const document = doc(this.firestore, 'chats', docId);
