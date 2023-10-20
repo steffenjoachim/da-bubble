@@ -100,7 +100,7 @@
               </div>
             </div>
           </div>
-          <div><span>{{ chat.sender }} </span>
+          <div class="name-and-date"><span>{{ chat.sender }} </span>
             <span class="date">{{ chat.timeStamp * 1000 | date: 'HH:mm '}}Uhr</span>
             <div [class.sent-message]="chat.sender === loggedUser.name"
               [class.recieved-message]="chat.sender !== loggedUser.name">

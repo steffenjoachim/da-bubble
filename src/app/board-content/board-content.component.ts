@@ -371,7 +371,6 @@ export class BoardContentComponent implements OnInit {
         matchingReactions.forEach(reaction => {
           const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
           if (userReactionIndex !== -1) {
-
             reaction.counter -= 1;
             reaction.userReaction.splice(userReactionIndex, 1);
           } else {
