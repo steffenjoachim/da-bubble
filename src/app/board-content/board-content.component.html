@@ -104,7 +104,7 @@
             </div>
             <div class="reaction-emojis">
             <div *ngFor="let reaction of chat.reactions">
-              <div class="emoji" (click)="emojiLikeChat(reaction.emoji, chat, loggedUser.name)">{{reaction.emoji}}
+              <div *ngIf="reaction.counter" class="emoji" (click)="emojiLikeChat(reaction.emoji, chat, loggedUser.name)">{{reaction.emoji}}
                 <span class="emoji-counter">{{reaction.counter}}</span>
               </div>
             </div>            

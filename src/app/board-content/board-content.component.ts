@@ -357,6 +357,7 @@ export class BoardContentComponent implements OnInit {
   }
 
   emojiLikeChat(emojiToFind, messageToFind, selectedUserReaction) {
+    console.log(selectedUserReaction, messageToFind)
     this.emojis$ = collectionData(this.chatCollection, { idField: 'id' });
     this.emojis$ = this.emojis$.pipe(
       map(emojis => {
