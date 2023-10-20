@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input }
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData, Timestamp, deleteDoc, doc, getDoc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map, BehaviorSubject, of } from 'rxjs';
+import { Observable, map, BehaviorSubject, of, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
@@ -356,54 +356,45 @@ export class BoardContentComponent implements OnInit {
     this.chatService.postReaction(this.reaction, chat);
   }
 
-  emojiLikeChat(emojiToFind, messageToFind, selectedUserReaction) {
-    console.log(selectedUserReaction, messageToFind)
+  emojiLikeChat(emoji, messageToFind) {
+    const selectedUserReaction = this.loggedUser.name;
     this.emojis$ = collectionData(this.chatCollection, { idField: 'id' });
     this.emojis$ = this.emojis$.pipe(
-      map(emojis => {
-        return emojis.map(chat => {
-          if (chat.reactions && chat.reactions.length > 0) {
-            const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emojiToFind);
-            if (matchingReactions.length > 0 && chat.message === messageToFind.message) {
-              matchingReactions.forEach(reaction => {
-                if (reaction.userReaction && reaction.userReaction.length > 0) {
-                  for (let i = 0; i < reaction.userReaction.length; i++) {
-                    const reactionItem = reaction.userReaction[i];
-                    if (reactionItem.sender === selectedUserReaction) {
-                      reaction.counter -= 1;
-                      reaction.userReaction.splice(i, 1);
-                    }
-                  }
-                } else {
-                  reaction.counter += 1;
-                  reaction.userReaction = [{
-                    sender: selectedUserReaction,
-                    timeStamp: new Date().getTime()
-                  }];
-                }
-              });
-  
-              return chat;
-            }
-          }
+      map(emojis => emojis.map(chat => {
+        if (!chat.reactions || chat.reactions.length === 0) {
           return null;
-        }).filter(chat => chat !== null);
-      })
-    );
-  
-    let stopRepeat = false;
-    this.emojis$.subscribe((filteredReactions) => {
-      filteredReactions.forEach(chat => {
-        if (!stopRepeat) {
-          stopRepeat = true;
-          this.updateReactionsInFirebase(chat.id, chat.reactions);
         }
-      });
+        const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emoji);
+        if (matchingReactions.length === 0 || chat.message !== messageToFind.message) {
+          return null;
+        }
+        matchingReactions.forEach(reaction => {
+          const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
+          if (userReactionIndex !== -1) {
+
+            reaction.counter -= 1;
+            reaction.userReaction.splice(userReactionIndex, 1);
+          } else {
+            reaction.counter += 1;
+            reaction.userReaction.push({
+              sender: selectedUserReaction,
+              timeStamp: new Date().getTime()
+            });
+          }
+        });
+        return chat;
+      }).filter(chat => chat !== null))
+    );
+    this.emojis$.pipe(take(1)).subscribe(filteredReactions => {
+      if (filteredReactions.length > 0) {
+        this.updateReactionsInFirebase(filteredReactions[0].id, filteredReactions[0].reactions);
+      } else {
+        this.emojiSelectedReactionChat(emoji, messageToFind)
+      }
     });
   }
-  
+
   async updateReactionsInFirebase(docId, updatedReactions) {
-    console.log(docId, updatedReactions);
     const document = doc(this.firestore, 'chats', docId);
     await updateDoc(document, { reactions: updatedReactions });
   }

@@ -61,7 +61,8 @@
                   <mat-icon *ngIf="loggedUser.name == channelChats.sender"
                     class="mat-icons" fontIcon="delete"
                     (click)="deleteChat(channelChats)"></mat-icon>
-                  <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                  <mat-icon (click)="openShowReaction(i)" class="mat-icons"
+                    fontIcon="sentiment_satisfied"></mat-icon>
                   <mat-icon class="mat-icons" fontIcon="chat"
                     (click)="openThread(channelChats)"></mat-icon>
                 </div>
@@ -88,9 +89,12 @@
         [class.recieved-container]="chat.sender !== loggedUser.name">
         <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
           [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
-          <div class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction(i)">
-            <div class="emojis-reaction-container" id="emojis-container-chat{{i}}">
-              <div *ngFor="let emoji of displayedEmojis" (click)="emojiSelectedReactionChat(emoji, chat)">
+          <div class="emoji-reaction-outer" id="emoji-outer"
+            (click)="closeShowReaction(i)">
+            <div class="emojis-reaction-container"
+              id="emojis-container-chat{{i}}">
+              <div *ngFor="let emoji of displayedEmojis"
+                (click)="emojiLikeChat(emoji, chat)">
                 <div class="selected-reaction-emoji" [innerHTML]="emoji"
                   style="width: 16px; height: 16px;">+</div>
               </div>
@@ -102,25 +106,26 @@
               [class.recieved-message]="chat.sender !== loggedUser.name">
               <span>{{ chat.message }}</span>
             </div>
-            <div class="reaction-emojis">
-            <div *ngFor="let reaction of chat.reactions">
-              <div *ngIf="reaction.counter" class="emoji" (click)="emojiLikeChat(reaction.emoji, chat, loggedUser.name)">{{reaction.emoji}}
-                <span class="emoji-counter">{{reaction.counter}}</span>
+            <div *ngIf="true" class="reaction-emojis">
+              <div *ngFor="let reaction of chat.reactions">
+                <div *ngIf="reaction.counter" class="emoji" (click)="emojiLikeChat(reaction.emoji, chat)">{{reaction.emoji}}
+                  <span class="emoji-counter">{{reaction.counter}}</span>
+                </div>
               </div>
-            </div>            
-          </div>
+            </div>
           </div>
           <img class="avatar" src={{chat.avatar}}>
           <div>
-            <div  id="chat-icon-frame{{i}}">
+            <div id="chat-icon-frame{{i}}">
               <mat-icon *ngIf="loggedUser.name == chat.sender"
                 class="mat-icons" fontIcon="delete"
                 (click)="deleteChat(chat)"></mat-icon>
-              <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+              <mat-icon (click)="openShowReaction(i)" class="mat-icons"
+                fontIcon="sentiment_satisfied"></mat-icon>
             </div>
           </div>
         </div>
-    </div>
+      </div>
     </div>
 
   </ng-container>
@@ -151,7 +156,8 @@
     </div>
   </div>
 </div>
-<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer" (click)="closeDialogEmoji()">
+<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer"
+  (click)="closeDialogEmoji()">
   <div class="emojis-container" id="emojis-container">
     <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
       <div class="selected-emoji" [innerHTML]="emoji"
