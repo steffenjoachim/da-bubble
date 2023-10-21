@@ -57,6 +57,7 @@ export class BoardContentComponent implements OnInit {
   showChat: boolean = false;
   emojisContainerVisible: boolean = false;
   emojisReactionContainerVisible: boolean = false;
+  emojisChannelContainerVisible: boolean = false;
   isHovered: boolean = false;
   message: any = '';
   selectedRecipient: string;
@@ -348,6 +349,14 @@ export class BoardContentComponent implements OnInit {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
   }
 
+  openShowChannelReaction(i){
+    document.getElementById(`chat-icon-frame{{i}}`).style.visibility = 'visible';
+  }
+
+  closeDialogChannelEmoji(){
+
+  }
+
   emojiSelectedReactionChat(emoji, chat) {
     const date = new Date();
     this.reaction.userReaction[0].timeStamp = date.getTime();
@@ -428,7 +437,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   openShowReaction(i) {
-    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'visible';
+    console.log('makes sense')
+    document.getElementById(`chat-icon-frame{{i}}`).style.visibility = 'visible';
   }
 
   closeShowReaction(i) {
