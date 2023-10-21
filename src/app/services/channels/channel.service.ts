@@ -1,5 +1,5 @@
 import { Injectable, ElementRef, ViewChild } from '@angular/core';
-import { Firestore, Timestamp, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, Timestamp, collectionData, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { addDoc, collection } from '@firebase/firestore';
 import { Observable, map } from 'rxjs';
@@ -15,7 +15,7 @@ export class ChannelService {
   };
 
   uniqueId = uuidv4();
-  chatCollection: any = collection(this.channelChat, 'channelChats');
+  // chatCollection: any = collection(this.channelChat, 'channelChats');
   channelsCollection: any = collection(this.channelChat, 'channels');
   chats$: Observable<any>
   private chatData$: Observable<any>;
@@ -156,6 +156,31 @@ export class ChannelService {
         console.error('Fehler beim Aktualisieren des Dokuments:', error);
         throw error;
       });
+  }
+
+  async postChannelReaction(reaction, message, channelId) {
+    const documentReference = doc(this.channelChat, 'channels', channelId);
+    try {
+      const docSnapshot = await getDoc(documentReference);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const updatedChats = data['chats'].map((chat) => {
+          if (chat.id === message.id) {
+            const updatedMessage = Array.isArray(chat.reactions) ? [...chat.reactions, reaction] : [reaction];
+            return { ...chat, reactions: updatedMessage };
+          } else {
+            return chat;
+          }
+        });
+        const reactions = data['reactions'] || [];
+        reactions.push(reaction);
+        await updateDoc(documentReference, { chats: updatedChats });
+      } else {
+        await setDoc(documentReference, { reactions: [reaction] });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
 }

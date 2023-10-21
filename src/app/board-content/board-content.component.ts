@@ -1,8 +1,9 @@
+import { user } from '@angular/fire/auth';
 import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Firestore, collection, collectionData, Timestamp, deleteDoc, doc, getDoc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map, BehaviorSubject, of, take } from 'rxjs';
+import { Observable, map, BehaviorSubject, of, take, filter, mergeMap } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
@@ -382,7 +383,8 @@ export class BoardContentComponent implements OnInit {
           if (userReactionIndex !== -1) {
             reaction.counter -= 1;
             reaction.userReaction.splice(userReactionIndex, 1);
-          } else {
+          }
+          else {
             reaction.counter += 1;
             reaction.userReaction.push({
               sender: selectedUserReaction,
@@ -405,6 +407,85 @@ export class BoardContentComponent implements OnInit {
   async updateReactionsInFirebase(docId, updatedReactions) {
     const document = doc(this.firestore, 'chats', docId);
     await updateDoc(document, { reactions: updatedReactions });
+  }
+
+  emojiLikeChannel(emoji, messageToFind, channelId) {
+    const selectedUserReaction = this.loggedUser.name;
+    this.emojis$ = collectionData(this.channelCollection, { idField: 'id' });
+    this.emojis$.pipe(
+      take(1),
+      mergeMap(emojis => {
+        const filteredChannel = emojis.find(channel => channel.id === channelId);
+        console.log(filteredChannel);
+        if (!filteredChannel) {
+          return of(null);
+        }
+        const filteredMessage = filteredChannel.chats.find(message => message.id === messageToFind.id);
+        console.log(filteredMessage);
+        if (!filteredMessage || !filteredMessage.reactions || filteredMessage.reactions.length === 0) {
+          this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
+          console.log('no reactions');
+          return of(null);
+        }
+        const matchingReactions = filteredMessage.reactions.filter(reaction => reaction.emoji === emoji);
+        console.log(matchingReactions);
+        if (matchingReactions.length === 0) {
+          this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
+          console.log('no matching reactions')
+          return of(null);
+        }
+        matchingReactions.forEach(reaction => {
+          console.log(reaction);
+
+          const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
+
+          console.log(userReactionIndex);
+
+          if (userReactionIndex !== -1) {
+            console.log('-');
+            reaction.counter -= 1;
+            console.log(reaction.userReaction);
+            reaction.userReaction.splice(userReactionIndex, 1);
+          } else {
+            console.log('+');
+            reaction.counter += 1;
+            reaction.userReaction.push({
+              sender: selectedUserReaction,
+              timeStamp: new Date().getTime()
+            });
+          }
+        });
+        return of(filteredChannel);
+      }),
+      filter(chat => chat !== null)
+    ).subscribe(filteredReactions => {
+      console.log(filteredReactions);
+      if (filteredReactions !== null) {
+        console.log('reaction>0');
+        this.updateChannelReactionsInFirebase(filteredReactions.id, filteredReactions.chats);
+      }
+    });
+  }
+
+
+  emojiSelectedReactionChannel(emoji, message, channelId) {
+    const date = new Date();
+    this.reaction.userReaction[0].timeStamp = date.getTime();
+    this.reaction.emoji = emoji;
+    this.reaction.userReaction[0].sender = this.loggedUser.name;
+    console.log(this.reaction);
+    this.channelService.postChannelReaction(this.reaction, message, channelId);
+  }
+
+  async updateChannelReactionsInFirebase(channelId, updatedChats) {
+    console.log(updatedChats);
+    console.log(channelId);
+    const documentReference = doc(this.firestore, 'channels', channelId);
+    try {
+      await updateDoc(documentReference, { chats: updatedChats });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   scrollToBottom() {
@@ -437,12 +518,25 @@ export class BoardContentComponent implements OnInit {
   }
 
   openShowReaction(i) {
-    console.log('makes sense')
-    document.getElementById(`chat-icon-frame{{i}}`).style.visibility = 'visible';
+    const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
+    const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
+    if (emojiContainerChat) {
+      emojiContainerChat.style.visibility = 'visible';
+    }
+    if (emojiContainerChannel) {
+      emojiContainerChannel.style.visibility = 'visible';
+    }
   }
 
   closeShowReaction(i) {
-    document.getElementById(`emojis-container-chat${i}`).style.visibility = 'hidden';
+    const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
+    const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
+    if (emojiContainerChat) {
+      emojiContainerChat.style.visibility = 'hidden';
+    }
+    if (emojiContainerChannel) {
+      emojiContainerChannel.style.visibility = 'hidden';
+    }
   }
 
   loadMoreEmojis() {
