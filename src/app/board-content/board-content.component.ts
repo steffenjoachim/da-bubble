@@ -350,9 +350,16 @@ export class BoardContentComponent implements OnInit {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
   }
 
-  openShowChannelReaction(i){
-    document.getElementById(`chat-icon-frame{{i}}`).style.visibility = 'visible';
+  openShowChannelReaction(i) {
+    // document.getElementById('emojis-channel-container{{i}}').style.visibility = 'visible';
+    console.log('opened', i);
+    const element = document.getElementById(`emojis-channel-container${i}`);
+    if (element) {
+      console.log('visible')
+      element.style.visibility = 'visible';
+    }
   }
+  
 
   closeDialogChannelEmoji(){
 
