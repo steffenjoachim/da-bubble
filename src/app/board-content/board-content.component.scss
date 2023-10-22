@@ -72,6 +72,16 @@
   justify-content: center;
 }
 
+.message-answers-frame {
+  gap: 8px;
+  display: flex;
+  padding: 10px;
+  .date-answers {
+    font-size: 10px;
+    color: #6e6e6e;
+  }
+}
+
 .message-frame {
   width: 43%;
   display: flex;
@@ -133,12 +143,12 @@
 
 .content-frame::-webkit-scrollbar {
   width: 8px;
-  background-color: transparent; /* Hintergrundfarbe der Scrollleiste */
+  background-color: transparent;
 }
 
 .content-frame::-webkit-scrollbar-thumb {
-  background-color: rgb(68, 77, 242); /* Farbe des Scrollbalken-Thumb */
-  border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
+  background-color: rgb(68, 77, 242);
+  border-radius: 5px;
 }
 
 .thread-frame {
@@ -184,19 +194,25 @@
 }
 
 .sent-message {
-  min-width: 40px;
+  min-width: 350px;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   border: none;
-  background: rgb(121, 126, 243);
-  color: white;
-  border-radius: 25px 0px 25px 25px;
-  padding: 16px;
+  color: black;
+  padding: 16px 16px 0px 16px;
   margin-top: 8px;
-  margin-bottom: 8px;
   text-align: end;
-  width: fit-content;
-  .message-sender{
+
+  .message-channel-frame {
+    width: fit-content;
+    color: white;
+    background: rgb(121, 126, 243);
+    border: none;
+    border-radius: 25px 0 25px 25px;
+    padding: 10px;
+  }
+  .message-sender {
     font-weight: 700;
     margin-right: 8px;
   }
@@ -209,28 +225,31 @@
   img {
     object-fit: contain;
   }
-  .message-sender{
+  .message-sender {
     font-weight: 700;
     margin-right: 8px;
   }
-  .name-hour{
+  .name-hour {
     display: flex;
     justify-content: flex-end;
   }
 }
 
 .recieved-message {
-  min-width: 40px;
+  min-width: 350px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  border-radius: 0 25px 25px 25px;
-  padding: 16px;
+  padding: 16px 16px 0px 16px;
   margin-top: 8px;
-  margin-bottom: 8px;
   text-align: start;
   width: fit-content;
+  .message-channel-frame {
+    width: fit-content;
+    border: 1px solid black;
+    border-radius: 0 25px 25px 25px;
+    padding: 10px;
+  }
 }
 
 .recieved-container {
@@ -243,7 +262,7 @@
   margin-bottom: 16px;
 }
 
-.name-and-date{
+.name-and-date {
   width: 100%;
 }
 
@@ -256,7 +275,7 @@
   img {
     object-fit: contain;
   }
-  .message-sender{
+  .message-sender {
     font-weight: 700;
     margin-right: 8px;
   }
@@ -269,18 +288,19 @@
   }
 }
 
-.day-of-message{
-  display:flex;
+.day-of-message {
+  display: flex;
 }
 
-.line-left, .line-right{
+.line-left,
+.line-right {
   height: 1px;
   width: 40%;
   background: rgb(173, 176, 217);
   margin-top: 16px;
 }
 
-.day-frame{
+.day-frame {
   border: 1px solid rgb(173, 176, 217);
   border-radius: 25px;
   padding: 8px 16px;
@@ -292,18 +312,31 @@
   background: white;
 }
 
-.emojis-container{
-  width: 400px;
-  padding: 16px;
+.emojis-container {
+  width: 520px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 8px;
   position: absolute;
-  bottom: 235px;
-  border: 1px solid black;
-  border-radius: 25px 25px 0 25px;
+  bottom: 0px;
   background: white;
+  overflow-y: scroll;
+  height: 190px;
+  padding-left: 16px;
+  padding-right: 6px;
+  z-index: 9;
+}
+
+.emojis-container::-webkit-scrollbar {
+  padding-left: 8px;
+  width: 8px;
+  background-color: transparent;
+}
+
+.emojis-container::-webkit-scrollbar-thumb {
+  background-color: rgb(68, 77, 242);
+  border-radius: 5px;
 }
 
 .selected-emoji {
@@ -312,26 +345,38 @@
   align-items: center;
   background-color: #e0e0e0;
   border-radius: 8px;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
   &:hover {
-      background-color: #d0d0d0;
+    background-color: #d0d0d0;
   }
 }
 
-.emojis-reaction-container, .emojis-channel-container{
+.emojis-reaction-container,
+.emojis-channel-container {
   visibility: hidden;
-  width: 58%;
-  padding: 12px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   position: absolute;
-  border: 1px solid black;
-  border-radius: 25px 0 25px 25px;
   background: white;
   z-index: 99;
+  overflow-y: scroll;
+  height: 130px;
+  width: 200px;
+}
+.emojis-reaction-container::-webkit-scrollbar,
+.emojis-channel-container::-webkit-scrollbar {
+  padding-left: 6px;
+  width: 8px;
+  background-color: transparent;
+}
+
+.emojis-reaction-container::-webkit-scrollbar-thumb,
+.emojis-channel-container::-webkit-scrollbar-thumb {
+  background-color: rgb(68, 77, 242);
+  border-radius: 5px;
 }
 
 .selected-reaction-emoji {
@@ -340,10 +385,10 @@
   align-items: center;
   background-color: #e0e0e0;
   border-radius: 8px;
-  padding: 8px;
+  padding: 4px;
   cursor: pointer;
   &:hover {
-      background-color: #d0d0d0;
+    background-color: #d0d0d0;
   }
 }
 
@@ -354,31 +399,48 @@
   bottom: 0;
 }
 
-.emoji-reaction-outer, .emoji-channel-outer {
+.emoji-reaction-outer,
+.emoji-channel-outer {
   position: relative;
   width: 100%;
   bottom: 0;
 }
 
-.reaction-emojis{
+.reaction-emojis-sender {
   display: flex;
   gap: 8px;
-  .emoji{
+  justify-content: flex-end;
+  .emoji {
     display: flex;
     cursor: pointer;
     border: solid 1px black;
     border-radius: 25px;
-    padding:6px 8px;
+    padding: 6px 8px;
     &:hover {
       opacity: 0.6;
     }
   }
 }
 
+.reaction-emojis-recieved {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  .emoji {
+    display: flex;
+    cursor: pointer;
+    border: solid 1px black;
+    border-radius: 25px;
+    padding: 6px 8px;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
 
 @media (max-height: 800px) {
-  .message-frame{
-    .input-frame{
+  .message-frame {
+    .input-frame {
       height: 120px;
     }
   }

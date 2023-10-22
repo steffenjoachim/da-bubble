@@ -67,6 +67,7 @@ export class BoardContentComponent implements OnInit {
   length: number;
   i: number = 0;
   emojiCounter: number = 0;
+  endIndex: number = 10;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
   directMessageDates: number[] = [];
@@ -74,19 +75,36 @@ export class BoardContentComponent implements OnInit {
   selectedChannel: any;
   prevChat: any;
   private chatCount = 0;
-  public selectedChannelChat: any = null;
+  public selectedChannelChat: any = null
   emojis: string[] = [
-    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
+    "❤️", "✅", "💯", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
     "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
     "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
-    "😖", "😢", "😭", "😓", "😪", "😥", "😰", "😩", "😫", "😤",
-    "😠", "😡", "🤬", "🤯", "😳", "🥺", "😨", "😰", "😥", "😓",
+    "😖", "😢", "😭", "😪", "😥", "😰", "😩", "😫", "😤", "☝",
+    "😠", "😡", "🤬", "🤯", "😳", "🥺", "😨", "😓", "👏", "💪",
     "🤗", "🙄", "😬", "😐", "😯", "😦", "😧", "😮", "😲", "🥴",
-    "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "😎", "🤓", "🧐", "😕",
-    "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧",
-    "😨", "😰", "😥", "😪", "😓", "😔", "😞", "😒", "😩", "😫",
-    "😤", "😠", "😡", "🤬", "🤯", "🤢", "🤮", "🤧", "😊", "😇",
+    "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "🤓", "🧐", "😕", "👌",
+    "😟", "🙁", "☹️", "🤢", "🤮", "🤧", "😊", "😇", "👋",
+    "🌞", "🌸", "🌟", "🌈", "🎉", "👍", "👏", "🤗", "🎂", "🍕",
+    "🍔", "🍦", "🎁", "🌺", "🎈", "🎊", "🍭", "🥂", "🎮", "📚",
+    "🖖", "🤝", "👸", "👼", "🚀", "🏆", "🎆", "🍹", "🎧", "📷",
+    "🤔", "🧐", "🕵️‍♂️", "💼", "🎶", "🕰️", "🌍", "🚦", "⏳", "🛒",
+    "🚶", "📊", "📅", "📋", "🚁", "🎯", "🏁", "📡", "📝", "💡",
+    "📦", "🚧", "🔍", "📌", "📩", "📖", "🚪", "📤", "📬", "📱",
+    "😷", "😕", "😓", "😣", "😬", "😶", "😠", "💔", "😪", "😖",
+    "😤", "😩", "🥺", "😥", "😓", "😵", "🤕", "😟", "😭", "😒",
+    "😞", "😔", "🤯", "😤", "😖", "🤮", "😥", "🤧", "😨", "😳",
+    "🤢", "😷", "😱", "😦", "😧", "😰", "😪", "😮", "😡", "😬",
+    "✌️", "🖐️", "🤘", "👊", "🤙", "👆", "👇", "👈", "👉", "👋",
+    "🤚", "🖖", "👌", "🤞", "✋", "🤝", "🙏", "🤲", "🙌", "🤟",
+    "🎓", "🎣", "🎽", "🍀", "🍁", "🍂", "🍃", "🍄", "🍅", "🍆",
+    "🍇", "🍈", "🍉", "🍊", "🍋", "🍌", "🍍", "🍎", "🍏", "🍐",
+    "🍑", "🍒", "🍓", "🥀", "🥂", "🥃", "🥄", "🥅", "🥇", "🥈",
+    "🥉", "🥊", "🥋", "🥌", "🥍", "🥎", "🥏", "🥐", "🥑", "🥒",
+    "🥓", "🥔", "🥕", "🥖", "🥗", "🥘", "🥙", "🥚", "🥛", "🥜",
+    "🥝", "🥞", "🥟", "🥠", "🥡", "🥢", "🥣", "🥤", "🥥", "🥦",
   ];
+
 
   displayedEmojis: string[] = [];
 
@@ -404,53 +422,52 @@ export class BoardContentComponent implements OnInit {
   emojiLikeChannel(emoji, messageToFind, channelId) {
     const selectedUserReaction = this.loggedUser.name;
     this.emojis$ = collectionData(this.channelCollection, { idField: 'id' });
-    this.emojis$.pipe(
-      take(1),
-      mergeMap(emojis => {
-        const filteredChannel = emojis.find(channel => channel.id === channelId);
-        if (!filteredChannel) {
-          return of(null);
-        }
-        const filteredMessage = filteredChannel.chats.find(message => message.id === messageToFind.id);
-        if (!filteredMessage || !filteredMessage.reactions || filteredMessage.reactions.length === 0) {
-          this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
-          return of(null);
-        }
-        const matchingReactions = filteredMessage.reactions.filter(reaction => reaction.emoji === emoji);
-        if (matchingReactions.length === 0) {
-          this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
-          return of(null);
-        }
-        matchingReactions.forEach(reaction => {
-          const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
-          const reactionIndex = filteredMessage.reactions.findIndex(reactionItem => reactionItem.emoji === emoji);
-          console.log(reactionIndex)
-
-          if (userReactionIndex !== -1) {
-            console.log('-');
-            reaction.counter -= 1;
-            if (reaction.counter == 0) {
-              console.log('all will be deleted', filteredMessage.reactions)
-             filteredMessage.reactions.splice(reactionIndex, 1)
-            } 
-            reaction.userReaction.splice(userReactionIndex, 1);
-          } else {
-            console.log('+');
-            reaction.counter += 1;
-            reaction.userReaction.push({
-              sender: selectedUserReaction,
-              timeStamp: new Date().getTime()
-            });
+    const subscription = this.emojis$
+      .pipe(
+        take(1),
+        mergeMap(emojis => {
+          const filteredChannel = emojis.find(channel => channel.id === channelId);
+          if (!filteredChannel) {
+            return of(null);
           }
-        });
-        return of(filteredChannel);
-      }),
-      filter(chat => chat !== null)
-    ).subscribe(filteredReactions => {
-      if (filteredReactions !== null) {
-        this.updateChannelReactionsInFirebase(filteredReactions.id, filteredReactions.chats);
-      }
-    });
+          const filteredMessage = filteredChannel.chats.find(message => message.id === messageToFind.id);
+          if (!filteredMessage || !filteredMessage.reactions || filteredMessage.reactions.length === 0) {
+            this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
+            return of(null);
+          }
+          const matchingReactions = filteredMessage.reactions.filter(reaction => reaction.emoji === emoji);
+          if (matchingReactions.length === 0) {
+            this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
+            return of(null);
+          }
+          matchingReactions.forEach(reaction => {
+            const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
+            const reactionIndex = filteredMessage.reactions.findIndex(reactionItem => reactionItem.emoji === emoji);
+
+            if (userReactionIndex !== -1) {
+              reaction.counter -= 1;
+              if (reaction.counter == 0) {
+                filteredMessage.reactions.splice(reactionIndex, 1)
+              }
+              reaction.userReaction.splice(userReactionIndex, 1);
+            } else {
+              reaction.counter += 1;
+              reaction.userReaction.push({
+                sender: selectedUserReaction,
+                timeStamp: new Date().getTime()
+              });
+            }
+          });
+          return of(filteredChannel);
+        }),
+        filter(chat => chat !== null)
+      )
+      .subscribe(filteredReactions => {
+        if (filteredReactions !== null) {
+          this.updateChannelReactionsInFirebase(filteredReactions.id, filteredReactions.chats);
+          subscription.unsubscribe();
+        }
+      });
   }
 
 
@@ -459,13 +476,10 @@ export class BoardContentComponent implements OnInit {
     this.reaction.userReaction[0].timeStamp = date.getTime();
     this.reaction.emoji = emoji;
     this.reaction.userReaction[0].sender = this.loggedUser.name;
-    console.log(this.reaction);
     this.channelService.postChannelReaction(this.reaction, message, channelId);
   }
 
   async updateChannelReactionsInFirebase(channelId, updatedChats) {
-    console.log(updatedChats);
-    console.log(channelId);
     const documentReference = doc(this.firestore, 'channels', channelId);
     try {
       await updateDoc(documentReference, { chats: updatedChats });
@@ -504,6 +518,9 @@ export class BoardContentComponent implements OnInit {
   }
 
   openShowReaction(i) {
+    if (this.displayedEmojis.length === 0) {
+      this.loadMoreEmojis()
+    }
     const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
     const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
     if (emojiContainerChat) {
@@ -515,6 +532,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   closeShowReaction(i) {
+    this.displayedEmojis = [];
+    console.log('close show reaction', this.endIndex);
     const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
     const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
     if (emojiContainerChat) {
@@ -527,12 +546,13 @@ export class BoardContentComponent implements OnInit {
 
   loadMoreEmojis() {
     const startIndex = this.displayedEmojis.length;
-    const endIndex = startIndex + 10;
+    this.endIndex = startIndex + 20;
 
     if (startIndex < this.emojis.length) {
-      const newEmojis = this.emojis.slice(startIndex, endIndex);
+      const newEmojis = this.emojis.slice(startIndex, this.endIndex);
       this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
     }
+    event.stopPropagation();
   }
 }
 
