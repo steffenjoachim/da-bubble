@@ -319,7 +319,7 @@
   }
 }
 
-.emojis-reaction-container{
+.emojis-reaction-container, .emojis-channel-container{
   visibility: hidden;
   width: 58%;
   padding: 12px;
@@ -354,7 +354,7 @@
   bottom: 0;
 }
 
-.emoji-reaction-outer {
+.emoji-reaction-outer, .emoji-channel-outer {
   position: relative;
   width: 100%;
   bottom: 0;

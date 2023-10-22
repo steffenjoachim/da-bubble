@@ -58,6 +58,7 @@ export class BoardContentComponent implements OnInit {
   showChat: boolean = false;
   emojisContainerVisible: boolean = false;
   emojisReactionContainerVisible: boolean = false;
+  emojisChannelContainerVisible: boolean = false;
   isHovered: boolean = false;
   message: any = '';
   selectedRecipient: string;
@@ -422,11 +423,16 @@ export class BoardContentComponent implements OnInit {
         }
         matchingReactions.forEach(reaction => {
           const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
+          const reactionIndex = filteredMessage.reactions.findIndex(reactionItem => reactionItem.emoji === emoji);
+          console.log(reactionIndex)
 
           if (userReactionIndex !== -1) {
             console.log('-');
             reaction.counter -= 1;
-            console.log(reaction.userReaction);
+            if (reaction.counter == 0) {
+              console.log('all will be deleted', filteredMessage.reactions)
+             filteredMessage.reactions.splice(reactionIndex, 1)
+            } 
             reaction.userReaction.splice(userReactionIndex, 1);
           } else {
             console.log('+');
