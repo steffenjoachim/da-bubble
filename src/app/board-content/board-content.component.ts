@@ -407,30 +407,21 @@ export class BoardContentComponent implements OnInit {
       take(1),
       mergeMap(emojis => {
         const filteredChannel = emojis.find(channel => channel.id === channelId);
-        console.log(filteredChannel);
         if (!filteredChannel) {
           return of(null);
         }
         const filteredMessage = filteredChannel.chats.find(message => message.id === messageToFind.id);
-        console.log(filteredMessage);
         if (!filteredMessage || !filteredMessage.reactions || filteredMessage.reactions.length === 0) {
           this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
-          console.log('no reactions');
           return of(null);
         }
         const matchingReactions = filteredMessage.reactions.filter(reaction => reaction.emoji === emoji);
-        console.log(matchingReactions);
         if (matchingReactions.length === 0) {
           this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
-          console.log('no matching reactions')
           return of(null);
         }
         matchingReactions.forEach(reaction => {
-          console.log(reaction);
-
           const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
-
-          console.log(userReactionIndex);
 
           if (userReactionIndex !== -1) {
             console.log('-');
@@ -450,9 +441,7 @@ export class BoardContentComponent implements OnInit {
       }),
       filter(chat => chat !== null)
     ).subscribe(filteredReactions => {
-      console.log(filteredReactions);
       if (filteredReactions !== null) {
-        console.log('reaction>0');
         this.updateChannelReactionsInFirebase(filteredReactions.id, filteredReactions.chats);
       }
     });
