@@ -76,7 +76,7 @@
                 <div class="chat-icon-frame" id="chat-icon-frame{{i}}">
                   <mat-icon *ngIf="loggedUser.name == channelChats.sender" class="mat-icons" fontIcon="delete"
                     (click)="deleteChat(channelChats)"></mat-icon>
-                    <mat-icon (click)="openShowChannelReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+                    <mat-icon (click)=" openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
                     <mat-icon class="mat-icons" fontIcon="chat" (click)="openThread(channelChats)"></mat-icon>
                 </div>
               </div>
@@ -85,7 +85,7 @@
         </ng-container> 
       </div>
     </div>
-    <div *ngIf="emojisChannelContainerVisible" class="emoji-channel-outer" id="emoji-channel-outer" (click)="closeDialogChannelEmoji()">
+    <div *ngIf="emojisChannelContainerVisible" class="emoji-channel-outer" id="emoji-channel-outer" (click)="closeShowReaction(i)">
       <div class="emojis-channel-container" id="emojis-channel-container{{i}}">
         <div *ngFor="let emoji of emojis">
           <div class="selected-channel-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>

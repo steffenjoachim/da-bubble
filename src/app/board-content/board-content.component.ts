@@ -350,21 +350,6 @@ export class BoardContentComponent implements OnInit {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
   }
 
-  openShowChannelReaction(i) {
-    // document.getElementById('emojis-channel-container{{i}}').style.visibility = 'visible';
-    console.log('opened', i);
-    const element = document.getElementById(`emojis-channel-container${i}`);
-    if (element) {
-      console.log('visible')
-      element.style.visibility = 'visible';
-    }
-  }
-  
-
-  closeDialogChannelEmoji(){
-
-  }
-
   emojiSelectedReactionChat(emoji, chat) {
     const date = new Date();
     this.reaction.userReaction[0].timeStamp = date.getTime();
@@ -445,13 +430,18 @@ export class BoardContentComponent implements OnInit {
           console.log(reaction);
 
           const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
+          const reactionIndex = filteredMessage.reactions.findIndex(reactionItem => reactionItem.emoji === emoji);
+          console.log(reactionIndex)
 
           console.log(userReactionIndex);
 
           if (userReactionIndex !== -1) {
             console.log('-');
             reaction.counter -= 1;
-            console.log(reaction.userReaction);
+            if (reaction.counter == 0) {
+              console.log('all will be deleted', filteredMessage.reactions)
+             filteredMessage.reactions.splice(reactionIndex, 1)
+            } 
             reaction.userReaction.splice(userReactionIndex, 1);
           } else {
             console.log('+');
