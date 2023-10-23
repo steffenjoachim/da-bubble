@@ -48,7 +48,8 @@
                     <div class="selected-reaction-emoji" [innerHTML]="emoji"
                       style="width: 16px; height: 16px;"></div>
                   </div>
-                  <mat-icon (click)="loadMoreEmojis()" class="selected-reaction-emoji" fontIcon="add"></mat-icon>
+                  <mat-icon (click)="loadMoreEmojis()"
+                    class="selected-reaction-emoji" fontIcon="add"></mat-icon>
                 </div>
               </div>
               <div>
@@ -61,25 +62,41 @@
                   [class.sent-message]="channelChats.sender === loggedUser.name"
                   [class.recieved-message]="channelChats.sender !== loggedUser.name">
                   <span class="message-channel-frame">{{ channelChats.message }}</span>
-                  <div class="message-answers-frame"> <span (click)="openThread(channelChats)"
-                      class="number-answers" *ngIf="channelChats.answers.length">
-                      {{channelChats.answers.length}} Antwort(en) </span>
-                      <span class="date-answers" *ngIf="channelChats.answers.length > 0">
-                        Letzte Antwort 
-                        <ng-container *ngIf="isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                          heute {{channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
-                        </ng-container>
-                        <ng-container *ngIf="isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                          gestern {{channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
-                        </ng-container>
-                        <ng-container *ngIf="!isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000) && !isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                          {{channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000 | date: 'dd.MM.YY HH:mm'}} Uhr
-                        </ng-container>
-                      </span>
+                  <div class="message-answers-frame">
+                    <span
+                    (click)="openThread(channelChats)"
+                    class="number-answers" *ngIf="channelChats.answers.length > 0">
+                    {{ channelChats.answers.length }} {{ channelChats.answers.length === 1 ? 'Antwort' : 'Antworten' }}
+                  </span>
+
+                    <span class="date-answers"
+                      *ngIf="channelChats.answers.length > 0">
+                      Letzte Antwort
+                      <ng-container
+                        *ngIf="isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                        heute {{channelChats.answers[channelChats.answers.length
+                        - 1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
+                      </ng-container>
+                      <ng-container
+                        *ngIf="isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                        gestern
+                        {{channelChats.answers[channelChats.answers.length -
+                        1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
+                      </ng-container>
+                      <ng-container
+                        *ngIf="!isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000) && !isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                        {{
+                        formatDate(channelChats.answers[channelChats.answers.length
+                        - 1].timeStamp) }}
+                        {{(channelChats.answers[channelChats.answers.length -
+                        1].timeStamp * 1000) | date: 'HH:mm' }} Uhr
+                      </ng-container>
+                    </span>
                   </div>
                 </div>
-                <div [class.reaction-emojis-sender]="channelChats.sender === loggedUser.name"
-                [class.reaction-emojis-recieved]="channelChats.sender !== loggedUser.name">
+                <div
+                  [class.reaction-emojis-sender]="channelChats.sender === loggedUser.name"
+                  [class.reaction-emojis-recieved]="channelChats.sender !== loggedUser.name">
                   <div *ngFor="let reaction of channelChats.reactions">
                     <div *ngIf="reaction.counter" class="emoji"
                       (click)="emojiLikeChannel(reaction.emoji, channelChats, chat.id)">{{reaction.emoji}}
@@ -147,8 +164,9 @@
               [class.recieved-message]="chat.sender !== loggedUser.name">
               <span>{{ chat.message }}</span>
             </div>
-            <div [class.reaction-emojis-sender]="chat.sender === loggedUser.name"
-            [class.reaction-emojis-recieved]="chat.sender !== loggedUser.name">
+            <div
+              [class.reaction-emojis-sender]="chat.sender === loggedUser.name"
+              [class.reaction-emojis-recieved]="chat.sender !== loggedUser.name">
               <div *ngFor="let reaction of chat.reactions">
                 <div *ngIf="reaction.counter" class="emoji"
                   (click)="emojiLikeChat(reaction.emoji, chat)">

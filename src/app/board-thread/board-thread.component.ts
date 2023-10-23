@@ -1,7 +1,8 @@
+import { Emojis } from './../emojis';
 import { BoardContentComponent } from './../board-content/board-content.component';
 import { Component, OnInit, ElementRef, AfterViewInit, Input, Inject } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, Timestamp, collection, collectionData, getDocs, where } from '@angular/fire/firestore';
+import { Firestore, Timestamp, collection, collectionData, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { BehaviorSubject, Observable, Subject, of, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -10,7 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { query } from '@angular/animations';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
 import { SharedEmojiServiceService } from '../services/shared-emojis/shared-emoji.service.service';
-
+import { update } from '@angular/fire/database';
 
 @Component({
   selector: 'app-board-thread',
@@ -34,33 +35,24 @@ export class BoardThreadComponent implements OnInit {
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
-  message: string ='';
+  message: string = '';
   relevantAnswers: Observable<any>;
   chatAnswersSubject = new Subject<any[]>();
   answers$: Observable<any>;
+  chatsChannel$ !: Observable<any>;
+  emojis: string[] = Emojis;
   ChatService: any;
   channel: string;
   selectedChannel: any;
   threadOpened: boolean = false;
   chatQuestion: string;
+  chatId: string;
   chatAvatar: string;
   chatSender: string;
   chatTimeStamp: number;
   selectedChannelMessage: any;
   answersLength: number;
   emojisContainerVisible: boolean = false;
-  emojis: string[] = [
-    "❤️", "✅", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
-    "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
-    "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
-    "😖", "😢", "😭", "😓", "😪", "😥", "😰", "😩", "😫", "😤",
-    "😠", "😡", "🤬", "🤯", "😳", "🥺", "😨", "😰", "😥", "😓",
-    "🤗", "🙄", "😬", "😐", "😯", "😦", "😧", "😮", "😲", "🥴",
-    "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "🤓", "🧐", "😕",
-    "😟", "🙁", "☹️", "😮", "😯", "😲", "😳", "🥺", "😦", "😧",
-    "😥", "😪", "😓", "😔", "😒", "😩", "😫",
-    "😤", "😠",  "🤯", "🤢", "🤮", "🤧","😊", "😇",
-  ];
 
   constructor(
     public firestore: Firestore,
@@ -87,6 +79,7 @@ export class BoardThreadComponent implements OnInit {
     this.chatAvatar = dataParse.chat.avatar;
     this.chatSender = dataParse.chat.sender;
     this.chatTimeStamp = dataParse.chat.timeStamp;
+    this.chatId = dataParse.chat.id;
     this.threadOpened = true;
     this.getMessageAnswers()
   }
@@ -144,9 +137,9 @@ export class BoardThreadComponent implements OnInit {
     this.emojisContainerVisible = !this.emojisContainerVisible;
   }
 
-  closeDialogEmoji(){
+  closeDialogEmoji() {
     this.emojisContainerVisible = false;
-     }
+  }
 
   emojiSelected(emoji: string) {
     this.message += emoji;
@@ -154,5 +147,27 @@ export class BoardThreadComponent implements OnInit {
       this.emojisContainerVisible = true;
     }, 1);
   }
+
+  async deleteAnswer(answer, chatId) {
+    const channelId = this.selectedChannel.id;
+    const answerToRemove = answer;
+    if (this.loggedUser.name === answerToRemove.sender) {
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+      const channelDocSnapshot = await getDoc(channelDocRef);
+      if (channelDocSnapshot.exists()) {
+        const channelDocData = channelDocSnapshot.data();
+        const chatsArray = Array.isArray(channelDocData['chats']) ? channelDocData['chats'] : [];
+        const chatToUpdate = chatsArray.find(chat => chat.id === chatId);
+        if (chatToUpdate) {
+          const answerIndex = chatToUpdate.answers.findIndex(answer => answer.id === answerToRemove.id);
+          if (answerIndex !== -1) {
+            chatToUpdate.answers.splice(answerIndex, 1);
+            await updateDoc(channelDocRef, { chats: chatsArray });
+          }
+        }
+      }
+    }
+  }
+
 
 }

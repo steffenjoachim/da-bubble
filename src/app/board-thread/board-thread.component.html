@@ -14,6 +14,12 @@
         <div class="thread-answer-frame">
           <div>
             <div class="avatar-and-message">
+              <div>
+                <div class="chat-icon-frame" id="chat-icon-frame">
+                  <mat-icon class="mat-icons"
+                    fontIcon="sentiment_satisfied"></mat-icon>
+                </div>
+              </div>
               <img class="message-img" src="{{chatAvatar}}" alt>
               <div class="right-of-avatar">
                 <div class="name-hour">
@@ -31,7 +37,7 @@
         <span>{{ answersLength }} Antwort(en)</span>
         <div class="line"></div>
       </div>
-      <div *ngFor="let answer of answerCollection$ |async">
+      <div *ngFor="let answer of answerCollection$ |async; let i = index">
         <div class="thread-content">
           <ng-container>
             <div [class.sent-container]="answer.sender === loggedUser.name"
@@ -48,6 +54,14 @@
                 </div>
               </div>
               <img class="message-img" src={{answer.avatar}}>
+              <div>
+                <div class="chat-icon-frame" id="chat-icon-frame{{i}}">
+                  <mat-icon (click)="deleteAnswer(answer, chatId)" *ngIf="loggedUser.name == answer.sender"
+                    class="mat-icons" fontIcon="delete"></mat-icon>
+                  <mat-icon class="mat-icons"
+                    fontIcon="sentiment_satisfied"></mat-icon>
+                </div>
+              </div>
             </div>
           </ng-container>
         </div>
@@ -55,14 +69,16 @@
     </div>
     <div class="message-container">
       <div class="message-frame">
-        <textarea [(ngModel)]="message" name="message" id="message" cols="30" rows="9"
+        <textarea [(ngModel)]="message" name="message" id="message" cols="30"
+          rows="9"
           placeholder="Antworten"></textarea>
         <div class="icon-container">
           <div class="icon-left">
             <!-- <div class="icon-div">
               <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
             </div> -->
-            <div class="emojis" (click)="openDialogShowEmojis()" class="icon-div">
+            <div class="emojis" (click)="openDialogShowEmojis()"
+              class="icon-div">
               <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>
             <!-- <div class="icon-div">
@@ -70,7 +86,8 @@
             </div> -->
           </div>
           <div class="icon-right">
-            <img (click)="postAnswer()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+            <img (click)="postAnswer()" class="submit-arrow"
+              src="./assets/img/Send icon.png" alt="submit arrow">
           </div>
 
         </div>
@@ -78,7 +95,8 @@
     </div>
   </div>
 </div>
-<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer" (click)="closeDialogEmoji()">
+<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer"
+  (click)="closeDialogEmoji()">
   <div class="emojis-container" id="emojis-container">
     <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
       <div class="selected-emoji" [innerHTML]="emoji"

@@ -12,7 +12,7 @@ import { BoardThreadComponent } from '../board-thread/board-thread.component';
 import { DialogChannelInfoComponent } from '../dialog-channel-info/dialog-channel-info.component';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
 import { DialogChannelReactionsComponent } from '../dialog-channel-reactions/dialog-channel-reactions.component';
-
+import { Emojis } from '../emojis';
 
 @Component({
   selector: 'app-board-content',
@@ -53,6 +53,7 @@ export class BoardContentComponent implements OnInit {
   filteredChannelMembers$: Observable<any[]>;
   membersOfSelectedChannel$: Observable<any>;
   emojis$: Observable<any>;
+  emojis: string[] = Emojis;
   channel;//localStorage
   showChannelChat: boolean = false
   showChat: boolean = false;
@@ -75,36 +76,7 @@ export class BoardContentComponent implements OnInit {
   selectedChannel: any;
   prevChat: any;
   private chatCount = 0;
-  public selectedChannelChat: any = null
-  emojis: string[] = [
-    "❤️", "✅", "💯", "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
-    "🙂", "🙃", "😉", "😌", "😍", "😘", "😗", "😙", "😚", "😋",
-    "😛", "😜", "😝", "🤤", "😎", "🤩", "😏", "😒", "😞", "😔",
-    "😖", "😢", "😭", "😪", "😥", "😰", "😩", "😫", "😤", "☝",
-    "😠", "😡", "🤬", "🤯", "😳", "🥺", "😨", "😓", "👏", "💪",
-    "🤗", "🙄", "😬", "😐", "😯", "😦", "😧", "😮", "😲", "🥴",
-    "🤐", "🤫", "😵", "🥵", "🥶", "🥳", "🤓", "🧐", "😕", "👌",
-    "😟", "🙁", "☹️", "🤢", "🤮", "🤧", "😊", "😇", "👋",
-    "🌞", "🌸", "🌟", "🎉", "👍", "👏", "🤗", "🎂", "🍕",
-    "🍔", "🍦", "🎁", "🌺", "🎈", "🎊", "🍭", "🎮", "📚",
-    "🖖", "🤝", "👸", "👼", "🚀", "🏆", "🎆", "🍹", "🎧", "📷",
-    "🤔", "🧐", "🕵️‍♂️", "💼", "🎶", "🕰️", "🌍", "🚦", "⏳", "🛒",
-    "🚶", "📊", "📅", "📋", "🚁", "🎯", "🏁", "📡", "📝", "💡",
-    "📦", "🚧", "🔍", "📌", "📩", "📖", "🚪", "📤", "📬", "📱",
-    "😷", "😕", "😓", "😣", "😬", "😶", "😠", "💔", "😪", "😖",
-    "😤", "😩", "🥺", "😥", "😓", "😵", "🤕", "😟", "😭", "😒",
-    "😞", "😔", "🤯", "😤", "😖", "🤮", "😥", "🤧", "😨", "😳",
-    "🤢", "😷", "😱", "😦", "😧", "😰", "😪", "😮", "😡", "😬",
-    "✌️", "🖐️", "🤘", "👊", "🤙", "👆", "👇", "👈", "👉", "👋",
-    "🤚", "🖖", "👌", "🤞", "✋", "🤝", "🤲", "🙌", "🤟",
-    "🎓", "🎣", "🎽",  "🍁", "🍂", "🍃", "🍄", "🍅", "🍆",
-    "🍇", "🍈", "🍉", "🍊", "🍋", "🍌", "🍍", "🍎", "🍏", "🍐",
-    "🍑", "🍒", "🍓", "🥀", "🥂", "🥃", "🥄", "🥅", "🥇", "🥈",
-    "🥉", "🥊", "🥋", "🥌", "🥍", "🥎", "🥏", "🥐", "🥑", "🥒",
-    "🥓", "🥔", "🥕", "🥖", "🥗", "🥘", "🥙", "🥚", "🥛", "🥜",
-    "🥝", "🥞", "🥟", "🥠", "🥡", "🥢", "🥣", "🥤", "🥥", "🥦",
-  ];
-
+  public selectedChannelChat: any = null;
 
   displayedEmojis: string[] = [];
 
@@ -113,7 +85,7 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,) {
     this.loadMoreEmojis();
     this.directMessageDates = [];
   }
@@ -217,7 +189,6 @@ export class BoardContentComponent implements OnInit {
     }
     return false;
   }
-
 
   formatDate(timeStamp: number): string {
     const chatDate = new Date(timeStamp * 1000);
@@ -533,7 +504,6 @@ export class BoardContentComponent implements OnInit {
 
   closeShowReaction(i) {
     this.displayedEmojis = [];
-    console.log('close show reaction', this.endIndex);
     const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
     const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
     if (emojiContainerChat) {
@@ -557,18 +527,22 @@ export class BoardContentComponent implements OnInit {
 
   isToday(timestamp: number): boolean {
     const now = new Date();
-    const date = new Date(timestamp);
-    return now.toDateString() === date.toDateString();
+    if (now) {
+      const date = new Date(timestamp);
+      return now.toDateString() === date.toDateString();
+    }
+
+    return false;
   }
-  
+
   isYesterday(timestamp: number): boolean {
     const now = new Date();
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
-  
+
     const date = new Date(timestamp);
     return yesterday.toDateString() === date.toDateString();
   }
-  
+
 }
 
