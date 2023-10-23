@@ -79,6 +79,7 @@ export class BoardContentComponent implements OnInit {
   public selectedChannelChat: any = null;
 
   displayedEmojis: string[] = [];
+  reactionSender: string[] = [];
 
   constructor(
     public firestore: Firestore,
@@ -441,7 +442,6 @@ export class BoardContentComponent implements OnInit {
       });
   }
 
-
   emojiSelectedReactionChannel(emoji, message, channelId) {
     const date = new Date();
     this.reaction.userReaction[0].timeStamp = date.getTime();
@@ -542,6 +542,19 @@ export class BoardContentComponent implements OnInit {
 
     const date = new Date(timestamp);
     return yesterday.toDateString() === date.toDateString();
+  }
+
+  showWhoReacted(emoji, channelChats, chatId, i) {
+    this.reactionSender = []; 
+    for (let index = 0; index < channelChats.reactions[0].userReaction.length; index++) {
+      const sender = channelChats.reactions[0].userReaction[index].sender;
+      this.reactionSender.push(sender);
+    }
+  }
+
+  hideWhoReacted(i){
+    console.log('hide', i)
+
   }
 
 }
