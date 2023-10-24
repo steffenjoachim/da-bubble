@@ -545,12 +545,16 @@ export class BoardContentComponent implements OnInit {
   }
 
 hoveredIndex: number = -1;
-
-showWhoReacted(emoji, channelChats, chatId, i) {
+selectedReaction: any;
+showWhoReacted(emoji, channelChats, chatId, i,j) {
   this.reactionSender = [];
-  for (let index = 0; index < channelChats.reactions[0].userReaction.length; index++) {
-    const sender = channelChats.reactions[0].userReaction[index].sender;
-    this.reactionSender.push(sender);
+  for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
+    const sender = channelChats.reactions[j];
+    console.log(channelChats.reactions[0].emoji, emoji)
+    if (sender.emoji == emoji){
+      this.selectedReaction = sender;
+      console.log(this.selectedReaction);
+    }
   }
 
   // Setzen Sie den Index des gehoverten Elements.
