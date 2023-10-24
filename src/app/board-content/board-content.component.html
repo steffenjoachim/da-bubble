@@ -88,16 +88,18 @@
                 </div>
                 <div [class.reaction-emojis-sender]="channelChats.sender === loggedUser.name"
                   [class.reaction-emojis-recieved]="channelChats.sender !== loggedUser.name">
-                  <div *ngFor="let reaction of channelChats.reactions">
+                  <div class="reaction-main-div" *ngFor="let reaction of channelChats.reactions">
                     <div *ngIf="reaction.counter" class="emoji"
                       (click)="emojiLikeChannel(reaction.emoji, channelChats, chat.id)"
                       (mouseover)="showWhoReacted(reaction.emoji, channelChats, chat.id, i)"
                       (mouseout)="hideWhoReacted(i)">{{reaction.emoji}}
                       <span class="emoji-counter">{{reaction.counter}}</span>
-                      <div *ngIf="reactionSender.length > 0">
+                      <div class="popup-who-reacted-container" *ngIf="reactionSender.length > 0 && i === hoveredIndex">
+                        <span class="reaction-emoji">{{reaction.emoji}}</span>
                         <div *ngFor="let sender of reactionSender">
                           {{ sender }}
                         </div>
+                        <span class="has-reacted">hat reagiert</span>
                       </div>
                     </div>
                   </div>

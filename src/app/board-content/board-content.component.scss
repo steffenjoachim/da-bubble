@@ -382,7 +382,7 @@
 
 .emojis-reaction-container::-webkit-scrollbar-thumb,
 .emojis-channel-container::-webkit-scrollbar-thumb {
-  background-color: rgb(68, 77, 242);
+  background: rgb(68, 77, 242);
   border-radius: 5px;
 }
 
@@ -434,6 +434,7 @@
   gap: 8px;
   justify-content: flex-start;
   .emoji {
+    position: relative;
     display: flex;
     cursor: pointer;
     border: solid 1px black;
@@ -442,6 +443,32 @@
     &:hover {
       opacity: 0.6;
     }
+  }
+}
+
+.emoji {
+  position: relative;
+}
+
+.popup-who-reacted-container{
+  position: absolute;
+  bottom: 32px;
+  right: 40px;
+  background: rgb(68, 77, 242);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 25px 25px 0 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  .reaction-emoji{
+    font-size: 24px;
+    padding-bottom: 8px;
+  }
+  .has-reacted{
+    font-size: 12px;
   }
 }
 

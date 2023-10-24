@@ -544,18 +544,23 @@ export class BoardContentComponent implements OnInit {
     return yesterday.toDateString() === date.toDateString();
   }
 
-  showWhoReacted(emoji, channelChats, chatId, i) {
-    this.reactionSender = []; 
-    for (let index = 0; index < channelChats.reactions[0].userReaction.length; index++) {
-      const sender = channelChats.reactions[0].userReaction[index].sender;
-      this.reactionSender.push(sender);
-    }
+hoveredIndex: number = -1;
+
+showWhoReacted(emoji, channelChats, chatId, i) {
+  this.reactionSender = [];
+  for (let index = 0; index < channelChats.reactions[0].userReaction.length; index++) {
+    const sender = channelChats.reactions[0].userReaction[index].sender;
+    this.reactionSender.push(sender);
   }
 
-  hideWhoReacted(i){
-    console.log('hide', i)
+  // Setzen Sie den Index des gehoverten Elements.
+  this.hoveredIndex = i;
+}
 
-  }
+hideWhoReacted(i) {
+  // Setzen Sie den Index zurück, wenn der Benutzer das Element verlässt.
+  this.hoveredIndex = -1;
+}
 
 }
 
