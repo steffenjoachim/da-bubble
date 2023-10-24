@@ -61,9 +61,13 @@ export class BoardContentComponent implements OnInit {
   emojisReactionContainerVisible: boolean = false;
   emojisChannelContainerVisible: boolean = false;
   isHovered: boolean = false;
+  emptyChannelShow: boolean = false;
   message: any = '';
+  selectedReaction: any;
   selectedRecipient: string;
   chats: any;
+  hoveredIndex: number = -1;
+  hoveredReactionIndex: number = -1;
   answersAmount: number;
   length: number;
   i: number = 0;
@@ -544,27 +548,22 @@ export class BoardContentComponent implements OnInit {
     return yesterday.toDateString() === date.toDateString();
   }
 
-hoveredIndex: number = -1;
-selectedReaction: any;
-showWhoReacted(emoji, channelChats, chatId, i,j) {
-  this.reactionSender = [];
-  for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
-    const sender = channelChats.reactions[j];
-    console.log(channelChats.reactions[0].emoji, emoji)
-    if (sender.emoji == emoji){
-      this.selectedReaction = sender;
-      console.log(this.selectedReaction);
+  showWhoReacted(emoji, channelChats, chatId, i, j) {
+    this.reactionSender = [];
+    for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
+      const sender = channelChats.reactions[j];
+      console.log(channelChats.reactions[0].emoji, emoji)
+      if (sender.emoji == emoji) {
+        this.selectedReaction = sender;
+      }
     }
+    this.hoveredIndex = i;
+    this.hoveredReactionIndex = j;
   }
 
-  // Setzen Sie den Index des gehoverten Elements.
-  this.hoveredIndex = i;
-}
-
-hideWhoReacted(i) {
-  // Setzen Sie den Index zurück, wenn der Benutzer das Element verlässt.
-  this.hoveredIndex = -1;
-}
+  hideWhoReacted(i) {
+    this.hoveredIndex = -1;
+  }
 
 }
 

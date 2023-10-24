@@ -134,11 +134,16 @@
 }
 
 .content-frame {
+  position: relative;
   padding: 32px;
   height: 56vh;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: rgb(68, 77, 242) transparent;
+  .empty-channel {
+    position: absolute;
+    bottom: 0;
+  }
 }
 
 .content-frame::-webkit-scrollbar {
@@ -253,7 +258,7 @@
   .message-channel-frame {
     width: fit-content;
     max-width: 55%;
-    border: 1px solid black;
+    background: rgb(236, 238, 254);
     border-radius: 0 25px 25px 25px;
     padding: 10px;
   }
@@ -289,6 +294,7 @@
 }
 
 .number-answers {
+  color: rgb(68, 77, 242);
   cursor: pointer;
   &:hover {
     text-decoration: underline;
@@ -423,8 +429,26 @@
     border: solid 1px black;
     border-radius: 25px;
     padding: 6px 8px;
-    &:hover {
-      opacity: 0.6;
+    .popup-who-reacted-container{
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      background: rgb(68, 77, 242);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 25px 25px 0 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 150px;
+      .reaction-emoji{
+        font-size: 24px;
+        padding-bottom: 8px;
+      }
+      .has-reacted{
+        font-size: 12px;
+      }
     }
   }
 }
@@ -440,8 +464,27 @@
     border: solid 1px black;
     border-radius: 25px;
     padding: 6px 8px;
-    &:hover {
-      opacity: 0.6;
+    .popup-who-reacted-container{
+      position: absolute;
+      bottom: 32px;
+      right: 0;
+      left: 40px;
+      background: rgb(68, 77, 242);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 25px 25px 25px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 150px;
+      .reaction-emoji{
+        font-size: 24px;
+        padding-bottom: 8px;
+      }
+      .has-reacted{
+        font-size: 12px;
+      }
     }
   }
 }
@@ -450,27 +493,7 @@
   position: relative;
 }
 
-.popup-who-reacted-container{
-  position: absolute;
-  bottom: 32px;
-  right: 40px;
-  background: rgb(68, 77, 242);
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 25px 25px 0 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 150px;
-  .reaction-emoji{
-    font-size: 24px;
-    padding-bottom: 8px;
-  }
-  .has-reacted{
-    font-size: 12px;
-  }
-}
+
 
 @media (max-height: 800px) {
   .message-frame {
