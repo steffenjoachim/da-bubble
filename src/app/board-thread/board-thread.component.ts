@@ -53,6 +53,7 @@ export class BoardThreadComponent implements OnInit {
   selectedChannelMessage: any;
   answersLength: number;
   emojisContainerVisible: boolean = false;
+  emojisThreadContainerVisible: boolean = false;
 
   constructor(
     public firestore: Firestore,
@@ -139,6 +140,16 @@ export class BoardThreadComponent implements OnInit {
 
   closeDialogEmoji() {
     this.emojisContainerVisible = false;
+  }
+
+  
+  openEmojisThreadContainer(){
+    console.log('clicked');
+    this.emojisThreadContainerVisible = !this.emojisThreadContainerVisible;
+  }
+
+  closeEmojisThreadContainer(){
+    this.emojisThreadContainerVisible = false;
   }
 
   emojiSelected(emoji: string) {

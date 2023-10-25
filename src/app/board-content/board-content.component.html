@@ -80,7 +80,6 @@
                       'Antworten'
                       }}
                     </span>
-
                     <span class="date-answers"
                       *ngIf="channelChats.answers.length > 0">
                       Letzte Antwort
@@ -123,11 +122,12 @@
                           *ngFor="let sender of selectedReaction.userReaction">
                           {{ sender.sender }}
                         </div>
-                        <span class="has-reacted">hat reagiert</span>
+                        <span class="has-reacted">{{ selectedReaction.userReaction.length === 1 ? 'hat reagiert' :
+                          'haben reagiert'
+                          }}</span>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <img class="avatar" [src]="channelChats.avatar">

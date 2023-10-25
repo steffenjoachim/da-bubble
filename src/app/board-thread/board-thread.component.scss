@@ -285,6 +285,37 @@ textarea {
   bottom: 0;
 }
 
+.emoji-channel-outer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
+.emojis-channel-container {
+  // visibility: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  position: absolute;
+  background: white;
+  z-index: 99;
+  overflow-y: scroll;
+  height: 130px;
+  width: 200px;
+}
+
+.emojis-channel-container::-webkit-scrollbar {
+  padding-left: 6px;
+  width: 8px;
+  background-color: transparent;
+}
+
+.emojis-channel-container::-webkit-scrollbar-thumb {
+  background: rgb(68, 77, 242);
+  border-radius: 5px;
+}
+
 @media (max-height: 800px) {
   .message-frame{
       height: 165px;

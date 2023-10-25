@@ -492,7 +492,12 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
+showReactionOpendedIndex: any;
+
   openShowReaction(i) {
+    this.closeShowReaction(this.showReactionOpendedIndex);
+    this.showReactionOpendedIndex = i;
+    this.displayedEmojis = [];
     if (this.displayedEmojis.length === 0) {
       this.loadMoreEmojis()
     }
@@ -507,7 +512,6 @@ export class BoardContentComponent implements OnInit {
   }
 
   closeShowReaction(i) {
-    this.displayedEmojis = [];
     const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
     const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
     if (emojiContainerChat) {
@@ -516,6 +520,7 @@ export class BoardContentComponent implements OnInit {
     if (emojiContainerChannel) {
       emojiContainerChannel.style.visibility = 'hidden';
     }
+    this.showReactionOpendedIndex = i;
   }
 
   loadMoreEmojis() {
