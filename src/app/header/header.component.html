@@ -11,10 +11,36 @@
     <span class="current-user-name" id="current-user-name">{{ loggedUser.name }}</span>
     <img id="current-user-img" src="{{ loggedUser.avatar }}" alt="image of user">
     <mat-icon (click)="openPopup()" fontIcon="keyboard_arrow_down"></mat-icon>
-      <div class="popup-frame" *ngIf="popup" (click)="closePopup()">
-        <div class="popup">
-          <h2 (click)="logout()">log out</h2>
+    <div class="popup-frame" *ngIf="popup" (click)="closePopup()">
+      <div *ngIf="showProfile" class="profile-container">
+        <div class="profile-header">
+          <h2>Profil</h2>
+          <mat-icon (click)="closeProfile()" fontIcon="close"></mat-icon>
+        </div>
+        <div class="img-container">
+          <img class="profile-img"
+            src="{{ loggedUser.avatar }}" alt>
+        </div>
+        <div class="profile-name">
+          <h2>{{ loggedUser.name }}</h2>
+          <span>Bearbeiten</span>
+        </div>
+        <div class="profile-state">
+          <div class="point"></div>
+          <span>Online</span>
+        </div>
+        <div class="profile-email-container" >
+          <mat-icon fontIcon="mail"></mat-icon>
+          <div class="profile-email">
+            <span>E-Mail Adresse</span>
+            <span class="profile-email-adress">email@email.de</span>
+          </div>
         </div>
       </div>
+      <div *ngIf="showLogoutPopup" class="popup">
+        <h2 (click)="openProfile()">Profil</h2>
+        <h2 (click)="logout()">Log out</h2>
+      </div>
+    </div>
   </div>
 </div>

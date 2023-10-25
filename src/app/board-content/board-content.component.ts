@@ -73,6 +73,7 @@ export class BoardContentComponent implements OnInit {
   i: number = 0;
   emojiCounter: number = 0;
   endIndex: number = 10;
+  showReactionOpendedIndex: number;
   dialogRef: MatDialogRef<any>;
   groupedChats: any[] = [];
   directMessageDates: number[] = [];
@@ -313,6 +314,7 @@ export class BoardContentComponent implements OnInit {
         this.selectChannel(chats, this.channel);
       } else if (chats.length > 0) {
         this.channel = '# ' + chats[0].name;
+
         localStorage.setItem('selected-recipient', this.channel);
         this.setSelectedRecipient();
         this.selectChannel(chats, this.channel);
@@ -332,6 +334,11 @@ export class BoardContentComponent implements OnInit {
       map(chats => chats.filter(chat => '# ' + chat.name == selectedChannel)),
     );
     this.chatsChannel$.subscribe((chats) => {
+      if(chats[0].chats == 0) {
+        this.emptyChannelShow = true;
+      } else {
+        this.emptyChannelShow = false;
+      }
       this.selectedChannel = chats[0];
     });
   }
@@ -492,7 +499,6 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
-showReactionOpendedIndex: any;
 
   openShowReaction(i) {
     this.closeShowReaction(this.showReactionOpendedIndex);

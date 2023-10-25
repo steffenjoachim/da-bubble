@@ -159,6 +159,7 @@
   margin-top: 8px;
   margin-bottom: 8px;
   border-radius: 25px;
+  z-index: 99;
 }
 
 .login-nav {
@@ -304,13 +305,13 @@ a {
 
     .guest-login{
       padding: 14px;
-    } 
+    }
 
     .login{
       padding: 16px;
     }
   }
-  
+
   .login-with-google{
     padding-top: 10px;
   }
