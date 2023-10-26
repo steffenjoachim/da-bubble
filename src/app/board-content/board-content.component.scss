@@ -73,7 +73,7 @@
 .message-container {
   display: flex;
   justify-content: center;
-  padding: 32px;
+  padding: 0 32px;
 }
 
 .message-answers-frame {
@@ -92,7 +92,6 @@
   flex-direction: column;
   justify-content: center;
   z-index: 9;
-  bottom: 0 !important;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 25px;
   .input-frame {
@@ -139,7 +138,7 @@
 .content-frame {
   position: relative;
   padding: 32px;
-  height: 56vh;
+  height: 50.5vh;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: rgb(68, 77, 242) transparent;
