@@ -421,6 +421,11 @@
   bottom: 0;
 }
 
+.emoji-reaction-outer{
+  display: flex;
+  justify-content: center;
+}
+
 .reaction-emojis-sender {
   display: flex;
   gap: 8px;
