@@ -47,8 +47,8 @@ export class BoardSidebarComponent implements OnInit {
   addMembers: boolean = false;
   popupheadline: string;
   message: string;
-  selectedRecipient = 'Entwicklerteam';
-  channel = 'Entwicklerteam';
+  selectedRecipient = localStorage.getItem('selected-recipient');
+  channel: string = localStorage.getItem('channel');;
   channelMembers: any[] = [];
 
   constructor(
@@ -56,10 +56,8 @@ export class BoardSidebarComponent implements OnInit {
     private firebase: FirebaseService,
     private chats: ChatService,
     private channelChat: ChannelService,
-    private channels: Firestore,
-  ) {
-    this.channel = localStorage.getItem('channel')
-  }
+    private channels: Firestore) { }
+
 
   ngOnInit(): void {
     this.firebase.setLogoVisible(true);
@@ -120,18 +118,10 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   showChannel(channel) {
-    localStorage.setItem('selected-recipient', '# ' + channel.name);
-    localStorage.setItem('channel', '# ' + channel.name);
+    this.selectedRecipient = '# ' + channel.name
     this.channelChat.showChannelChat(channel);
     document.getElementById('channel-members').classList.remove('d-none');
-    //this.showChannelMembers(channel);
   }
-
-  // showChannelMembers(channel) {
-  //   this.channelMembers = channel.members;
-  //   const membersString = JSON.stringify(channel.members);
-  //   localStorage.setItem('chat.members', membersString);
-  // }
 
   showChat(name) {
     this.selectedRecipient = name;
