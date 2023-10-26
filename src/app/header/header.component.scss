@@ -1,12 +1,23 @@
+* {
+scroll-behavior: smooth;
+}
+
 .header-frame {
   background: rgb(236, 238, 254);
   padding: 30px 16px;
   display: flex;
   justify-content: space-between;
-  div {
+  .user-frame,
+  .search-frame,
+  .logo-frame {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    img {
+      border-radius: 100%;
+      object-fit: contain;
+      height: 70px;
+    }
   }
   input {
     border: none;
@@ -33,9 +44,21 @@
 .user-frame {
   position: relative;
   width: 24%;
+  mat-icon {
+    cursor: pointer;
+  }
 }
 
-.popup-frame{
+@keyframes opacityIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.popup-frame {
   position: fixed;
   width: 100%;
   height: 100 vh;
@@ -43,8 +66,124 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 999;
+  animation: opacityIn 0.3s ease-in-out;
+}
+
+.popup-frame.closing {
+  animation: opacityOut 0.3s ease-in-out;
+}
+
+@keyframes opacityOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.popup.closing {
+  animation: slideOut 0.3s ease-in-out;
+}
+
+.profile-container.closing {
+  animation: slideOut 0.3s ease-in-out;
+}
+
+.profile-container {
+  z-index: 101;
+  position: fixed;
+  top: 125px;
+  right: 32px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: 420px;
+  width: 350px;
+  border-radius: 25px 0 25px 25px;
+  padding: 24px;
+  animation : slideIn 0.3s ease-in-out;
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .img-container {
+    display: flex;
+    justify-content: center;
+  }
+  .profile-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+
+    h2 {
+      margin: 0;
+    }
+    span {
+      color: rgb(68, 77, 242);
+      cursor: pointer;
+      transition: all 0.125s ease-in-out;
+      &:hover {
+        scale: 1.1;
+      }
+    }
+  }
+  .profile-state {
+    color: rgb(146, 200, 62);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    .point {
+      height: 15px;
+      width: 15px;
+      border-radius: 100%;
+      background-color: rgb(146, 200, 62);
+    }
+  }
+  .profile-email {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .profile-email-container {
+    display: flex;
+    gap: 6px;
+    padding-top: 16px;
+    .profile-email {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      .profile-email-adress {
+        color: #1381ff;
+      }
+    }
+  }
+}
+
+.profile-img {
+  height: 200px !important;
 }
 
 .popup {
@@ -53,14 +192,26 @@
   right: 32px;
   background-color: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 150px;
   width: 250px;
   border-radius: 25px 0 25px 25px;
   z-index: 99;
-  h2{
+  animation : slideIn 0.3s ease-in-out;
+  h2 {
     color: black;
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 6px 6px;
+    width: 80%;
+    border-radius: 25px;
+    text-align: center;
+    &:hover {
+      color: blue;
+      background: rgb(236, 238, 254);
+    }
   }
 }
 

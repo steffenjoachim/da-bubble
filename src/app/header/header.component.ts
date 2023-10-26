@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { getAuth, signOut } from "firebase/auth";
 import { onAuthStateChanged } from '@angular/fire/auth';
+import { set } from '@angular/fire/database';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,8 @@ import { onAuthStateChanged } from '@angular/fire/auth';
 export class HeaderComponent implements OnInit {
 
   popup: boolean = false;
+  showProfile: boolean = false;
+  showLogoutPopup: boolean = false;
 
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
@@ -35,21 +38,41 @@ export class HeaderComponent implements OnInit {
 
   openPopup() {
     this.popup = true;
+    this.showLogoutPopup = true;
   }
 
   closePopup() {
-    this.popup = false;
+    this.showProfile = false;
+    const profile = document.querySelector(".popup");
+    profile.classList.add("closing");
+    const popup = document.querySelector(".popup-frame");
+    popup.classList.add("closing");
+    setTimeout(() => {
+      this.popup = false;
+    }, 290);
+    event.stopPropagation();
+  }
+
+  openProfile() {
+    this.showProfile = true;
+    event.stopPropagation();
+  }
+
+  closeProfile() {
+    const popup = document.querySelector(".profile-container");
+    popup.classList.add("closing");
+    setTimeout(() => {
+      this.showProfile = false;
+    }, 290);
+    event.stopPropagation();
   }
 
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
-      // Überwachen Sie den Authentifizierungsstatus, um sicherzustellen, dass der Benutzer abgemeldet ist
       onAuthStateChanged(auth, (user) => {
         if (!user) {
-          // Benutzer ist ausgeloggt, führen Sie die Navigation aus
           this.router.navigate(['login']);
-          // Entfernen Sie lokale Speicherdaten nach dem Logout
           localStorage.removeItem('userData');
           localStorage.removeItem('selected-recipient');
           localStorage.removeItem('channel');

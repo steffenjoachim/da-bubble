@@ -137,6 +137,11 @@
     cursor: pointer;
     padding: 8px;
     border-radius: 25px;
+    img {
+      border-radius: 100%;
+      object-fit: contain;
+      height: 48px;
+    }
     &:hover {
       background: rgb(236, 238, 254);
     }
@@ -254,11 +259,16 @@ h3 {
   }
 }
 
-.image-frame{
+.image-frame {
   position: relative;
+  img {
+    border-radius: 100%;
+    object-fit: contain;
+    height: 48px;
+  }
 }
 
-.online-indication{
+.online-indication {
   position: absolute;
   left: 32px;
   bottom: 8px;
@@ -269,8 +279,7 @@ h3 {
   border-radius: 50%;
 }
 
-
-.offline-indication{
+.offline-indication {
   position: absolute;
   left: 32px;
   bottom: 8px;
