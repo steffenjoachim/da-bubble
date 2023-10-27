@@ -308,7 +308,6 @@ export class BoardContentComponent implements OnInit {
     this.showChannelChat = true;
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
-
     this.chatsChannel$.subscribe((chats) => {
       if (this.channel) {
         this.selectChannel(chats, this.channel);

@@ -25,6 +25,15 @@ export class BoardThreadComponent implements OnInit {
     name: 'Gast'
   }
 
+  reactions = [{
+    counter: 0,
+    emoji: '',
+    userReaction: [{
+      sender: '',
+      timeStamp: 0
+    }]
+  }];
+
   public chatSubject = new BehaviorSubject<any>(null);
   chat$: Observable<any> = this.chatSubject.asObservable();
 
@@ -32,6 +41,7 @@ export class BoardThreadComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   channelChatCollection: any = collection(this.channelChat, 'channels')
   users: any[] = [];
+  reactions$: Observable<any>;
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
   answers: any[] = [];
@@ -49,11 +59,12 @@ export class BoardThreadComponent implements OnInit {
   chatId: string;
   chatAvatar: string;
   chatSender: string;
+
   chatTimeStamp: number;
   selectedChannelMessage: any;
   answersLength: number;
   emojisContainerVisible: boolean = false;
-  emojisThreadContainerVisible: boolean = false;
+  emojisThreadContainerVisible: boolean[] = [];
 
   constructor(
     public firestore: Firestore,
@@ -142,14 +153,51 @@ export class BoardThreadComponent implements OnInit {
     this.emojisContainerVisible = false;
   }
 
-  
-  openEmojisThreadContainer(){
-    console.log('clicked');
-    this.emojisThreadContainerVisible = !this.emojisThreadContainerVisible;
+
+  setObjetoReactions(emoji: string) {
+    this.reactions = [{
+      counter: 1,
+      emoji: emoji,
+      userReaction: [{
+        sender: this.loggedUser.name,
+        timeStamp: Date.now()
+      }]
+    }]
   }
 
-  closeEmojisThreadContainer(){
-    this.emojisThreadContainerVisible = false;
+  async emojiReaction(emoji: string, answer) {
+    this.setObjetoReactions(emoji);
+    const answerId = answer.id;
+    const channelId = this.selectedChannel.id;
+    this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    const docRef = doc(this.channelChat, 'channels', channelId);
+    const docSnapshot = getDoc(docRef);
+    if (docSnapshot) {
+      const docData = (await docSnapshot).data();
+      const chatsArray = docData['chats'];
+      const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
+      if (chatToUpdate) {
+        let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
+        if (answerToUpdate) {
+          const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+
+          if (emojiIndex !== -1) {
+            answerToUpdate.reactions.splice(emojiIndex, 1);
+          } else {
+            answerToUpdate.reactions = this.reactions;
+          }
+          await updateDoc(docRef, { chats: chatsArray });
+        }
+      }
+    }
+  }
+
+  openEmojisThreadContainer(index) {
+    this.emojisThreadContainerVisible[index] = !this.emojisThreadContainerVisible[index];
+  }
+
+  closeEmojisThreadContainer(index) {
+    this.emojisThreadContainerVisible[index] = false;
   }
 
   emojiSelected(emoji: string) {

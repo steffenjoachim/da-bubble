@@ -77,9 +77,11 @@ export class HeaderComponent implements OnInit {
           localStorage.removeItem('selected-recipient');
           localStorage.removeItem('channel');
         }
+        localStorage.removeItem('channel');
       });
     }).catch((error) => {
       console.log(error)
     });
+    localStorage.removeItem('channel');
   }
 }
