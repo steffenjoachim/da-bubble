@@ -25,7 +25,6 @@
     height: 62vh;
     border-radius: 25px;
     margin-bottom: 16px;
-
   }
 
   h1 {
@@ -143,6 +142,7 @@
     color: white;
     border: none;
     padding: 8px;
+    z-index: 1;
   }
 
   .guest-login {
@@ -263,8 +263,10 @@ a {
   }
 
   .create-account {
+    position: relative;
     font-size: 20px;
     padding: 16px;
+    z-index: 1;
   }
 }
 
@@ -286,37 +288,35 @@ a {
 }
 
 @media (max-height: 800px) {
-
   .login-frame {
     mat-card {
       height: 520px;
     }
   }
 
-  .login-btn{
+  .login-btn {
     margin-top: 10px;
   }
 
-  .button-container{
-
-    .google-btn{
+  .button-container {
+    .google-btn {
       margin-top: 8px;
     }
 
-    .guest-login{
+    .guest-login {
       padding: 14px;
     }
 
-    .login{
+    .login {
       padding: 16px;
     }
   }
 
-  .login-with-google{
+  .login-with-google {
     padding-top: 10px;
   }
 
-  .registration-frame{
+  .registration-frame {
     margin-top: 24px;
   }
 }
