@@ -178,14 +178,18 @@ export class BoardThreadComponent implements OnInit {
       const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
       if (chatToUpdate) {
         let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
-        if (answerToUpdate) {
+        if (answerToUpdate.reactions) {
+          console.log(answerToUpdate);
           const emojiReaction = answerToUpdate.reactions.find(item=> item.emoji === emoji);
           if (emojiReaction) {
             const emojiReactionUser = emojiReaction.userReaction.find(user=> user.sender === this.loggedUser.name)
-            if (emojiReactionUser == this.loggedUser.name) {
+            if (emojiReactionUser.sender == this.loggedUser.name) {
+              console.log(emojiReaction)
               this.reactions[0].counter= emojiReaction.counter -= 1
               const userIndex = emojiReaction.userReaction.findIndex(index=> index.sender === this.loggedUser.name)
-              emojiReaction.userReaction.splice(userIndex,1);
+              const newUserReaction = emojiReaction.userReaction.splice(userIndex,1)
+             this.reactions[0].userReaction.push(newUserReaction);
+             console.log(this.reactions)
             }else{
               this.reactions[0].counter= emojiReaction.counter += 1
             }
@@ -195,10 +199,13 @@ export class BoardThreadComponent implements OnInit {
           // if (emojiIndex !== -1) {
           //   answerToUpdate.reactions.splice(emojiIndex, 1);
           // } else {
+          }
+            console.log(answerToUpdate)
             answerToUpdate.reactions = this.reactions;
+            
           // }
           await updateDoc(docRef, { chats: chatsArray });
-        }
+        
       }
     }
   }
