@@ -154,7 +154,7 @@ export class BoardThreadComponent implements OnInit {
   }
 
 
-  setObjetoReactions(emoji: string) {
+  setObjecToReaction(emoji: string) {
     this.reactions = [{
       counter: 1,
       emoji: emoji,
@@ -166,7 +166,7 @@ export class BoardThreadComponent implements OnInit {
   }
 
   async emojiReaction(emoji: string, answer) {
-    this.setObjetoReactions(emoji);
+    this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
     this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
@@ -179,13 +179,24 @@ export class BoardThreadComponent implements OnInit {
       if (chatToUpdate) {
         let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
         if (answerToUpdate) {
+          const emojiReaction = answerToUpdate.reactions.find(item=> item.emoji === emoji);
+          if (emojiReaction) {
+            const emojiReactionUser = emojiReaction.userReaction.find(user=> user.sender === this.loggedUser.name)
+            if (emojiReactionUser == this.loggedUser.name) {
+              this.reactions[0].counter= emojiReaction.counter -= 1
+              const userIndex = emojiReaction.userReaction.findIndex(index=> index.sender === this.loggedUser.name)
+              emojiReaction.userReaction.splice(userIndex,1);
+            }else{
+              this.reactions[0].counter= emojiReaction.counter += 1
+            }
+          }
           const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
 
-          if (emojiIndex !== -1) {
-            answerToUpdate.reactions.splice(emojiIndex, 1);
-          } else {
+          // if (emojiIndex !== -1) {
+          //   answerToUpdate.reactions.splice(emojiIndex, 1);
+          // } else {
             answerToUpdate.reactions = this.reactions;
-          }
+          // }
           await updateDoc(docRef, { chats: chatsArray });
         }
       }
