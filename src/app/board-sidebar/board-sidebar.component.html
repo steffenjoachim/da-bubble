@@ -21,8 +21,8 @@
 
     </div>
     <div id="channels-body" class="channels-body">
-      <div *ngFor="let chanel of channel$ | async"
-        (click)="onSidebarLinkClick(chanel)" class="channels"
+      <div *ngFor="let chanel of channel$  | async"
+      (click)="onSidebarLinkClickAndOpenContent(channel)" class="channels"
         [ngClass]="{'active': '# ' + chanel.name == selectedRecipient}">
         <span># {{ chanel.name }}</span>
       </div>

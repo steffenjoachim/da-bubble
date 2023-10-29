@@ -6,7 +6,7 @@
       (anotherEvent)="boardContent.startChat()">
     </app-board-sidebar>
   </div>
-  <div class="content-box">
+  <div class="content-box" id="content-box">
     <app-board-content #boardContent
       (contentClicked)="boardThread.getMessage($event)">
     </app-board-content>

@@ -219,7 +219,15 @@ export class BoardSidebarComponent implements OnInit {
     }
   }
 
+  onSidebarLinkClickAndOpenContent(channel) {
+    this.onSidebarLinkClick(channel);
+    this.openContent(channel);
+  }
+
+  openContent(channel){
+    // document.getElementById('content-box').style.display = 'block';  }
+
 }
 
 
-
+}

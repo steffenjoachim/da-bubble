@@ -1,258 +1,232 @@
-<div class="content-head">
-  <button (click)="openDialogchannelInfo()">
-    <span id="selected-recipient" class="selectedInterloctor">{{
-      selectedRecipient }}</span>
-    <div>
-      <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
-    </div>
-  </button>
-  <div class="channel-members" id="channel-members">
-    <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
-      <div *ngFor="let avatar of channel.members">
-        <img [src]="avatar.avatar" alt>
+<div class="main-frame">
+  <div class="content-head">
+    <button (click)="openDialogchannelInfo()">
+      <span id="selected-recipient" class="selectedInterloctor">{{
+        selectedRecipient }}</span>
+      <div>
+        <mat-icon fontIcon="keyboard_arrow_down"></mat-icon>
       </div>
-    </div>
-    <span>{{length}}</span>
-    <div (click)="openDialogAddMembers()">
-      <mat-icon fontIcon="group_add"></mat-icon>
+    </button>
+    <div class="channel-members" id="channel-members">
+      <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
+        <div *ngFor="let avatar of channel.members">
+          <img [src]="avatar.avatar" alt>
+        </div>
+      </div>
+      <span>{{length}}</span>
+      <div (click)="openDialogAddMembers()">
+        <mat-icon fontIcon="group_add"></mat-icon>
+      </div>
     </div>
   </div>
-</div>
-<!-- Channel -->
-<div class="content-frame" id="content-frame">
-  <ng-container *ngIf="showChannelChat">
-    <div *ngIf="emptyChannelShow" class="empty-channel">
-      <h1>{{channel}}</h1>
-      <div>
-        <span>Du hast diesen Channel heute erstellt. Das ist der Anfang des
-          Channels </span>
-        <span> {{ channel }}. </span>
+  <!-- Channel -->
+  <div class="content-frame" id="content-frame">
+    <ng-container *ngIf="showChannelChat">
+      <div *ngIf="emptyChannelShow" class="empty-channel">
+        <h1>{{channel}}</h1>
+        <div>
+          <span>Du hast diesen Channel heute erstellt. Das ist der Anfang des
+            Channels </span>
+          <span> {{ channel }}. </span>
+        </div>
       </div>
-    </div>
-    <div>
-      <div *ngFor="let chat of chatsChannel$ | async;">
-        <ng-container *ngFor="let channelChats of chat.chats; let i = index">
+      <div>
+        <div *ngFor="let chat of chatsChannel$ | async;">
+          <ng-container *ngFor="let channelChats of chat.chats; let i = index">
 
-          <ng-container *ngIf="isDifferentDate(chat, i)">
-            <div class="day-of-message">
-              <div class="line-left"></div>
-              <span *ngIf="channelChats.timeStamp" class="day-frame">{{
-                formatDate(channelChats.timeStamp) }}</span>
+            <ng-container *ngIf="isDifferentDate(chat, i)">
+              <div class="day-of-message">
+                <div class="line-left"></div>
+                <span *ngIf="channelChats.timeStamp" class="day-frame">{{
+                  formatDate(channelChats.timeStamp) }}</span>
 
-              <div class="line-right"></div>
-            </div>
-          </ng-container>
-          <div (mouseover)="showChatIcons(i)" (mouseout)="hideChatIcons(i)"
-            [class.sent-container]="channelChats.sender === loggedUser.name"
-            [class.recieved-container]="channelChats.sender !== loggedUser.name">
-            <div
-              [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
-              [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
-              <div class="emoji-reaction-outer" id="emoji-outer"
-                (click)="closeShowReaction(i)">
-                <div class="emojis-reaction-container"
-                  id="emojis-container-channel{{i}}">
-                  <div *ngFor="let emoji of displayedEmojis"
-                    (click)="emojiLikeChannel(emoji, channelChats, chat.id)">
-                    <div class="selected-reaction-emoji" [innerHTML]="emoji"
-                      style="width: 16px; height: 16px;"></div>
-                  </div>
-                  <mat-icon (click)="loadMoreEmojis()"
-                    class="selected-reaction-emoji" fontIcon="add"></mat-icon>
-                </div>
+                <div class="line-right"></div>
               </div>
-              <div>
-                <div class="name-hour">
-                  <span class="message-sender">{{ channelChats.sender }}</span>
-                  <span class="date">{{channelChats.timeStamp * 1000 | date:
-                    'HH:mm'}}Uhr</span>
-                </div>
-                <div
-                  [class.sent-message]="channelChats.sender === loggedUser.name"
-                  [class.recieved-message]="channelChats.sender !== loggedUser.name">
-                  <span class="message-channel-frame">{{ channelChats.message }}</span>
-                  <div class="message-answers-frame">
-                    <span (click)="openThread(channelChats)"
-                      class="number-answers"
-                      *ngIf="channelChats.answers.length > 0">
-                      {{ channelChats.answers.length }} {{
-                      channelChats.answers.length === 1 ? 'Antwort' :
-                      'Antworten'
-                      }}
-                    </span>
-                    <span class="date-answers"
-                      *ngIf="channelChats.answers.length > 0">
-                      Letzte Antwort
-                      <ng-container
-                        *ngIf="isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                        heute {{channelChats.answers[channelChats.answers.length
-                        - 1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
-                      </ng-container>
-                      <ng-container
-                        *ngIf="isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                        gestern
-                        {{channelChats.answers[channelChats.answers.length -
-                        1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
-                      </ng-container>
-                      <ng-container
-                        *ngIf="!isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000) && !isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
-                        {{
-                        formatDate(channelChats.answers[channelChats.answers.length
-                        - 1].timeStamp) }}
-                        {{(channelChats.answers[channelChats.answers.length -
-                        1].timeStamp * 1000) | date: 'HH:mm' }} Uhr
-                      </ng-container>
-                    </span>
+            </ng-container>
+            <div (mouseover)="showChatIcons(i)" (mouseout)="hideChatIcons(i)"
+              [class.sent-container]="channelChats.sender === loggedUser.name"
+              [class.recieved-container]="channelChats.sender !== loggedUser.name">
+              <div [class.sent-name-avatar]="channelChats.sender === loggedUser.name"
+                [class.recieved-name-avatar]="channelChats.sender !== loggedUser.name">
+                <div class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction(i)">
+                  <div class="emojis-reaction-container" id="emojis-container-channel{{i}}">
+                    <div *ngFor="let emoji of displayedEmojis" (click)="emojiLikeChannel(emoji, channelChats, chat.id)">
+                      <div class="selected-reaction-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
+                    </div>
+                    <mat-icon (click)="loadMoreEmojis()" class="selected-reaction-emoji" fontIcon="add"></mat-icon>
                   </div>
                 </div>
-                <div
-                  [class.reaction-emojis-sender]="channelChats.sender === loggedUser.name"
-                  [class.reaction-emojis-recieved]="channelChats.sender !== loggedUser.name">
-                  <div class="reaction-main-div"
-                    *ngFor="let reaction of channelChats.reactions; let j=index">
-                    <div *ngIf="reaction.counter" class="emoji"
-                      (click)="emojiLikeChannel(reaction.emoji, channelChats, chat.id)"
-                      (mouseover)="showWhoReacted(reaction.emoji, channelChats, chat.id, i, j)"
-                      (mouseout)="hideWhoReacted(i)">{{reaction.emoji}}
-                      <span class="emoji-counter">{{reaction.counter}}</span>
-                      <div class="popup-who-reacted-container"
-                        *ngIf="i === hoveredIndex && j === hoveredReactionIndex">
-                        <span class="reaction-emoji">{{selectedReaction.emoji}}</span>
-                        <div
-                          *ngFor="let sender of selectedReaction.userReaction">
-                          {{ sender.sender }}
+                <div>
+                  <div class="name-hour">
+                    <span class="message-sender">{{ channelChats.sender }}</span>
+                    <span class="date">{{channelChats.timeStamp * 1000 | date:
+                      'HH:mm'}}Uhr</span>
+                  </div>
+                  <div [class.sent-message]="channelChats.sender === loggedUser.name"
+                    [class.recieved-message]="channelChats.sender !== loggedUser.name">
+                    <span class="message-channel-frame">{{ channelChats.message }}</span>
+                    <div class="message-answers-frame">
+                      <span (click)="openThread(channelChats)" class="number-answers"
+                        *ngIf="channelChats.answers.length > 0">
+                        {{ channelChats.answers.length }} {{
+                        channelChats.answers.length === 1 ? 'Antwort' :
+                        'Antworten'
+                        }}
+                      </span>
+                      <span class="date-answers" *ngIf="channelChats.answers.length > 0">
+                        Letzte Antwort
+                        <ng-container
+                          *ngIf="isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                          heute {{channelChats.answers[channelChats.answers.length
+                          - 1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
+                        </ng-container>
+                        <ng-container
+                          *ngIf="isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                          gestern
+                          {{channelChats.answers[channelChats.answers.length -
+                          1].timeStamp * 1000 | date: 'HH:mm'}} Uhr
+                        </ng-container>
+                        <ng-container
+                          *ngIf="!isToday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000) && !isYesterday(channelChats.answers[channelChats.answers.length - 1].timeStamp * 1000)">
+                          {{
+                          formatDate(channelChats.answers[channelChats.answers.length
+                          - 1].timeStamp) }}
+                          {{(channelChats.answers[channelChats.answers.length -
+                          1].timeStamp * 1000) | date: 'HH:mm' }} Uhr
+                        </ng-container>
+                      </span>
+                    </div>
+                  </div>
+                  <div [class.reaction-emojis-sender]="channelChats.sender === loggedUser.name"
+                    [class.reaction-emojis-recieved]="channelChats.sender !== loggedUser.name">
+                    <div class="reaction-main-div" *ngFor="let reaction of channelChats.reactions; let j=index">
+                      <div *ngIf="reaction.counter" class="emoji"
+                        (click)="emojiLikeChannel(reaction.emoji, channelChats, chat.id)"
+                        (mouseover)="showWhoReacted(reaction.emoji, channelChats, chat.id, i, j)"
+                        (mouseout)="hideWhoReacted(i)">{{reaction.emoji}}
+                        <span class="emoji-counter">{{reaction.counter}}</span>
+                        <div class="popup-who-reacted-container"
+                          *ngIf="i === hoveredIndex && j === hoveredReactionIndex">
+                          <span class="reaction-emoji">{{selectedReaction.emoji}}</span>
+                          <div *ngFor="let sender of selectedReaction.userReaction">
+                            {{ sender.sender }}
+                          </div>
+                          <span class="has-reacted">{{ selectedReaction.userReaction.length === 1 ? 'hat reagiert' :
+                            'haben reagiert'
+                            }}</span>
                         </div>
-                        <span class="has-reacted">{{ selectedReaction.userReaction.length === 1 ? 'hat reagiert' :
-                          'haben reagiert'
-                          }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <img class="avatar" [src]="channelChats.avatar">
-              <div>
-                <div class="chat-icon-frame" id="chat-icon-frame{{i}}">
-                  <mat-icon *ngIf="loggedUser.name == channelChats.sender"
-                    class="mat-icons" fontIcon="delete"
-                    (click)="deleteChat(channelChats)"></mat-icon>
-                  <mat-icon (click)=" openShowReaction(i)" class="mat-icons"
-                    fontIcon="sentiment_satisfied"></mat-icon>
-                  <mat-icon class="mat-icons" fontIcon="chat"
-                    (click)="openThread(channelChats)"></mat-icon>
+                <img class="avatar" [src]="channelChats.avatar">
+                <div>
+                  <div class="chat-icon-frame" id="chat-icon-frame{{i}}">
+                    <mat-icon *ngIf="loggedUser.name == channelChats.sender" class="mat-icons" fontIcon="delete"
+                      (click)="deleteChat(channelChats)"></mat-icon>
+                    <mat-icon (click)=" openShowReaction(i)" class="mat-icons"
+                      fontIcon="sentiment_satisfied"></mat-icon>
+                    <mat-icon class="mat-icons" fontIcon="chat" (click)="openThread(channelChats)"></mat-icon>
+                  </div>
                 </div>
               </div>
             </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="emojisChannelContainerVisible" class="emoji-channel-outer" id="emoji-channel-outer"
+        (click)="closeShowReaction(i)">
+        <div class="emojis-channel-container" id="emojis-channel-container{{i}}">
+          <div *ngFor="let emoji of emojis">
+            <div class="selected-channel-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Chats -->
+    <ng-container *ngIf="showChat">
+      <div *ngFor="let chat of chats$ | async; let i = index">
+        <ng-container *ngIf="isDifferentDate(chat, i)">
+          <div class="day-of-message">
+            <div class="line-left"></div>
+            <span *ngIf="chat.timeStamp" class="day-frame">{{
+              formatDate(chat.timeStamp) }}</span>
+            <div class="line-right"></div>
           </div>
         </ng-container>
-      </div>
-    </div>
-    <div *ngIf="emojisChannelContainerVisible" class="emoji-channel-outer"
-      id="emoji-channel-outer"
-      (click)="closeShowReaction(i)">
-      <div class="emojis-channel-container" id="emojis-channel-container{{i}}">
-        <div *ngFor="let emoji of emojis">
-          <div class="selected-channel-emoji" [innerHTML]="emoji"
-            style="width: 16px; height: 16px;"></div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
-  <!-- Chats -->
-  <ng-container *ngIf="showChat">
-    <div *ngFor="let chat of chats$ | async; let i = index">
-      <ng-container *ngIf="isDifferentDate(chat, i)">
-        <div class="day-of-message">
-          <div class="line-left"></div>
-          <span *ngIf="chat.timeStamp" class="day-frame">{{
-            formatDate(chat.timeStamp) }}</span>
-          <div class="line-right"></div>
-        </div>
-      </ng-container>
-      <div [class.sent-container]="chat.sender === loggedUser.name"
-        [class.recieved-container]="chat.sender !== loggedUser.name">
-        <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
-          [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
-          <div class="emoji-reaction-outer" id="emoji-outer"
-            (click)="closeShowReaction(i)">
-            <div class="emojis-reaction-container"
-              id="emojis-container-chat{{i}}">
-              <div *ngFor="let emoji of displayedEmojis"
-                (click)="emojiLikeChat(emoji, chat)">
-                <div class="selected-reaction-emoji" [innerHTML]="emoji"
-                  style="width: 16px; height: 16px;">+</div>
-              </div>
-            </div>
-          </div>
-          <div class="name-and-date"><span>{{ chat.sender }} </span>
-            <span class="date">{{ chat.timeStamp * 1000 | date: 'HH:mm '}}Uhr</span>
-            <div [class.sent-message]="chat.sender === loggedUser.name"
-              [class.recieved-message]="chat.sender !== loggedUser.name">
-              <span>{{ chat.message }}</span>
-            </div>
-            <div
-              [class.reaction-emojis-sender]="chat.sender === loggedUser.name"
-              [class.reaction-emojis-recieved]="chat.sender !== loggedUser.name">
-              <div *ngFor="let reaction of chat.reactions">
-                <div *ngIf="reaction.counter" class="emoji"
-                  (click)="emojiLikeChat(reaction.emoji, chat)">
-                  {{reaction.emoji}}
-                  <span class="emoji-counter">{{reaction.counter}}</span>
+        <div [class.sent-container]="chat.sender === loggedUser.name"
+          [class.recieved-container]="chat.sender !== loggedUser.name">
+          <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
+            [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+            <div class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction(i)">
+              <div class="emojis-reaction-container" id="emojis-container-chat{{i}}">
+                <div *ngFor="let emoji of displayedEmojis" (click)="emojiLikeChat(emoji, chat)">
+                  <div class="selected-reaction-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;">+</div>
                 </div>
               </div>
             </div>
-          </div>
-          <img class="avatar" src={{chat.avatar}}>
-          <div>
-            <div id="chat-icon-frame{{i}}">
-              <mat-icon *ngIf="loggedUser.name == chat.sender" class="mat-icons"
-                fontIcon="delete"
-                (click)="deleteChat(chat)"></mat-icon>
-              <mat-icon (click)="openShowReaction(i)" class="mat-icons"
-                fontIcon="sentiment_satisfied"></mat-icon>
+            <div class="name-and-date"><span>{{ chat.sender }} </span>
+              <span class="date">{{ chat.timeStamp * 1000 | date: 'HH:mm '}}Uhr</span>
+              <div [class.sent-message]="chat.sender === loggedUser.name"
+                [class.recieved-message]="chat.sender !== loggedUser.name">
+                <span>{{ chat.message }}</span>
+              </div>
+              <div [class.reaction-emojis-sender]="chat.sender === loggedUser.name"
+                [class.reaction-emojis-recieved]="chat.sender !== loggedUser.name">
+                <div *ngFor="let reaction of chat.reactions">
+                  <div *ngIf="reaction.counter" class="emoji" (click)="emojiLikeChat(reaction.emoji, chat)">
+                    {{reaction.emoji}}
+                    <span class="emoji-counter">{{reaction.counter}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="avatar" src={{chat.avatar}}>
+            <div>
+              <div id="chat-icon-frame{{i}}">
+                <mat-icon *ngIf="loggedUser.name == chat.sender" class="mat-icons" fontIcon="delete"
+                  (click)="deleteChat(chat)"></mat-icon>
+                <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-  </ng-container>
-</div>
-<div class="message-container">
-  <div class="message-frame">
-    <div (click)="closeDialogEmoji()" class="input-frame">
-      <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht"
-        cols="37" rows="9" #emojiTextArea>
+    </ng-container>
+  </div>
+  <div class="message-container">
+    <div class="message-frame">
+      <div (click)="closeDialogEmoji()" class="input-frame">
+        <textarea id="textarea" [(ngModel)]="message" placeholder name="Nachricht" cols="37" rows="9" #emojiTextArea>
       </textarea>
-    </div>
-    <div class="icon-container">
-      <div class="icon-left">
-        <!-- <div class="icon-div">
+      </div>
+      <div class="icon-container">
+        <div class="icon-left">
+          <!-- <div class="icon-div">
           <mat-icon class="mat-icons" fontIcon="add"></mat-icon>
         </div> -->
-        <div (click)="openDialogShowEmojis()" class="icon-div">
-          <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
-        </div>
-        <!-- <div class="icon-div">
+          <div (click)="openDialogShowEmojis()" class="icon-div">
+            <mat-icon class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
+          </div>
+          <!-- <div class="icon-div">
           <mat-icon class="mat-icons" fontIcon="alternate_email"></mat-icon>
         </div> -->
-      </div>
-      <div class="icon-right">
-        <img (click)="postChat()" class="submit-arrow"
-          src="./assets/img/Send icon.png" alt="submit arrow">
+        </div>
+        <div class="icon-right">
+          <img (click)="postChat()" class="submit-arrow" src="./assets/img/Send icon.png" alt="submit arrow">
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer"
-  (click)="closeDialogEmoji()">
-  <div class="emojis-container" id="emojis-container">
-    <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
-      <div class="selected-emoji" [innerHTML]="emoji"
-        style="width: 16px; height: 16px;"></div>
+  <div *ngIf="emojisContainerVisible" class="emoji-outer" id="emoji-outer" (click)="closeDialogEmoji()">
+    <div class="emojis-container" id="emojis-container">
+      <div *ngFor="let emoji of emojis" (click)="emojiSelected(emoji)">
+        <div class="selected-emoji" [innerHTML]="emoji" style="width: 16px; height: 16px;"></div>
+      </div>
     </div>
   </div>
-</div>
-<!-- <div (click)="closeDialogEmoji()">
+  <!-- <div (click)="closeDialogEmoji()">
 <app-dialog-show-emojis #showEmojis (openEmojis)="dialogShowEmojis.emojiSelected()"></app-dialog-show-emojis>
 </div> -->
+</div>

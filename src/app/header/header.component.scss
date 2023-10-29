@@ -235,3 +235,25 @@ scroll-behavior: smooth;
     font-size: 28px;
   }
 }
+
+
+@media (max-width: 1410px) {
+  .header-frame{
+    img{
+      margin-left: 0;
+    }
+    .user-frame{
+      img{
+        height: 55px;
+      }
+    }
+  }
+
+  .current-user-name{
+    font-size: 18px;
+  }
+
+  .search-frame{
+    width: 35%;
+  }
+}

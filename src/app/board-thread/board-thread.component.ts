@@ -166,6 +166,7 @@ export class BoardThreadComponent implements OnInit {
   }
 
   async emojiReaction(emoji: string, answer) {
+    console.log(emoji, answer)
     this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
