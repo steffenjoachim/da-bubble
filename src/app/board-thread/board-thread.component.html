@@ -63,9 +63,11 @@
                 </div>
               </div>
             </div>
-            <div class="emoji" *ngFor="let reaction of answer.reactions">
-              <span>{{reaction.emoji}}</span>
-              <span>{{reaction.counter}}</span>
+            <div *ngFor="let reaction of answer.reactions">
+              <div class="emoji" *ngIf="reaction.counter >0">
+                <span>{{reaction.emoji}}</span>
+                <span>{{reaction.counter}}</span>
+              </div>
             </div>
             <div *ngIf="emojisThreadContainerVisible[i]"
               class="emoji-channel-outer" id="emoji-channel-outer"

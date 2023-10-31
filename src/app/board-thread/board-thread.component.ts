@@ -154,7 +154,8 @@ export class BoardThreadComponent implements OnInit {
   }
 
 
-  setObjetoReactions(emoji: string) {
+
+  setObjecToReaction(emoji: string) {
     this.reactions = [{
       counter: 1,
       emoji: emoji,
@@ -166,7 +167,7 @@ export class BoardThreadComponent implements OnInit {
   }
 
   async emojiReaction(emoji: string, answer) {
-    this.setObjetoReactions(emoji);
+    this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
     this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
@@ -178,19 +179,68 @@ export class BoardThreadComponent implements OnInit {
       const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
       if (chatToUpdate) {
         let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
-        if (answerToUpdate) {
-          const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+        if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
+          const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
+          // console.log(emojiReaction)
+          // if (emojiReaction === undefined) {
+          //   answerToUpdate.reactions.push(this.reactions);
+          //   console.log(emojiReaction)
+          // }
 
-          if (emojiIndex !== -1) {
-            answerToUpdate.reactions.splice(emojiIndex, 1);
-          } else {
-            answerToUpdate.reactions = this.reactions;
+          if (emojiReaction.counter > 0) {
+            const emojiReactionUser = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
+            if (emojiReactionUser.sender == this.loggedUser.name) {
+              this.reactions[0].counter = emojiReaction.counter -= 1
+              if (this.reactions[0].counter == 0) {
+                this.reactions.splice(0, 1)
+              }
+              const userIndex = await emojiReaction.userReaction.findIndex(index => index.sender === this.loggedUser.name)
+            } else {
+              this.reactions[0].counter = emojiReaction.counter += 1
+            }
           }
-          await updateDoc(docRef, { chats: chatsArray });
+
         }
+        //const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+
+        // if (emojiIndex !== -1) {
+        //   answerToUpdate.reactions.splice(emojiIndex, 1);
+        // }
+
+        console.log(this.reactions)
+
+        answerToUpdate.reactions = this.reactions;
+        await updateDoc(docRef, { chats: chatsArray });
       }
     }
   }
+
+  // async emojiReaction(emoji: string, answer) {
+  //   this.setObjetoReactions(emoji);
+  //   const answerId = answer.id;
+  //   const channelId = this.selectedChannel.id;
+  //   this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
+  //   const docRef = doc(this.channelChat, 'channels', channelId);
+  //   const docSnapshot = getDoc(docRef);
+  //   if (docSnapshot) {
+  //     const docData = (await docSnapshot).data();
+  //     const chatsArray = docData['chats'];
+  //     const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
+  //     if (chatToUpdate) {
+  //       let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
+  //       if (answerToUpdate) {
+  //         const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+
+  //         if (emojiIndex !== -1) {
+  //           answerToUpdate.reactions.splice(emojiIndex, 1);
+  //         } else {
+  //           answerToUpdate.reactions = this.reactions;
+  //         }
+  //         await updateDoc(docRef, { chats: chatsArray });
+  //       }
+  //     }
+  //   }
+  // }
 
   openEmojisThreadContainer(index) {
     this.emojisThreadContainerVisible[index] = !this.emojisThreadContainerVisible[index];
