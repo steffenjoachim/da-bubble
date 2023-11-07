@@ -199,8 +199,6 @@ export class BoardThreadComponent implements OnInit {
             // Jetzt sollte answerToUpdate.reactions ein Array mit beiden Einträgen sein
             console.log(answerToUpdate.reactions);
           }
-          
-          
 
           // if (emojiReaction.counter > 0) {
           //   const emojiReactionUser = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
@@ -222,9 +220,9 @@ export class BoardThreadComponent implements OnInit {
         //   answerToUpdate.reactions.splice(emojiIndex, 1);
         // }
 
-        console.log(this.reactions)
-
-        answerToUpdate.reactions = this.reactions;
+        // this.reactions = answerToUpdate.reactions  ;
+        console.log(this.reactions);
+        console.log(chatsArray)
         await updateDoc(docRef, { chats: chatsArray });
       }
     }

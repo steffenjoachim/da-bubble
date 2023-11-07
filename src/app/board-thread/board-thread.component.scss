@@ -353,6 +353,14 @@ textarea {
   }
 }
 
+.emoji-container{
+  display: flex;
+}
+
+.single-emoji{
+  padding-right: 8px;
+}
+
 @media (max-height: 800px) {
   .message-frame{
       height: 165px;
