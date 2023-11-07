@@ -154,6 +154,7 @@ export class BoardThreadComponent implements OnInit {
   }
 
 
+
   setObjecToReaction(emoji: string) {
     this.reactions = [{
       counter: 1,
@@ -166,7 +167,6 @@ export class BoardThreadComponent implements OnInit {
   }
 
   async emojiReaction(emoji: string, answer) {
-    console.log(emoji, answer)
     this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
@@ -179,37 +179,83 @@ export class BoardThreadComponent implements OnInit {
       const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
       if (chatToUpdate) {
         let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
-        if (answerToUpdate.reactions) {
-          console.log(answerToUpdate);
-          const emojiReaction = answerToUpdate.reactions.find(item=> item.emoji === emoji);
-          if (emojiReaction) {
-            const emojiReactionUser = emojiReaction.userReaction.find(user=> user.sender === this.loggedUser.name)
-            if (emojiReactionUser.sender == this.loggedUser.name) {
-              console.log(emojiReaction)
-              this.reactions[0].counter= emojiReaction.counter -= 1
-              const userIndex = emojiReaction.userReaction.findIndex(index=> index.sender === this.loggedUser.name)
-              const newUserReaction = emojiReaction.userReaction.splice(userIndex,1)
-             this.reactions[0].userReaction.push(newUserReaction);
-             console.log(this.reactions)
-            }else{
-              this.reactions[0].counter= emojiReaction.counter += 1
+        if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
+          console.log(answerToUpdate.reactions)
+          const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
+          console.log(emojiReaction)
+          if (answerToUpdate.reactions) {
+            console.log(answerToUpdate);
+            console.log(this.reactions);
+          
+            // Überprüfen, ob answerToUpdate.reactions bereits ein Array ist
+            if (Array.isArray(answerToUpdate.reactions)) {
+              // Ein neues Array erstellen und beide Einträge hinzufügen
+              answerToUpdate.reactions = answerToUpdate.reactions.concat(this.reactions);
+            } else {
+              // Wenn es kein Array ist, ein neues Array erstellen und beide Einträge hinzufügen
+              answerToUpdate.reactions = [answerToUpdate.reactions, this.reactions];
             }
+          
+            // Jetzt sollte answerToUpdate.reactions ein Array mit beiden Einträgen sein
+            console.log(answerToUpdate.reactions);
           }
-          const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+          
+          
 
-          // if (emojiIndex !== -1) {
-          //   answerToUpdate.reactions.splice(emojiIndex, 1);
-          // } else {
-          }
-            console.log(answerToUpdate)
-            answerToUpdate.reactions = this.reactions;
-            
+          // if (emojiReaction.counter > 0) {
+          //   const emojiReactionUser = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
+          //   if (emojiReactionUser.sender == this.loggedUser.name) {
+          //     this.reactions[0].counter = emojiReaction.counter -= 1
+          //     if (this.reactions[0].counter == 0) {
+          //       this.reactions.splice(0, 1)
+          //     }
+          //     const userIndex = await emojiReaction.userReaction.findIndex(index => index.sender === this.loggedUser.name)
+          //   } else {
+          //     this.reactions[0].counter = emojiReaction.counter += 1
+          //   }
           // }
-          await updateDoc(docRef, { chats: chatsArray });
-        
+
+        }
+        //const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+
+        // if (emojiIndex !== -1) {
+        //   answerToUpdate.reactions.splice(emojiIndex, 1);
+        // }
+
+        console.log(this.reactions)
+
+        answerToUpdate.reactions = this.reactions;
+        await updateDoc(docRef, { chats: chatsArray });
       }
     }
   }
+
+  // async emojiReaction(emoji: string, answer) {
+  //   this.setObjetoReactions(emoji);
+  //   const answerId = answer.id;
+  //   const channelId = this.selectedChannel.id;
+  //   this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
+  //   const docRef = doc(this.channelChat, 'channels', channelId);
+  //   const docSnapshot = getDoc(docRef);
+  //   if (docSnapshot) {
+  //     const docData = (await docSnapshot).data();
+  //     const chatsArray = docData['chats'];
+  //     const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
+  //     if (chatToUpdate) {
+  //       let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
+  //       if (answerToUpdate) {
+  //         const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
+
+  //         if (emojiIndex !== -1) {
+  //           answerToUpdate.reactions.splice(emojiIndex, 1);
+  //         } else {
+  //           answerToUpdate.reactions = this.reactions;
+  //         }
+  //         await updateDoc(docRef, { chats: chatsArray });
+  //       }
+  //     }
+  //   }
+  // }
 
   openEmojisThreadContainer(index) {
     this.emojisThreadContainerVisible[index] = !this.emojisThreadContainerVisible[index];

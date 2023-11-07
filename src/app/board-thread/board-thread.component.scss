@@ -358,23 +358,3 @@ textarea {
       height: 165px;
   }
 }
-
-@media (max-width: 1520px) {
-  .name-hour{
-    display: flex;
-    flex-direction: column-reverse;
-    padding-right: 8px;
-  }
-
-  .sender-message{
-    margin-bottom: 0;
-  }
-
-}
-
-
-@media (max-width: 1410px) {
-  textarea {
-    width: 90%;
-  } 
-}
