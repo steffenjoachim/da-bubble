@@ -59,6 +59,8 @@ export class BoardThreadComponent implements OnInit {
   chatId: string;
   chatAvatar: string;
   chatSender: string;
+  chatsArray = [];
+  docRef: any;
 
   chatTimeStamp: number;
   selectedChannelMessage: any;
@@ -166,38 +168,36 @@ export class BoardThreadComponent implements OnInit {
     }]
   }
 
+  async filterOnWhichAnswerWasReacted(docSnapshot, answerId){
+    const docData = (await docSnapshot).data();
+    this.chatsArray = docData['chats'];
+    const chatToUpdate = this.chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
+    let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
+    return answerToUpdate
+  }
+
+  async filterChannel(channelId){
+    this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
+    this.docRef = doc(this.channelChat, 'channels', channelId);
+    const docSnapshot = await getDoc(this.docRef);
+    return docSnapshot
+  }
+  
   async emojiReaction(emoji: string, answer) {
     this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
-    this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
-    const docRef = doc(this.channelChat, 'channels', channelId);
-    const docSnapshot = getDoc(docRef);
+    const docSnapshot = await this.filterChannel(channelId);
     if (docSnapshot) {
-      const docData = (await docSnapshot).data();
-      const chatsArray = docData['chats'];
-      const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
-      if (chatToUpdate) {
-        let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
+      const answerToUpdate = await this.filterOnWhichAnswerWasReacted(docSnapshot, answerId); 
         if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
-          console.log(answerToUpdate.reactions)
           const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
-          console.log(emojiReaction)
           if (answerToUpdate.reactions) {
-            console.log(answerToUpdate);
-            console.log(this.reactions);
-          
-            // Überprüfen, ob answerToUpdate.reactions bereits ein Array ist
             if (Array.isArray(answerToUpdate.reactions)) {
-              // Ein neues Array erstellen und beide Einträge hinzufügen
               answerToUpdate.reactions = answerToUpdate.reactions.concat(this.reactions);
             } else {
-              // Wenn es kein Array ist, ein neues Array erstellen und beide Einträge hinzufügen
               answerToUpdate.reactions = [answerToUpdate.reactions, this.reactions];
             }
-          
-            // Jetzt sollte answerToUpdate.reactions ein Array mit beiden Einträgen sein
-            console.log(answerToUpdate.reactions);
           }
 
           // if (emojiReaction.counter > 0) {
@@ -220,11 +220,10 @@ export class BoardThreadComponent implements OnInit {
         //   answerToUpdate.reactions.splice(emojiIndex, 1);
         // }
 
-        // this.reactions = answerToUpdate.reactions  ;
-        console.log(this.reactions);
-        console.log(chatsArray)
-        await updateDoc(docRef, { chats: chatsArray });
-      }
+        
+       answerToUpdate.reactions = this.reactions;
+        await updateDoc(this.docRef, { chats: this.chatsArray });
+      
     }
   }
 
