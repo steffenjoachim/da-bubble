@@ -203,36 +203,84 @@ export class BoardThreadComponent implements OnInit {
     });
   }
 
+  removeReactionUser(answerId, emojiReaction) {
+    emojiReaction.counter -= 1;
+    const userIndex = emojiReaction.userReaction.findIndex(index => index.sender === this.loggedUser.name);
+    emojiReaction.userReaction.splice(userIndex, 1);
+
+    // Update das chatsArray hier
+    this.chatsArray = this.chatsArray.map((chat) => {
+      if (chat.id === this.chatId) {
+        return {
+          ...chat,
+          answers: chat.answers.map((a) => (a.id === answerId ? { ...a, reactions: a.reactions.map((r) => (r.emoji === emojiReaction.emoji ? emojiReaction : r)) } : a)),
+        };
+      }
+      return chat;
+    });
+
+    console.log(emojiReaction);
+    return emojiReaction;
+  }
+
+
+  returnAddedUser(emojiReaction, answerId) {
+    const userReact = {
+      timeStamp: Date.now(),
+      sender: this.loggedUser.name
+    };
+    emojiReaction.counter += 1;
+    emojiReaction.userReaction.push(userReact);
+
+    // Update das chatsArray hier
+    this.chatsArray = this.chatsArray.map((chat) => {
+      if (chat.id === this.chatId) {
+        return {
+          ...chat,
+          answers: chat.answers.map((a) => (a.id === answerId ? { ...a, reactions: a.reactions.map((r) => (r.emoji === emojiReaction.emoji ? emojiReaction : r)) } : a)),
+        };
+      }
+      return chat;
+    });
+  }
+
   async emojiReaction(emoji: string, answer) {
     this.setObjecToReaction(emoji);
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
     const docSnapshot = await this.filterChannel(channelId);
+
     if (docSnapshot) {
       const answerToUpdate = await this.filterOnWhichAnswerWasReacted(docSnapshot, answerId);
+
       if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
         const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
+
         if (emojiReaction) {
           const userHasReacted = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
+
           if (userHasReacted) {
             if (emojiReaction.counter === 1) {
               this.returnSplicedChatsArray(answerToUpdate, emoji);
-              console.log("After:", answerToUpdate);
             } else {
-              emojiReaction.counter -= 1;
-              console.log(emojiReaction);
+              this.removeReactionUser(answerId, emojiReaction)
             }
+          } else {
+            this.returnAddedUser(emojiReaction, answerId);
           }
         }
       }
+
       if (Array.isArray(answerToUpdate.reactions)) {
         answerToUpdate.reactions.push(this.reactions);
       } else {
         answerToUpdate.reactions = [this.reactions];
       }
+
       await updateDoc(this.docRef, { chats: this.chatsArray });
     }
   }
+
 
 
   // async emojiReaction(emoji: string, answer) {
