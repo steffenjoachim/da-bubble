@@ -210,7 +210,7 @@ export class BoardThreadComponent implements OnInit {
     const docSnapshot = await this.filterChannel(channelId);
     if (docSnapshot) {
       const answerToUpdate = await this.filterOnWhichAnswerWasReacted(docSnapshot, answerId);
-      if (answerToUpdate.reactions.length > 0) {
+      if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
         const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
         if (emojiReaction) {
           const userHasReacted = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
