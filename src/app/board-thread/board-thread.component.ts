@@ -222,7 +222,7 @@ export class BoardThreadComponent implements OnInit {
 
         
        answerToUpdate.reactions = this.reactions;
-        await updateDoc(this.docRef, { chats: this.chatsArray });
+       await updateDoc(this.docRef, { chats: this.chatsArray });
       
     }
   }
