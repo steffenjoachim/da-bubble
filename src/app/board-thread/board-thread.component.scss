@@ -44,7 +44,7 @@
   }
 }
 
-.thread-content{
+.thread-content {
   margin-bottom: 32px;
 }
 
@@ -105,32 +105,31 @@
   align-items: center;
 }
 
-.thread-answer-frame{
-display: flex;
-margin-bottom: 24px;
+.thread-answer-frame {
+  display: flex;
+  margin-bottom: 24px;
 
-.answer-message{
-  padding: 16px;
-  background: rgb(236, 238, 254);
-  border-radius: 0 25px 25px 25px;
+  .answer-message {
+    padding: 16px;
+    background: rgb(236, 238, 254);
+    border-radius: 0 25px 25px 25px;
+  }
 }
 
-}
-
-hr{
+hr {
   margin-bottom: 32px;
 }
 
-.name-hour{
+.name-hour {
   margin-bottom: 8px;
 }
 
-.message-img{
-height: 64px;
-width: 64px;
-border-radius: 100%;
-object-fit: contain;
-height: 63px;
+.message-img {
+  height: 64px;
+  width: 64px;
+  border-radius: 100%;
+  object-fit: contain;
+  height: 63px;
 }
 
 .message-container {
@@ -153,11 +152,10 @@ height: 63px;
   .input-frame {
     display: flex;
     justify-content: center;
-
   }
 }
 
-.sender-message{
+.sender-message {
   font-weight: 700;
   margin-bottom: 16px;
 }
@@ -171,19 +169,19 @@ height: 63px;
   padding-bottom: 10px;
 }
 
-.icon-left{
+.icon-left {
   display: flex;
   align-items: center;
   padding-left: 12px;
 }
 
-.icon-right{
+.icon-right {
   display: flex;
   align-items: center;
   padding-right: 12px;
 }
 
-.icon-div{
+.icon-div {
   padding-top: 6px;
   padding-right: 8px;
 }
@@ -198,7 +196,7 @@ textarea {
   border-top-right-radius: 25px;
 }
 
-.submit-arrow{
+.submit-arrow {
   cursor: pointer;
   &:hover {
     opacity: 0.8;
@@ -212,11 +210,11 @@ textarea {
   }
 }
 
-.number-of-answers{
+.number-of-answers {
   display: flex;
   color: rgb(173, 176, 217);
   margin-bottom: 16px;
-  .line{
+  .line {
     height: 1px;
     width: 50%;
     background: rgb(173, 176, 217);
@@ -224,7 +222,7 @@ textarea {
   }
 }
 
-.avatar-and-message{
+.avatar-and-message {
   display: flex;
   align-items: center;
   img {
@@ -234,7 +232,7 @@ textarea {
   }
 }
 
-.right-of-avatar{
+.right-of-avatar {
   display: flex;
   flex-direction: column;
 }
@@ -257,7 +255,7 @@ textarea {
   border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
 }
 
-.emojis-container{
+.emojis-container {
   width: 300px;
   padding: 16px;
   display: flex;
@@ -282,7 +280,7 @@ textarea {
   padding: 8px;
   cursor: pointer;
   &:hover {
-      background-color: #d0d0d0;
+    background-color: #d0d0d0;
   }
 }
 
@@ -340,6 +338,7 @@ textarea {
 }
 
 .emoji {
+  position: relative;
   cursor: pointer;
   border: solid 1px black;
   border-radius: 25px;
@@ -348,21 +347,42 @@ textarea {
   span {
     margin: 0;
   }
-  &:hover {
-    opacity: 0.8;
+  .popup-who-reacted-container {
+    position: absolute;
+    font-size: 12px;
+    bottom: 32px;
+    left: 10px;
+    background: rgb(68, 77, 242);
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 25px 25px 25px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    .reaction-emoji {
+      font-size: 14px;
+      padding-bottom: 8px;
+    }
+    .has-reacted {
+      font-size: 10px;
+    }
   }
 }
 
-.emoji-container{
+.emoji-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
-.single-emoji{
+.single-emoji {
   padding-right: 8px;
 }
 
 @media (max-height: 800px) {
-  .message-frame{
-      height: 165px;
+  .message-frame {
+    height: 165px;
   }
 }

@@ -21,10 +21,12 @@
 
     </div>
     <div id="channels-body" class="channels-body">
-      <div *ngFor="let chanel of channel$ | async"
-        (click)="onSidebarLinkClick(chanel)" class="channels"
-        [ngClass]="{'active': '# ' + chanel.name == selectedRecipient}">
-        <span># {{ chanel.name }}</span>
+      <div *ngFor="let channel of channel$ | async"
+        (click)="onSidebarLinkClick(channel)" class="channels"
+        [ngClass]="{'active': '# ' + channel.name == selectedRecipient}">
+        <div *ngFor="let member of members">
+          <span *ngIf="member.name"># {{ member.name }}</span>
+        </div>
       </div>
       <div class="add-channel">
         <mat-icon fontIcon="add_circle"></mat-icon>

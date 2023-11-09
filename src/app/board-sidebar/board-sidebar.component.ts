@@ -42,6 +42,7 @@ export class BoardSidebarComponent implements OnInit {
   allUsers: any[] = [];
   channel$: Observable<any>;
   chats$ !: Observable<any>;
+  members: any;
   addChannelPopup: boolean = false;
   popupContainer: boolean = true;
   addMembers: boolean = false;
@@ -152,7 +153,14 @@ export class BoardSidebarComponent implements OnInit {
 
 
   getChannels() {
+    console.log(this.loggedUser.name)
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
+    this.channel$.subscribe((channel => {
+      channel.forEach(element => {
+        this.members = element.members
+        console.log(this.members)
+      });
+    }))
   }
 
   ngOnDestroy(): void {

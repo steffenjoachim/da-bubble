@@ -6,7 +6,7 @@
   <div *ngIf="showName" class="channel-name">
     <div>
       <h2>Channel-Name</h2>
-      <span (click)="editChannelName()" class="edit">Bearbeiten</span>
+      <span *ngIf="channelAdmin == loggedUserAsJSON.name" (click)="editChannelName()" class="edit">Bearbeiten</span>
     </div>
     <span>{{ selectedChannelName }}</span>
   </div>
@@ -25,7 +25,7 @@
   <div *ngIf="showDescription" class="channel-name">
     <div>
       <h2>Beschreibung</h2>
-      <span (click)="editChannelDescription()" class="edit">Bearbeiten</span>
+      <span *ngIf="channelAdmin == loggedUserAsJSON.name" (click)="editChannelDescription()" class="edit">Bearbeiten</span>
     </div>
     <div>
       <span>{{channelDescription}}</span>
