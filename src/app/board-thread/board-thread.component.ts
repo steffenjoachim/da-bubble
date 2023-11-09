@@ -41,6 +41,7 @@ export class BoardThreadComponent implements OnInit {
   usersCollection: any = collection(this.firestore, 'users');
   channelChatCollection: any = collection(this.channelChat, 'channels')
   users: any[] = [];
+  reactionSender: string[] = [];
   reactions$: Observable<any>;
   chats$ !: Observable<any>;
   answerCollection$ !: Observable<any>;
@@ -52,6 +53,7 @@ export class BoardThreadComponent implements OnInit {
   chatsChannel$ !: Observable<any>;
   emojis: string[] = Emojis;
   ChatService: any;
+  selectedReaction: any;
   channel: string;
   selectedChannel: any;
   threadOpened: boolean = false;
@@ -61,7 +63,8 @@ export class BoardThreadComponent implements OnInit {
   chatSender: string;
   chatsArray = [];
   docRef: any;
-
+  hoveredIndex: number = -1;
+  hoveredReactionIndex: number = -1;
   chatTimeStamp: number;
   selectedChannelMessage: any;
   answersLength: number;
@@ -207,8 +210,6 @@ export class BoardThreadComponent implements OnInit {
     emojiReaction.counter -= 1;
     const userIndex = emojiReaction.userReaction.findIndex(index => index.sender === this.loggedUser.name);
     emojiReaction.userReaction.splice(userIndex, 1);
-
-    // Update das chatsArray hier
     this.chatsArray = this.chatsArray.map((chat) => {
       if (chat.id === this.chatId) {
         return {
@@ -218,21 +219,17 @@ export class BoardThreadComponent implements OnInit {
       }
       return chat;
     });
-
-    console.log(emojiReaction);
     return emojiReaction;
   }
 
 
   returnAddedUser(emojiReaction, answerId) {
     const userReact = {
-      timeStamp: Date.now(),
+      timeStampp: Date.now(),
       sender: this.loggedUser.name
     };
     emojiReaction.counter += 1;
     emojiReaction.userReaction.push(userReact);
-
-    // Update das chatsArray hier
     this.chatsArray = this.chatsArray.map((chat) => {
       if (chat.id === this.chatId) {
         return {
@@ -242,6 +239,21 @@ export class BoardThreadComponent implements OnInit {
       }
       return chat;
     });
+  }
+
+  checkIfReactionExists(emojiReaction, answerToUpdate, emoji, answerId) {
+    if (emojiReaction) {
+      const userHasReacted = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
+      if (userHasReacted) {
+        if (emojiReaction.counter === 1) {
+          this.returnSplicedChatsArray(answerToUpdate, emoji);
+        } else {
+          this.removeReactionUser(answerId, emojiReaction)
+        }
+      } else {
+        this.returnAddedUser(emojiReaction, answerId);
+      }
+    }
   }
 
   async emojiReaction(emoji: string, answer) {
@@ -249,66 +261,20 @@ export class BoardThreadComponent implements OnInit {
     const answerId = answer.id;
     const channelId = this.selectedChannel.id;
     const docSnapshot = await this.filterChannel(channelId);
-
     if (docSnapshot) {
       const answerToUpdate = await this.filterOnWhichAnswerWasReacted(docSnapshot, answerId);
-
       if (answerToUpdate.reactions && answerToUpdate.reactions.length > 0) {
         const emojiReaction = answerToUpdate.reactions.find(item => item.emoji === emoji);
-
-        if (emojiReaction) {
-          const userHasReacted = emojiReaction.userReaction.find(user => user.sender === this.loggedUser.name)
-
-          if (userHasReacted) {
-            if (emojiReaction.counter === 1) {
-              this.returnSplicedChatsArray(answerToUpdate, emoji);
-            } else {
-              this.removeReactionUser(answerId, emojiReaction)
-            }
-          } else {
-            this.returnAddedUser(emojiReaction, answerId);
-          }
-        }
+        this.checkIfReactionExists(emojiReaction, answerToUpdate, emoji, answerId)
       }
-
       if (Array.isArray(answerToUpdate.reactions)) {
         answerToUpdate.reactions.push(this.reactions);
       } else {
         answerToUpdate.reactions = [this.reactions];
       }
-
       await updateDoc(this.docRef, { chats: this.chatsArray });
     }
   }
-
-
-
-  // async emojiReaction(emoji: string, answer) {
-  //   this.setObjetoReactions(emoji);
-  //   const answerId = answer.id;
-  //   const channelId = this.selectedChannel.id;
-  //   this.reactions$ = collectionData(this.channelChatCollection, { idField: 'id' });
-  //   const docRef = doc(this.channelChat, 'channels', channelId);
-  //   const docSnapshot = getDoc(docRef);
-  //   if (docSnapshot) {
-  //     const docData = (await docSnapshot).data();
-  //     const chatsArray = docData['chats'];
-  //     const chatToUpdate = chatsArray.find(chat => chat.id === this.selectedChannelMessage.id);
-  //     if (chatToUpdate) {
-  //       let answerToUpdate = chatToUpdate.answers.find(answer => answer.id === answerId);
-  //       if (answerToUpdate) {
-  //         const emojiIndex = Array.isArray(answerToUpdate.reactions) ? answerToUpdate.reactions.findIndex(reaction => reaction.emoji === emoji) : -1;
-
-  //         if (emojiIndex !== -1) {
-  //           answerToUpdate.reactions.splice(emojiIndex, 1);
-  //         } else {
-  //           answerToUpdate.reactions = this.reactions;
-  //         }
-  //         await updateDoc(docRef, { chats: chatsArray });
-  //       }
-  //     }
-  //   }
-  // }
 
   openEmojisThreadContainer(index) {
     this.emojisThreadContainerVisible[index] = !this.emojisThreadContainerVisible[index];
@@ -346,5 +312,20 @@ export class BoardThreadComponent implements OnInit {
     }
   }
 
+  showWhoReacted(emoji, channelChats, chatId, i, j) {
+    this.reactionSender = [];
+    for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
+      const sender = channelChats.reactions[j];
+      if (sender.emoji == emoji) {
+        this.selectedReaction = sender;
+      }
+    }
+    this.hoveredIndex = i;
+    this.hoveredReactionIndex = j;
+  }
+
+  hideWhoReacted(i) {
+    this.hoveredIndex = -1;
+  }
 
 }

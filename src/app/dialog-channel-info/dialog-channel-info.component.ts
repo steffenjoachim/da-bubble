@@ -12,6 +12,7 @@ export class DialogChannelInfoComponent {
 
   selectedChannel = localStorage.getItem('channel');
   loggedUser: any = localStorage.getItem('userData');
+  loggedUserAsJSON = this.loggedUser = JSON.parse(this.loggedUser);
   channelCollection: any = collection(this.firestore, 'channels');
   selectedChannelName: string
   editName: boolean = false;
@@ -102,8 +103,6 @@ export class DialogChannelInfoComponent {
   }
 
   async removeMemberFromFirebase() {
-    this.loggedUser = JSON.parse(this.loggedUser);
-    console.log(this.selectedChannelId, this.loggedUser.name);
     const documentReference = doc(this.firestore, 'channels', this.selectedChannelId);
     const docSnapshot = await getDoc(documentReference);
     if (docSnapshot.exists()) {

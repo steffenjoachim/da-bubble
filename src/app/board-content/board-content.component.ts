@@ -562,7 +562,6 @@ export class BoardContentComponent implements OnInit {
     this.reactionSender = [];
     for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
       const sender = channelChats.reactions[j];
-      console.log(channelChats.reactions[0].emoji, emoji)
       if (sender.emoji == emoji) {
         this.selectedReaction = sender;
       }
