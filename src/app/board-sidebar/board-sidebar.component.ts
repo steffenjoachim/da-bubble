@@ -153,15 +153,17 @@ export class BoardSidebarComponent implements OnInit {
 
 
   getChannels() {
-    console.log(this.loggedUser.name)
+    console.log(this.loggedUser.name);
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
-    this.channel$.subscribe((channel => {
-      channel.forEach(element => {
-        this.members = element.members
-        console.log(this.members)
-      });
-    }))
+    this.channel$.subscribe((channels => {
+      this.channels = channels;
+    }));
   }
+  
+  isUserInChannel(channel: any): boolean {
+    return channel.members.some(member => member.name === this.loggedUser.name);
+  }
+  
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
