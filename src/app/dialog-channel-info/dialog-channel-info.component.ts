@@ -124,5 +124,8 @@ export class DialogChannelInfoComponent {
     } else {
       console.error('Das Dokument existiert in Firebase nicht.');
     }
+    this.getChannel();
+    this.closeDialogChannesInfo();
   }
+  
 }
