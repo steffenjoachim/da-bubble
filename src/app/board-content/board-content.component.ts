@@ -82,7 +82,7 @@ export class BoardContentComponent implements OnInit {
   prevChat: any;
   private chatCount = 0;
   public selectedChannelChat: any = null;
-
+  channelAdmin: string
   displayedEmojis: string[] = [];
   reactionSender: string[] = [];
 
@@ -96,11 +96,11 @@ export class BoardContentComponent implements OnInit {
     this.directMessageDates = [];
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
-    this.getChannelChats();
+    await this.getChannelChats();
     this.lastDisplayedDate = null;
   }
 
@@ -114,7 +114,7 @@ export class BoardContentComponent implements OnInit {
     return uniqueId;
   }
 
-  getMembers() {
+  async getMembers() {
     this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
     this.filteredChannelMembers$ = this.channelMembers$.pipe(
       map(channels => channels.filter(channel => '# ' + channel.name == this.channel))
@@ -122,6 +122,7 @@ export class BoardContentComponent implements OnInit {
     this.filteredChannelMembers$.subscribe(data => {
       this.length = data[0].members.length
     });
+    return
   }
 
   openDialogAddMembers() {
@@ -233,10 +234,11 @@ export class BoardContentComponent implements OnInit {
         if (chatsArray) {
           const updatedChatsArray = chatsArray.filter(chat => chat.id !== chatToRemove.id);
           await setDoc(channelDocRef, { chats: updatedChatsArray }, { merge: true });
-          this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
+          return
         }
       }
       await deleteDoc(doc(this.chatCollection, selectedChat.id));
+      return
     }
     document.getElementById('thread')?.classList.add('d-none');
   }
@@ -281,9 +283,10 @@ export class BoardContentComponent implements OnInit {
     this.getChats()
   }
 
-  showFunction(channel) {
+  async showFunction(channel) {
     this.selectedChannel = channel
-    this.getChannelChats()
+    await this.getChannelChats()
+    return
   }
 
   getChats() {
@@ -309,50 +312,62 @@ export class BoardContentComponent implements OnInit {
         return i;
       }
     }
-    return null; // Return null if no matching channel is found
+    return null;
   }
-  
-  getChannelChats() {
+
+
+  async getChannelChats() {
     document.getElementById('thread')?.classList.add('d-none');
+    let startFunction = true;
+    let startFunctionElseIf = true;
     this.showChat = false;
     this.showChannelChat = true;
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
-    this.chatsChannel$.subscribe((chats) => {
-      const firstUserChannelIndex = this.getFirstChannelIndexForUser(chats);
-      if (this.channel) {
-        this.selectChannel(chats, this.channel);
-      } else if (firstUserChannelIndex !== null) {
-        this.channel = '# ' + chats[firstUserChannelIndex].name;
-        localStorage.setItem('selected-recipient', this.channel);
-        this.setSelectedRecipient();
-        this.selectChannel(chats, this.channel);
-      }
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 200);
-  
-      this.getMembers();
+    await new Promise<void>((resolve) => {
+      this.chatsChannel$.subscribe((chats) => {
+        const firstUserChannelIndex = this.getFirstChannelIndexForUser(chats);
+        if (this.channel) {
+          if (startFunction) {
+            startFunction = false;
+            this.setSelectedRecipient();
+            this.selectChannel(chats, this.channel);
+          }
+        } else if (firstUserChannelIndex !== null) {
+          this.channel = '# ' + chats[firstUserChannelIndex].name;
+          localStorage.setItem('selected-recipient', this.channel);
+          if (startFunctionElseIf) {
+            startFunctionElseIf = false;
+            this.setSelectedRecipient();
+            this.selectChannel(chats, this.channel);
+          }
+        }
+        setTimeout(() => {
+          this.scrollToBottom();
+          resolve();
+        }, 200);
+      });
     });
-    this.setSelectedRecipient();
+    await this.getMembers();
   }
-  
 
-  selectChannel(chats, selectedChannel) {
+  async selectChannel(chats, selectedChannel) {
     localStorage.setItem('channel', selectedChannel);
     this.selectedRecipient = selectedChannel;
-    this.chatsChannel$ = this.chatsChannel$.pipe(
-      map(chats => chats.filter(chat => '# ' + chat.name == selectedChannel)),
-    );
-    this.chatsChannel$.subscribe((chats) => {
-      if(chats[0].chats == 0) {
-        this.emptyChannelShow = true;
-      } else {
-        this.emptyChannelShow = false;
-      }
-      this.selectedChannel = chats[0];
+    await new Promise<void>((resolve) => {
+      this.chatsChannel$ = this.chatsChannel$.pipe(
+        map(chats => chats.filter(chat => '# ' + chat.name == selectedChannel)),
+      );
+      this.chatsChannel$.subscribe((chats) => {
+        this.channelAdmin = chats[0].admin;
+        this.emptyChannelShow = chats[0].chats == 0;
+        this.selectedChannel = chats[0];
+        resolve();
+      });
     });
+    return
   }
+
 
   showChatIcons(i: number) {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'visible';

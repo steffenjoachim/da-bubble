@@ -58,9 +58,7 @@ export class BoardSidebarComponent implements OnInit {
     private chats: ChatService,
     private channelChat: ChannelService,
     private channels: Firestore) {
-
   }
-
 
   ngOnInit(): void {
     this.channel = localStorage.getItem('channel')
@@ -101,7 +99,6 @@ export class BoardSidebarComponent implements OnInit {
   addChannelToFirebase() {
     for (let i = 0; i < this.allUsers.length; i++) {
       const element = this.allUsers[i];
-      console.log(element)
       this.channelsData.members.push(element);
     }
 
@@ -153,17 +150,16 @@ export class BoardSidebarComponent implements OnInit {
 
 
   getChannels() {
-    console.log(this.loggedUser.name);
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
     this.channel$.subscribe((channels => {
       this.channels = channels;
     }));
   }
-  
+
   isUserInChannel(channel: any): boolean {
     return channel.members.some(member => member.name === this.loggedUser.name);
   }
-  
+
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);

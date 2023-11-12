@@ -8,13 +8,13 @@
   </button>
   <div class="channel-members" id="channel-members">
     <div *ngFor="let channel of filteredChannelMembers$ | async" class="members">
-      <div *ngFor="let avatar of channel.members">
-        <img [src]="avatar.avatar" alt>
+      <div *ngFor="let avatar of channel.members; let i = index">
+        <img *ngIf="i < 3" [src]="avatar.avatar" alt="Avatar">
       </div>
     </div>
-    <span>{{length}}</span>
+    <span *ngIf="length > 3">+{{length - 3}}</span>
     <div (click)="openDialogAddMembers()">
-      <mat-icon fontIcon="group_add"></mat-icon>
+      <mat-icon *ngIf="channelAdmin == loggedUser.name" fontIcon="group_add"></mat-icon>
     </div>
   </div>
 </div>

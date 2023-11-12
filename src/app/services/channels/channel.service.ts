@@ -44,20 +44,23 @@ export class ChannelService {
   }
 
   postChat(message: any, selectedChannel) {
-    const loggedUser = JSON.parse(localStorage.getItem('userData'));
-    const id = this.generateUniqueId(20);
-    const chatDate = new Date();
-    const timeStamp = Timestamp.fromDate(chatDate);
-    const firebaseFieldName = 'chats';
-    const postChat = this.channelMessage;
-    this.channelMessage.timeStamp = timeStamp.seconds;
-    this.channelMessage.avatar = loggedUser.avatar;
-    this.channelMessage.sender = loggedUser.name;
-    this.channelMessage.message = message;
-    this.channelMessage.channel = selectedChannel.name;
-    this.channelMessage.id = id;
-    this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
+    if (message.trim() !== '') { // Überprüfen, ob die Nachricht nicht leer ist
+      const loggedUser = JSON.parse(localStorage.getItem('userData'));
+      const id = this.generateUniqueId(20);
+      const chatDate = new Date();
+      const timeStamp = Timestamp.fromDate(chatDate);
+      const firebaseFieldName = 'chats';
+      const postChat = this.channelMessage;
+      this.channelMessage.timeStamp = timeStamp.seconds;
+      this.channelMessage.avatar = loggedUser.avatar;
+      this.channelMessage.sender = loggedUser.name;
+      this.channelMessage.message = message;
+      this.channelMessage.channel = selectedChannel.name;
+      this.channelMessage.id = id;
+      this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
+    }
   }
+
 
 
   showChannelChat(channel) {
@@ -121,6 +124,7 @@ export class ChannelService {
             [firebaseFieldName]: updatedChats,
           };
           await updateDoc(documentReference, updateData);
+          return null
         } catch (error) {
           console.error('Fehler beim Aktualisieren der Daten in Firebase:', error);
         }
