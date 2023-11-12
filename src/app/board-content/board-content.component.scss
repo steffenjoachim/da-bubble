@@ -518,4 +518,14 @@
       height: 120px;
     }
   }
+  .content-frame{
+    height: 40vh;
+  }
+}
+
+
+@media (min-height: 400px) {
+  .content-frame{
+    height:50vh;
+  }
 }

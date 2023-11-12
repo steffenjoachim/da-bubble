@@ -49,7 +49,7 @@
     <span class="admin">{{ channelAdmin }}</span>
   </div>
 
-  <footer>
+  <footer *ngIf="loggedUserAsJSON.name == !channelAdmin">
     <button (click)="removeMemberFromFirebase()">Channel verlassen</button>
   </footer>
 </div>
