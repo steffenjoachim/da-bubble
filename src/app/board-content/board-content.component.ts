@@ -302,47 +302,40 @@ export class BoardContentComponent implements OnInit {
     });
   }
 
+  getFirstChannelIndexForUser(chats: any[]): number | null {
+    for (let i = 0; i < chats.length; i++) {
+      const isUserMember = chats[i].members.some(member => member.name === this.loggedUser.name);
+      if (isUserMember) {
+        return i;
+      }
+    }
+    return null; // Return null if no matching channel is found
+  }
+  
   getChannelChats() {
     document.getElementById('thread')?.classList.add('d-none');
     this.showChat = false;
     this.showChannelChat = true;
     this.channel = localStorage.getItem('channel');
     this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
-    
     this.chatsChannel$.subscribe((chats) => {
-      let selectedChannelIndex = -1; // Mit einem ungültigen Index initialisieren
-  
+      const firstUserChannelIndex = this.getFirstChannelIndexForUser(chats);
       if (this.channel) {
-        // Überprüfen, ob der eingeloggte Benutzer Mitglied in einem Kanal ist
-        selectedChannelIndex = chats.findIndex(channel => 
-          channel.members.some(member => member.name === this.loggedUser.name)
-        );
-      }
-  
-      if (selectedChannelIndex === -1 && chats.length > 0) {
-        // Wenn der eingeloggte Benutzer kein Mitglied im angegebenen Kanal ist,
-        // den ersten Kanal finden, in dem der Benutzer Mitglied ist
-        selectedChannelIndex = chats.findIndex(channel =>
-          channel.members.some(member => member.name === this.loggedUser.name)
-        );
-      }
-  
-      if (selectedChannelIndex !== -1) {
-        // Wenn ein Kanal gefunden wurde, in dem der Benutzer Mitglied ist, diesen Kanal verwenden
-        this.channel = '# ' + chats[selectedChannelIndex].name;
+        this.selectChannel(chats, this.channel);
+      } else if (firstUserChannelIndex !== null) {
+        this.channel = '# ' + chats[firstUserChannelIndex].name;
         localStorage.setItem('selected-recipient', this.channel);
+        this.setSelectedRecipient();
         this.selectChannel(chats, this.channel);
       }
-  
       setTimeout(() => {
         this.scrollToBottom();
       }, 200);
+  
       this.getMembers();
     });
-  
     this.setSelectedRecipient();
   }
-  
   
 
   selectChannel(chats, selectedChannel) {
