@@ -35,7 +35,12 @@ export class LoginComponent {
   }
 
   guestLogin() {
+    const guest: any = {
+      name: 'Gast',
+      avatar: './assets/img/Profile.png'
+    }
     localStorage.removeItem('userData');
+    localStorage.setItem('userData', JSON.stringify(guest))
     this.router.navigate(['/board']);
   }
 
