@@ -1,13 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { DocumentData, Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable, map } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { BoardComponent } from '../board/board.component';
 import { BoardContentComponent } from '../board-content/board-content.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-import { getAuth } from '@angular/fire/auth';
+import { getAuth, user } from '@angular/fire/auth';
 import { onAuthStateChanged } from '@firebase/auth';
 
 @Component({
@@ -119,10 +119,57 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
+  async pushUserRead(userRead, channel) {
+    const indexLastMessage = channel.chats.length - 1;
+    const chatsRef = doc(this.firestore, 'channels', channel.id);
+    const chatsSnapshot = await getDoc(chatsRef);
+    const chatsData = chatsSnapshot.data();
+
+    // Annahme: chats ist ein Array von Objekten, und jedes Objekt hat ein Array notification
+    const updatedChats = chatsData['chats'].map((chat, index) => {
+        if (index === indexLastMessage) {
+            const notifications = chat.notification || [];
+
+            // Überprüfe, ob userRead.name bereits im Array vorhanden ist
+            const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
+
+            if (!userAlreadyExists) {
+                notifications.push(userRead);
+            }
+
+            return { ...chat, notification: notifications };
+        }
+        return chat;
+    });
+
+    // Aktualisiere das Dokument in der Firestore-Datenbank
+    await updateDoc(chatsRef, {
+        chats: updatedChats
+    });
+
+    console.log('Chats array after update:', updatedChats);
+}
+
+
+
+
+
+
+  userHasRead(channel) {
+    const chatDate = new Date();
+    const timeStamp = Timestamp.fromDate(chatDate);
+    const userRead = {
+      name: this.loggedUser.name,
+      timeStamp: timeStamp.seconds,
+      isOnChannel: true
+    }
+    this.pushUserRead(userRead, channel);
+  }
+
   showChannel(channel) {
+    this.userHasRead(channel);
     localStorage.setItem('selected-recipient', '# ' + channel.name);
     localStorage.setItem('channel', '# ' + channel.name);
-
     this.selectedRecipient = '# ' + channel.name
     this.channelChat.showChannelChat(channel);
     document.getElementById('channel-members').classList.remove('d-none');

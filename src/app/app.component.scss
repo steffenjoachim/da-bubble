@@ -11,7 +11,7 @@
     margin-top: 32px;
     margin-left: 12px;
     font-size: 28px;
-    color: white;
+    color: #ffffff;
     transform: translateX(-104%);
     visibility: hidden;
     animation: slide-text 1.6s 0.4s forwards, change-font-color 1s 2s forwards;
@@ -29,7 +29,7 @@
 
 @keyframes change-font-color {
   to {
-    color: black;
+    color: #000000 !important;
   }
 }
 

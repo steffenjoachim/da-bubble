@@ -24,7 +24,7 @@
     <div *ngIf="emptyChannelShow" class="empty-channel">
       <h1>{{channel}}</h1>
       <div>
-        <span>Du hast diesen Channel heute erstellt. Das ist der Anfang des
+        <span>Das ist der Anfang des
           Channels </span>
         <span> {{ channel }}. </span>
       </div>
@@ -122,7 +122,9 @@
                           *ngFor="let sender of selectedReaction.userReaction">
                           {{ sender.sender }}
                         </div>
-                        <span class="has-reacted">{{ selectedReaction.userReaction.length === 1 ? 'hat reagiert' :
+                        <span class="has-reacted">{{
+                          selectedReaction.userReaction.length === 1 ?
+                          'hat reagiert' :
                           'haben reagiert'
                           }}</span>
                       </div>

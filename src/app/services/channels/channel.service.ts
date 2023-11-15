@@ -36,28 +36,35 @@ export class ChannelService {
     sender: '',
     avatar: '',
     id: '',
-    answers: []
+    answers: [],
+    notification: []
   };
 
   getChatData(): Observable<any> {
     return this.chatData$;
   }
 
-  postChat(message: any, selectedChannel) {
-    if (message.trim() !== '') { // Überprüfen, ob die Nachricht nicht leer ist
+  async postChat(message: any, selectedChannel) {
+    if (message.trim() !== '') {
       const loggedUser = JSON.parse(localStorage.getItem('userData'));
       const id = this.generateUniqueId(20);
       const chatDate = new Date();
       const timeStamp = Timestamp.fromDate(chatDate);
       const firebaseFieldName = 'chats';
       const postChat = this.channelMessage;
+      const userRead = {
+        name: loggedUser.name,
+        timeStamp: timeStamp.seconds
+      }
       this.channelMessage.timeStamp = timeStamp.seconds;
       this.channelMessage.avatar = loggedUser.avatar;
       this.channelMessage.sender = loggedUser.name;
       this.channelMessage.message = message;
       this.channelMessage.channel = selectedChannel.name;
       this.channelMessage.id = id;
-      this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
+      this.channelMessage.notification.push(userRead)
+      await this.updateDocOnFirebaseChannelChat(postChat, firebaseFieldName, selectedChannel);
+      this.channelMessage.notification.splice(0, 1)
     }
   }
 

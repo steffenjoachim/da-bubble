@@ -23,12 +23,15 @@
     <div id="channels-body" class="channels-body">
       <div *ngFor="let channel of channel$ | async">
         <ng-container *ngIf="isUserInChannel(channel)">
-          <div (click)="onSidebarLinkClick(channel)" class="channels" [ngClass]="{'active': '# ' + channel.name == selectedRecipient}">
+          <div (click)="onSidebarLinkClick(channel)" class="channels"
+            [ngClass]="{'active': '# ' + channel.name == selectedRecipient}">
             <span># {{ channel.name }}</span>
+            <div *ngFor="let chat of channel.chats" class="show-new-message">
+              <span *ngFor="let userRead of chat.notification">{{
+                chat.notification.length }}</span></div>
           </div>
         </ng-container>
       </div>
-      
       <div class="add-channel">
         <mat-icon fontIcon="add_circle"></mat-icon>
         <span (click)="openAddChanelPopup()">Channel hinzufügen</span>

@@ -76,6 +76,11 @@
 }
 
 .channels {
+  .show-new-message {
+    color: rgb(84, 163, 137);
+  }
+  display: flex;
+  justify-content: space-between;
   margin-top: 16px;
   width: 170px;
   padding: 16px;

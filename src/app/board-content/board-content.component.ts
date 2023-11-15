@@ -116,6 +116,9 @@ export class BoardContentComponent implements OnInit {
 
   async getMembers() {
     this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
+    if(this.channel == undefined) {
+      this.channel = '# Entwicklerteam'
+    }
     this.filteredChannelMembers$ = this.channelMembers$.pipe(
       map(channels => channels.filter(channel => '# ' + channel.name == this.channel))
     );
@@ -315,6 +318,16 @@ export class BoardContentComponent implements OnInit {
     return null;
   }
 
+  async showNotification() {
+    await Notification.requestPermission().then((premission) => {
+      if (premission !== 'granted') {
+        return
+      }
+      const notifications = new Notification('Neue Nachricht', {
+        body: 'Neue Nachricht'
+      })
+    })
+  }
 
   async getChannelChats() {
     document.getElementById('thread')?.classList.add('d-none');
@@ -349,6 +362,7 @@ export class BoardContentComponent implements OnInit {
       });
     });
     await this.getMembers();
+    await this.showNotification();
   }
 
   async selectChannel(chats, selectedChannel) {
@@ -367,7 +381,6 @@ export class BoardContentComponent implements OnInit {
     });
     return
   }
-
 
   showChatIcons(i: number) {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'visible';
