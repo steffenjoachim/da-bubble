@@ -52,6 +52,7 @@ export class BoardSidebarComponent implements OnInit {
   message: string;
   selectedRecipient = localStorage.getItem('selected-recipient');
   channel;
+  channelChatsMessageLength: number;
   channelMembers: any[] = [];
   indexLastMessage: number;
   indexLastChat: number;
@@ -127,6 +128,9 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
+
+
+
   async pushUserRead(userRead, channel) {
     this.indexLastMessage = channel.chats.length - 1;
     this.indexLastChat = channel.chats.length - 1;
@@ -158,10 +162,17 @@ export class BoardSidebarComponent implements OnInit {
     });
   }
 
+  calcUnreadMessages(chatsLength) {
+    this.channelChatsMessageLength = chatsLength
+console.log(this.channelChatsMessageLength)
+    return chatsLength
+  }
+
   messageBeenRead(channelIndex: number) {
     collectionData(this.channelCollection).pipe(
       map(user => {
         const lastChatIndex = user[channelIndex]['chats'].length - 1;
+        this.channelChatsMessageLength = user[channelIndex]['chats'].length
         const lastChat = user[channelIndex]['chats'][lastChatIndex];
         const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
         return userInLastMessage;
