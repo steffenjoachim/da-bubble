@@ -42,15 +42,21 @@ export class BoardSidebarComponent implements OnInit {
   allUsers: any[] = [];
   channel$: Observable<any>;
   chats$ !: Observable<any>;
+  userReadLastMeassage$: Observable<any>;
   members: any;
   addChannelPopup: boolean = false;
   popupContainer: boolean = true;
   addMembers: boolean = false;
+  checkIfUserHasRead: boolean;
   popupheadline: string;
   message: string;
   selectedRecipient = localStorage.getItem('selected-recipient');
   channel;
   channelMembers: any[] = [];
+  indexLastMessage: number;
+  indexLastChat: number;
+  channelStatus: boolean[] = [];
+
 
   constructor(
     public firestore: Firestore,
@@ -67,6 +73,7 @@ export class BoardSidebarComponent implements OnInit {
     this.loadLoggedUserData();
     this.getUsers();
     this.getChannels();
+    this.loadChannels();
   }
 
   ngAfterViewInit() {
@@ -74,6 +81,7 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public onSidebarLinkClick(selectedData): void {
+
     this.showChannel(selectedData);
     this.sidebarLinkClicked.emit(selectedData);
   }
@@ -120,40 +128,48 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   async pushUserRead(userRead, channel) {
-    const indexLastMessage = channel.chats.length - 1;
+    this.indexLastMessage = channel.chats.length - 1;
+    this.indexLastChat = channel.chats.length - 1;
     const chatsRef = doc(this.firestore, 'channels', channel.id);
     const chatsSnapshot = await getDoc(chatsRef);
     const chatsData = chatsSnapshot.data();
-
-    // Annahme: chats ist ein Array von Objekten, und jedes Objekt hat ein Array notification
     const updatedChats = chatsData['chats'].map((chat, index) => {
-        if (index === indexLastMessage) {
-            const notifications = chat.notification || [];
-
-            // Überprüfe, ob userRead.name bereits im Array vorhanden ist
-            const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
-
-            if (!userAlreadyExists) {
-                notifications.push(userRead);
-            }
-
-            return { ...chat, notification: notifications };
+      if (index === this.indexLastMessage) {
+        const notifications = chat.notification || [];
+        const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
+        if (!userAlreadyExists) {
+          notifications.push(userRead);
         }
-        return chat;
+        return { ...chat, notification: notifications };
+      }
+      return chat;
     });
-
-    // Aktualisiere das Dokument in der Firestore-Datenbank
     await updateDoc(chatsRef, {
-        chats: updatedChats
+      chats: updatedChats
     });
+  }
 
-    console.log('Chats array after update:', updatedChats);
-}
+  loadChannels() {
+    this.channel$ = collectionData(this.channelCollection);
+    this.channel$.subscribe((channels: any[]) => {
+      channels.forEach((channel, index) => {
+        this.messageBeenRead(index);
+      });
+    });
+  }
 
-
-
-
-
+  messageBeenRead(channelIndex: number) {
+    collectionData(this.channelCollection).pipe(
+      map(user => {
+        const lastChatIndex = user[channelIndex]['chats'].length - 1;
+        const lastChat = user[channelIndex]['chats'][lastChatIndex];
+        const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
+        return userInLastMessage;
+      })
+    ).subscribe(hasUserRead => {
+      this.channelStatus[channelIndex] = hasUserRead;
+    });
+  }
 
   userHasRead(channel) {
     const chatDate = new Date();
@@ -205,6 +221,7 @@ export class BoardSidebarComponent implements OnInit {
 
   isUserInChannel(channel: any): boolean {
     return channel.members.some(member => member.name === this.loggedUser.name);
+
   }
 
 
