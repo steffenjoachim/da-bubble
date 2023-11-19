@@ -162,11 +162,30 @@ export class BoardSidebarComponent implements OnInit {
     });
   }
 
-  calcUnreadMessages(chatsLength) {
-    this.channelChatsMessageLength = chatsLength
-console.log(this.channelChatsMessageLength)
-    return chatsLength
+  findLastNotificationIndex(channel: any): number {
+    let lastIndex = -1;
+  
+    for (let i = channel.chats.length - 1; i >= 0; i--) {
+      const chat = channel.chats[i];
+      if (chat.notification && chat.notification.some((notif: any) => notif.name === this.loggedUser.name)) {
+        lastIndex = i;
+        break;
+      }
+    }
+  
+    return lastIndex;
   }
+  
+
+  calcUnreadMessages(chatsLength: number, channel: any): number {
+    this.channelChatsMessageLength = chatsLength;
+    const lastNotificationIndex = this.findLastNotificationIndex(channel);
+    console.log('Last Chat Index with Notification:', lastNotificationIndex);
+    const numberNewMessages = this.channelChatsMessageLength - (lastNotificationIndex + 1);
+    console.log(numberNewMessages);
+    return numberNewMessages;
+  }  
+  
 
   messageBeenRead(channelIndex: number) {
     collectionData(this.channelCollection).pipe(
