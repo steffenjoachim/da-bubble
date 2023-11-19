@@ -27,7 +27,7 @@
             [ngClass]="{'active': '# ' + channel.name == selectedRecipient}">
             <span># {{ channel.name }}</span>
             <div class="show-new-message">
-              <span *ngIf="channelStatus[i]">
+              <span *ngIf="!channelStatus[i]">
                 {{ calcUnreadMessages(channel.chats.length) }}
               </span>
             </div>
