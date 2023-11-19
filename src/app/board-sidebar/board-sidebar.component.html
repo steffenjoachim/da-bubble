@@ -28,7 +28,7 @@
             <span># {{ channel.name }}</span>
             <div class="show-new-message">
               <span *ngIf="channelStatus[i]">
-                {{ calcUnreadMessages(channel.chats.length,channel) }}
+                {{ newMessage }}
               </span>
             </div>
           </div>

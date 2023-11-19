@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter }
 import { FirebaseService } from '../services/firebase.service';
 import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { BoardComponent } from '../board/board.component';
 import { BoardContentComponent } from '../board-content/board-content.component';
@@ -55,6 +55,7 @@ export class BoardSidebarComponent implements OnInit {
   channelChatsMessageLength: number;
   channelMembers: any[] = [];
   indexLastMessage: number;
+  newMessage: number;
   indexLastChat: number;
   channelStatus: boolean[] = [];
 
@@ -162,30 +163,31 @@ export class BoardSidebarComponent implements OnInit {
     });
   }
 
-  findLastNotificationIndex(channel: any): number {
+  findLastNotificationIndex(channels) {
     let lastIndex = -1;
-  
-    for (let i = channel.chats.length - 1; i >= 0; i--) {
-      const chat = channel.chats[i];
-      if (chat.notification && chat.notification.some((notif: any) => notif.name === this.loggedUser.name)) {
-        lastIndex = i;
-        break;
+    for (let i = channels.length - 1; i >= 0; i--) {
+      const chat = channels[i].chats;
+      for (let j = chat.length - 1; j >= 0; j--) {
+        const element = chat[j];
+        if (element.notification && element.notification.some((notif: any) => notif.name === this.loggedUser.name)) {
+          lastIndex = j;
+          this.channelChatsMessageLength = chat.length
+          break;
+        }
       }
     }
-  
     return lastIndex;
   }
-  
 
-  calcUnreadMessages(chatsLength: number, channel: any): number {
-    this.channelChatsMessageLength = chatsLength;
-    const lastNotificationIndex = this.findLastNotificationIndex(channel);
-    console.log('Last Chat Index with Notification:', lastNotificationIndex);
+
+  calcUnreadMessages(channels) {
+    const lastNotificationIndex = this.findLastNotificationIndex(channels);
     const numberNewMessages = this.channelChatsMessageLength - (lastNotificationIndex + 1);
-    console.log(numberNewMessages);
-    return numberNewMessages;
-  }  
-  
+    this.newMessage = numberNewMessages
+    console.log(this.newMessage)
+    return
+  }
+
 
   messageBeenRead(channelIndex: number) {
     collectionData(this.channelCollection).pipe(
@@ -193,8 +195,10 @@ export class BoardSidebarComponent implements OnInit {
         const lastChatIndex = user[channelIndex]['chats'].length - 1;
         this.channelChatsMessageLength = user[channelIndex]['chats'].length
         const lastChat = user[channelIndex]['chats'][lastChatIndex];
-        const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
-        return userInLastMessage;
+        if (lastChat !== undefined) {
+          const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
+          return userInLastMessage;
+        }
       })
     ).subscribe(hasUserRead => {
       this.channelStatus[channelIndex] = hasUserRead;
@@ -246,6 +250,7 @@ export class BoardSidebarComponent implements OnInit {
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
     this.channel$.subscribe((channels => {
       this.channels = channels;
+      this.calcUnreadMessages(channels);
     }));
   }
 
