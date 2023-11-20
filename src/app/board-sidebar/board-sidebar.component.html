@@ -28,13 +28,13 @@
             <span># {{ channel.name }}</span>
             <div class="show-new-message">
               <span *ngIf="channelStatus[i]">
-                {{ newMessage }}
+                {{ newMessages[i] }}
               </span>
             </div>
           </div>
         </ng-container>
       </div>
-
+      
       <div class="add-channel">
         <mat-icon fontIcon="add_circle"></mat-icon>
         <span (click)="openAddChanelPopup()">Channel hinzufügen</span>
