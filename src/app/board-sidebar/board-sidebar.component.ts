@@ -54,11 +54,12 @@ export class BoardSidebarComponent implements OnInit {
   channel;
   channelChatsMessageLength: number;
   channelMembers: any[] = [];
+  allChannels: any;
   indexLastMessage: number;
   newMessage: number;
   indexLastChat: number;
-  channelStatus: boolean[] = [];
-  newMessages: number[] = []; // Hier werden die neuen Nachrichten für jeden Kanal gespeichert
+  chanelState: boolean[] = [];
+  newMessages: number[] = [];
 
   constructor(
     public firestore: Firestore,
@@ -129,9 +130,6 @@ export class BoardSidebarComponent implements OnInit {
     this.popupContainer = true
   }
 
-
-
-
   async pushUserRead(userRead, channel) {
     this.indexLastMessage = channel.chats.length - 1;
     this.indexLastChat = channel.chats.length - 1;
@@ -163,70 +161,45 @@ export class BoardSidebarComponent implements OnInit {
     });
   }
 
-findLastNotificationIndex(channels) {
-  let lastIndex = -1;
-  for (let i = channels.length - 1; i >= 0; i--) {
-    const chat = channels[i].chats;
-    for (let j = chat.length - 1; j >= 0; j--) {
-      const element = chat[j];
-      if (element.notification && element.notification.some((notif: any) => notif.name === this.loggedUser.name)) {
-        lastIndex = j;
-        this.channelChatsMessageLength = chat.length;
-        break;
-      }
-    }
+  messageBeenRead(index) {
+    collectionData(this.channelCollection).pipe(
+      map(channel => {
+        const lastChatIndex = channel[index]['chats'].length - 1;
+        const lastChat = channel[index]['chats'][lastChatIndex];
+        if (lastChat && lastChat.notification && Array.isArray(lastChat.notification)) {
+          const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
+          if (!userInLastMessage) {
+            const unreadMessagesCount = channel[index]['chats']
+              .reduce((count, chat) => count + (chat.notification && Array.isArray(chat.notification) ? chat.notification.every(notification => notification.name !== this.loggedUser.name) : 0), 0);
+            return unreadMessagesCount;
+          }
+        }
+        return 0;
+      })
+    ).subscribe(unreadMessagesCount => {
+      this.chanelState[index] = unreadMessagesCount;
+    });
   }
-  return lastIndex;
-}
 
-calcUnreadMessages(channels) {
-  const lastNotificationIndex = this.findLastNotificationIndex(channels);
-  const numberNewMessages = this.channelChatsMessageLength - (lastNotificationIndex + 1);
-  this.newMessages.push(numberNewMessages); // Speichere die Anzahl der neuen Nachrichten für den Kanal
-  console.log(this.newMessages, this.loggedUser.name);
-}
-
-messageBeenRead(channelIndex: number) {
-  collectionData(this.channelCollection).pipe(
-    map(user => {
-      const lastChatIndex = user[channelIndex]['chats'].length - 1;
-      const unreadMessages = user[channelIndex]['chats'].filter(chat => {
-        const hasNotification = chat.notification && chat.notification.some((notif: any) => notif.name === this.loggedUser.name);
-        return !hasNotification; 
-      }).length;
-      return unreadMessages;
-    })
-  ).subscribe(unreadMessages => {
-    const currentMessages = this.newMessages[channelIndex];
-    this.newMessages[channelIndex] = unreadMessages;
-    this.channelStatus[channelIndex] = unreadMessages > 0;
-    if (currentMessages !== unreadMessages) {
+  userHasRead(channel) {
+    const chatDate = new Date();
+    const timeStamp = Timestamp.fromDate(chatDate);
+    const userRead = {
+      name: this.loggedUser.name,
+      timeStamp: timeStamp.seconds,
+      isOnChannel: true
     }
-  });
-}
-
-
-
-userHasRead(channel) {
-  const chatDate = new Date();
-  const timeStamp = Timestamp.fromDate(chatDate);
-  const userRead = {
-    name: this.loggedUser.name,
-    timeStamp: timeStamp.seconds,
-    isOnChannel: true
+    this.pushUserRead(userRead, channel);
   }
-  this.pushUserRead(userRead, channel);
-}
 
-showChannel(channel) {
-  this.userHasRead(channel);
-  localStorage.setItem('selected-recipient', '# ' + channel.name);
-  localStorage.setItem('channel', '# ' + channel.name);
-  this.selectedRecipient = '# ' + channel.name
-  this.channelChat.showChannelChat(channel);
-  document.getElementById('channel-members').classList.remove('d-none');
-}
-
+  showChannel(channel) {
+    this.userHasRead(channel);
+    localStorage.setItem('selected-recipient', '# ' + channel.name);
+    localStorage.setItem('channel', '# ' + channel.name);
+    this.selectedRecipient = '# ' + channel.name
+    this.channelChat.showChannelChat(channel);
+    document.getElementById('channel-members').classList.remove('d-none');
+  }
 
   showChat(name) {
     this.selectedRecipient = name;
@@ -252,9 +225,9 @@ showChannel(channel) {
   getChannels() {
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
     this.channel$.subscribe((channels => {
-      this.channels = channels;
-      this.calcUnreadMessages(channels);
+      this.allChannels = channels;
     }));
+    // this.calcUnreadMessages(this.channels);
   }
 
   isUserInChannel(channel: any): boolean {
