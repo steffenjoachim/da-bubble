@@ -58,7 +58,7 @@ export class BoardSidebarComponent implements OnInit {
   indexLastMessage: number;
   newMessage: number;
   indexLastChat: number;
-  chanelState: boolean[] = [];
+  channelState: boolean[] = [];
   newMessages: number[] = [];
 
   constructor(
@@ -179,7 +179,7 @@ export class BoardSidebarComponent implements OnInit {
         return 0;
       })
     ).subscribe(unreadMessagesCount => {
-      this.chanelState[index] = unreadMessagesCount;
+      this.channelState[index] = unreadMessagesCount;
     });
   }
 
