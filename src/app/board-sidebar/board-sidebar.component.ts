@@ -131,26 +131,28 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   async pushUserRead(userRead, channel) {
-    this.indexLastMessage = channel.chats.length - 1;
-    this.indexLastChat = channel.chats.length - 1;
     const chatsRef = doc(this.firestore, 'channels', channel.id);
     const chatsSnapshot = await getDoc(chatsRef);
-    const chatsData = chatsSnapshot.data();
-    const updatedChats = chatsData['chats'].map((chat, index) => {
-      if (index === this.indexLastMessage) {
+
+    if (chatsSnapshot.exists()) {
+      const chatsData = chatsSnapshot.data();
+      const updatedChats = chatsData['chats'].map(chat => {
         const notifications = chat.notification || [];
         const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
+
         if (!userAlreadyExists) {
           notifications.push(userRead);
         }
+
         return { ...chat, notification: notifications };
-      }
-      return chat;
-    });
-    await updateDoc(chatsRef, {
-      chats: updatedChats
-    });
+      });
+
+      await updateDoc(chatsRef, {
+        chats: updatedChats
+      });
+    }
   }
+
 
   loadChannels() {
     this.channel$ = collectionData(this.channelCollection);
