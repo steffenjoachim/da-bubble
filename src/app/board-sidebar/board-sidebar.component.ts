@@ -60,6 +60,7 @@ export class BoardSidebarComponent implements OnInit {
   indexLastChat: number;
   channelState: boolean[] = [];
   newMessages: number[] = [];
+  event: any;
 
   constructor(
     public firestore: Firestore,
@@ -112,7 +113,6 @@ export class BoardSidebarComponent implements OnInit {
       const element = this.allUsers[i];
       this.channelsData.members.push(element);
     }
-
     addDoc(this.channelCollection, this.channelsData)
     this.addChannelPopup = false
     this.popupContainer = false
@@ -126,8 +126,16 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   closeAddChannelPopup() {
-    this.addChannelPopup = false
-    this.popupContainer = true
+    this.addChannelPopup = false;
+    this.popupContainer = true;
+    this.addMembers = false;
+    this.channelName = '';
+    this.channelDescription = '';
+  }
+
+  closeChannelCreate() {
+    this.addChannelPopup = false;
+    event.stopPropagation();
   }
 
   async pushUserRead(userRead, channel) {
@@ -229,7 +237,6 @@ export class BoardSidebarComponent implements OnInit {
     this.channel$.subscribe((channels => {
       this.allChannels = channels;
     }));
-    // this.calcUnreadMessages(this.channels);
   }
 
   isUserInChannel(channel: any): boolean {

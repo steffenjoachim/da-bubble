@@ -77,7 +77,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="addChannelPopup" class="add-channels-popup">
+<div (click)="closeChannelCreate()" *ngIf="addChannelPopup" class="add-channels-popup">
   <div class="popup-container">
     <div class="channel-popup-head">
       <h2>{{popupheadline}}</h2>
