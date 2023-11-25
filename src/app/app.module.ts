@@ -35,6 +35,7 @@ import { DialogChannelReactionsComponent } from './dialog-channel-reactions/dial
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { DialogSelectMembersComponent } from './dialog-select-members/dialog-select-members.component';
 
 
 registerLocaleData(localeDe);
@@ -54,6 +55,7 @@ registerLocaleData(localeDe);
     DialogChannelInfoComponent,
     DialogShowEmojisComponent,
     DialogChannelReactionsComponent,
+    DialogSelectMembersComponent,
   ],
   imports: [
     MatMenuModule,

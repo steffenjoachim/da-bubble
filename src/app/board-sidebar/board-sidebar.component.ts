@@ -4,11 +4,8 @@ import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData,
 import { ChatService } from '../services/chats/chat.service';
 import { Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
-import { BoardComponent } from '../board/board.component';
-import { BoardContentComponent } from '../board-content/board-content.component';
-import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-import { getAuth, user } from '@angular/fire/auth';
-import { onAuthStateChanged } from '@firebase/auth';
+import { DialogSelectMembersComponent } from '../dialog-select-members/dialog-select-members.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-board-sidebar',
@@ -58,6 +55,8 @@ export class BoardSidebarComponent implements OnInit {
   indexLastMessage: number;
   newMessage: number;
   indexLastChat: number;
+  isSelectChecked: boolean;
+  isAllChecked: boolean;
   channelState: boolean[] = [];
   newMessages: number[] = [];
   event: any;
@@ -67,7 +66,8 @@ export class BoardSidebarComponent implements OnInit {
     private firebase: FirebaseService,
     private chats: ChatService,
     private channelChat: ChannelService,
-    private channels: Firestore) {
+    private channels: Firestore,
+    private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -108,16 +108,28 @@ export class BoardSidebarComponent implements OnInit {
     this.popupheadline = 'Leute hinzufügen'
   }
 
-  addChannelToFirebase() {
+  pushAllMembers() {
     for (let i = 0; i < this.allUsers.length; i++) {
       const element = this.allUsers[i];
       this.channelsData.members.push(element);
     }
+  }
+
+  addChannelToFirebase() {
+    if (this.isAllChecked) {
+      this.pushAllMembers()
+    } else if (this.isSelectChecked) { }
+    else {
+      alert('bitte ein Checkbox auswählen')
+    }
+
     addDoc(this.channelCollection, this.channelsData)
+    console.log('gepusht')
     this.addChannelPopup = false
     this.popupContainer = false
     this.addMembers = false
-    this.clearChannelsData()
+    this.clearChannelsData();
+    this.closeAddChannelPopup();
   }
 
   openAddChanelPopup() {
@@ -133,8 +145,12 @@ export class BoardSidebarComponent implements OnInit {
     this.channelDescription = '';
   }
 
-  closeChannelCreate() {
-    this.addChannelPopup = false;
+  closeChannelCreate(event: Event) {
+    const isInsidePopup = (event.target as HTMLElement).closest('.popup-container');
+    if (isInsidePopup) {
+      return;
+    }
+    this.closeAddChannelPopup();
     event.stopPropagation();
   }
 
@@ -147,14 +163,11 @@ export class BoardSidebarComponent implements OnInit {
       const updatedChats = chatsData['chats'].map(chat => {
         const notifications = chat.notification || [];
         const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
-
         if (!userAlreadyExists) {
           notifications.push(userRead);
         }
-
         return { ...chat, notification: notifications };
       });
-
       await updateDoc(chatsRef, {
         chats: updatedChats
       });
@@ -241,7 +254,6 @@ export class BoardSidebarComponent implements OnInit {
 
   isUserInChannel(channel: any): boolean {
     return channel.members.some(member => member.name === this.loggedUser.name);
-
   }
 
 
@@ -307,6 +319,13 @@ export class BoardSidebarComponent implements OnInit {
       name: '',
       description: ''
     }
+  }
+
+  openDialogSelectMembers() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
 }

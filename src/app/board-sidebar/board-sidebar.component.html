@@ -77,7 +77,8 @@
     </div>
   </div>
 </div>
-<div (click)="closeChannelCreate()" *ngIf="addChannelPopup" class="add-channels-popup">
+<div (click)="closeChannelCreate($event)" *ngIf="addChannelPopup"
+  class="add-channels-popup">
   <div class="popup-container">
     <div class="channel-popup-head">
       <h2>{{popupheadline}}</h2>
@@ -105,11 +106,13 @@
     <div class="member-container" *ngIf="addMembers">
       <form action></form>
       <label>
-        <input type="radio" name="option" value="option1"> Alle Mitglieder von
+        <input type="radio" name="option" [(ngModel)]="isAllChecked"
+          value="option1"> Alle Mitglieder von
         {{ channelName }} hinzufügen
       </label>
       <label>
-        <input type="radio" name="option" value="option2"> Bestimmte Leute
+        <input id (click)="openDialogSelectMembers()" [(ngModel)]="isSelectChecked" type="radio" name="option"
+          value="option2"> Bestimmte Leute
         hinzufügen
       </label>
       <div>
