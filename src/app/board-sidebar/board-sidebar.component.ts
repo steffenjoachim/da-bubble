@@ -322,11 +322,16 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   openDialogSelectMembers() {
-    const dialogConfig = new MatDialogConfig();
+    console.log(this.channelsData);
+    const dialogConfig = {
+      data: this.channelsData // Übergebe die Daten als Objekt mit dem Schlüssel 'data'
+    };
     const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
+      // Hier kannst du den geschlossenen Dialog verarbeiten, falls erforderlich
     });
   }
+  
 
 }
 

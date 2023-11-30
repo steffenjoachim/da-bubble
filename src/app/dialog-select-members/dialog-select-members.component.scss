@@ -1,0 +1,44 @@
+.add-member{
+    border: none;
+    background: rgb(104, 104, 104);
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 25px;
+}
+
+h2{
+    text-align: center;
+    padding: 8px;
+    border: 2px solid rgb(104, 94, 242);
+    border-radius: 25px;
+    margin: 0 16px;
+}
+
+h3{
+    text-align: center;
+    padding: 8px;
+    border: 2px solid rgb(104, 104, 104);
+    border-radius: 25px;
+    margin: 16px;
+}
+
+label{
+    margin: 16px;
+}
+
+.close-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button{
+        border: none;
+        background: rgb(104, 104, 104);
+        font-size: 12px;
+        font-weight: 700;
+        color: white;
+        padding: 8px 12x;
+        border-radius: 25px;
+    }
+}

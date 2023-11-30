@@ -1,16 +1,26 @@
 <div class="dialog-add-members-frame">
   <div class="dialog-head-frame">
-    <h1 mat-dialog-title class="dialog-add-user-headline">Mitglied hinzufügen</h1>
+    <h1 mat-dialog-title class="dialog-add-user-headline">Mitglieder hinzufügen</h1>
     <img (click)="closeDialogAddMembers()" src="./assets/img/45. Close.png" alt>
   </div>
-  <h2 class="c-blue">{{ selectedChannel }}</h2>
+  <h2 class="c-blue"># {{ data.name }}</h2>
+  <h3>{{ data.description }}</h3>
   <div mat-dialog-content>
     <span class="is-already-member" *ngIf="isAlreadyMember">{{ userName }} ist schon Mitglied</span>
     <div>
-      <button class="add-member" (click)="selectedMembers()" class="add-member" [matMenuTriggerFor]="menu">Hinzufügen</button>
+      <button class="add-member" (click)="selectedMembers()" class="add-member" [matMenuTriggerFor]="menu">Mitglieder
+        auswählen</button>
       <mat-menu #menu="matMenu">
-        <div *ngFor="let user of usersCollection$ | async" >
-          <button mat-menu-item><span>{{ user.name }}</span></button>
+        <div (click)="$event.stopPropagation()">
+          <div *ngFor="let user of usersCollection$ | async">
+            <label>
+              <input type="checkbox" [value]="user.name" (change)="toggleSelection($event, user.name)">
+              <span>{{ user.name }}</span>
+            </label>
+          </div>
+        </div>
+        <div class="close-icon">
+          <button (click)="closeMenu()">Schließen</button>
         </div>
       </mat-menu>
     </div>
