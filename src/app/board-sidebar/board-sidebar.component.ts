@@ -45,8 +45,10 @@ export class BoardSidebarComponent implements OnInit {
   popupContainer: boolean = true;
   addMembers: boolean = false;
   checkIfUserHasRead: boolean;
+  shwoWrongText: boolean = false;
   popupheadline: string;
   message: string;
+  wrongText: string;
   selectedRecipient = localStorage.getItem('selected-recipient');
   channel;
   channelChatsMessageLength: number;
@@ -115,20 +117,35 @@ export class BoardSidebarComponent implements OnInit {
     }
   }
 
-  addChannelToFirebase() {
+  selectMembersForChannel() {
+    this.shwoWrongText = false;
     if (this.isAllChecked) {
-      this.pushAllMembers()
-    } else if (this.isSelectChecked) { }
+      this.pushAllMembers();
+      this.addChannelToFirebase();
+    } else if (this.isSelectChecked) {
+      this.addChannelToFirebase();
+    }
     else {
-      alert('bitte ein Checkbox auswählen')
+      this.shwoWrongText = true;
+      this.wrongText = 'Bitte ein Checkbox auswählen'
     }
 
-    addDoc(this.channelCollection, this.channelsData)
-    this.addChannelPopup = false
-    this.popupContainer = false
-    this.addMembers = false
-    this.clearChannelsData();
-    this.closeAddChannelPopup();
+  }
+
+  addChannelToFirebase() {
+    if (this.channelsData.members.length > 0) {
+      addDoc(this.channelCollection, this.channelsData)
+      this.shwoWrongText = false;
+      this.addChannelPopup = false;
+      this.popupContainer = false;
+      this.addMembers = false;
+      this.clearChannelsData();
+      this.closeAddChannelPopup();
+    }
+    else {
+      this.shwoWrongText = true;
+      this.wrongText = 'Bitte mindestens einen Mitglied auswählen'
+    }
   }
 
   openAddChanelPopup() {
@@ -321,13 +338,12 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   openDialogSelectMembers() {
-    console.log(this.channelsData);
+    console.log(this.channelsData)
     const dialogConfig = {
-      data: this.channelsData // Übergebe die Daten als Objekt mit dem Schlüssel 'data'
+      data: this.channelsData
     };
     const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
-      // Hier kannst du den geschlossenen Dialog verarbeiten, falls erforderlich
     });
   }
 
