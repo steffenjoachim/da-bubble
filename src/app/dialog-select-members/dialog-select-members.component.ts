@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, map } from 'rxjs';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 
@@ -25,14 +24,25 @@ export class DialogSelectMembersComponent {
   isAlreadyMember: boolean = false;
   selectedChannel = localStorage.getItem('channel');
   userName: string;
+  selectedUserNames: string[] = [];
+  // channelsData: any = {
+  //   admin: '',
+  //   members: [],
+  //   name: '',
+  //   description: '',
+  //   chats: []
+  // }
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
     private firebase: Firestore,
     private firestore: Firestore,
-    private dialogRef: MatDialogRef<DialogAddMembersComponent>
+    private dialogRef: MatDialogRef<DialogAddMembersComponent>,
   ) {
     this.getFilteredChannel()
+    console.log(this.data);
+
   }
 
 
@@ -40,7 +50,34 @@ export class DialogSelectMembersComponent {
     this.getMembers()
   }
 
+  toggleSelection(event: Event, userName: string) {
+    event.stopPropagation();
+    const index = this.selectedUserNames.indexOf(userName);
+    if (index === -1) {
+      this.selectedUserNames.push(userName); 
+    } else {
+      this.selectedUserNames.splice(index, 1); 
+    }
+  
+    // Füge selectedUserNames zu this.data.members hinzu, aber nur, wenn der Benutzername nicht bereits vorhanden ist
+    if (this.data && Array.isArray(this.data.members)) {
+      this.selectedUserNames.forEach(name => {
+        if (!this.data.members.includes(name)) {
+          this.data.members.push(name);
+        }
+      });
+    }
+    console.log(this.data);
+  }
+  
+
+  closeMenu() {
+    
+  }
+
+
   getMembers() {
+    console.log(this.data)
     this.usersCollection$ = collectionData(this.usersCollection$, { idField: 'id' });
     this.usersCollection$.subscribe((user) => {
     });
