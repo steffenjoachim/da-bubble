@@ -124,7 +124,6 @@ export class BoardSidebarComponent implements OnInit {
     }
 
     addDoc(this.channelCollection, this.channelsData)
-    console.log('gepusht')
     this.addChannelPopup = false
     this.popupContainer = false
     this.addMembers = false
@@ -323,12 +322,8 @@ export class BoardSidebarComponent implements OnInit {
 
   openDialogSelectMembers() {
     const dialogConfig = new MatDialogConfig();
-    const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig);
+    const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig, );
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-
 }
-
-
-
