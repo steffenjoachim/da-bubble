@@ -129,7 +129,6 @@ export class BoardSidebarComponent implements OnInit {
       this.shwoWrongText = true;
       this.wrongText = 'Bitte ein Checkbox auswählen'
     }
-
   }
 
   addChannelToFirebase() {
@@ -146,6 +145,8 @@ export class BoardSidebarComponent implements OnInit {
       this.shwoWrongText = true;
       this.wrongText = 'Bitte mindestens einen Mitglied auswählen'
     }
+    this.isSelectChecked = false;
+    this.isAllChecked = false;
   }
 
   openAddChanelPopup() {
@@ -338,7 +339,7 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   openDialogSelectMembers() {
-    console.log(this.channelsData)
+    this.isAllChecked = false;
     const dialogConfig = {
       data: this.channelsData
     };

@@ -40,11 +40,11 @@ export class DialogSelectMembersComponent {
     this.getMembers()
   }
 
-  toggleSelection(event: Event, userName: string) {
+  toggleSelection(event: Event, user: string) {
     event.stopPropagation();
-    const index = this.selectedUserNames.indexOf(userName);
+    const index = this.selectedUserNames.indexOf(user);
     if (index === -1) {
-      this.selectedUserNames.push(userName);
+      this.selectedUserNames.push(user);
     } else {
       this.selectedUserNames.splice(index, 1);
     }

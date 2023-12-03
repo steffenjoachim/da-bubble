@@ -365,6 +365,7 @@ export class BoardContentComponent implements OnInit {
     await this.showNotification();
   }
 
+
   async selectChannel(chats, selectedChannel) {
     localStorage.setItem('channel', selectedChannel);
     this.selectedRecipient = selectedChannel;
