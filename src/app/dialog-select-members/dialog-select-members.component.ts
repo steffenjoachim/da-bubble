@@ -25,13 +25,13 @@ export class DialogSelectMembersComponent {
   selectedChannel = localStorage.getItem('channel');
   userName: string;
   selectedUserNames: string[] = [];
-  // channelsData: any = {
-  //   admin: '',
-  //   members: [],
-  //   name: '',
-  //   description: '',
-  //   chats: []
-  // }
+  channelsData: any = {
+    admin: '',
+    members: [],
+    name: '',
+    description: '',
+    chats: []
+  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -58,8 +58,7 @@ export class DialogSelectMembersComponent {
     } else {
       this.selectedUserNames.splice(index, 1); 
     }
-  
-    // Füge selectedUserNames zu this.data.members hinzu, aber nur, wenn der Benutzername nicht bereits vorhanden ist
+
     if (this.data && Array.isArray(this.data.members)) {
       this.selectedUserNames.forEach(name => {
         if (!this.data.members.includes(name)) {
