@@ -257,6 +257,11 @@ h3 {
 .member-container {
   display: flex;
   flex-direction: column;
+  .wrong-text {
+    font-size: 18px;
+    color: red;
+    font-weight: 600;
+  }
   label {
     display: flex;
     align-items: center;
@@ -298,7 +303,7 @@ h3 {
   border-radius: 50%;
 }
 
-.create{
+.create {
   margin-top: 32px;
   border: none;
   background: rgb(104, 104, 104);

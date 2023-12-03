@@ -8,19 +8,19 @@
   <div mat-dialog-content>
     <span class="is-already-member" *ngIf="isAlreadyMember">{{ userName }} ist schon Mitglied</span>
     <div>
-      <button class="add-member" (click)="selectedMembers()" class="add-member" [matMenuTriggerFor]="menu">Mitglieder
+      <button class="add-member" class="add-member" [matMenuTriggerFor]="menu">Mitglieder
         auswählen</button>
       <mat-menu #menu="matMenu">
         <div (click)="$event.stopPropagation()">
           <div *ngFor="let user of usersCollection$ | async">
             <label>
-              <input type="checkbox" [value]="user.name" (change)="toggleSelection($event, user.name)">
+              <input type="checkbox" [value]="user.name" (change)="toggleSelection($event, user)">
               <span>{{ user.name }}</span>
             </label>
           </div>
         </div>
         <div class="close-icon">
-          <button (click)="closeMenu()">Schließen</button>
+          <button>Schließen</button>
         </div>
       </mat-menu>
     </div>

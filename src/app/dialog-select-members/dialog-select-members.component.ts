@@ -25,13 +25,6 @@ export class DialogSelectMembersComponent {
   selectedChannel = localStorage.getItem('channel');
   userName: string;
   selectedUserNames: string[] = [];
-  channelsData: any = {
-    admin: '',
-    members: [],
-    name: '',
-    description: '',
-    chats: []
-  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -40,11 +33,8 @@ export class DialogSelectMembersComponent {
     private firestore: Firestore,
     private dialogRef: MatDialogRef<DialogAddMembersComponent>,
   ) {
-    this.getFilteredChannel()
-    console.log(this.data);
-
+    this.getFilteredChannel();
   }
-
 
   ngOnInit() {
     this.getMembers()
@@ -54,11 +44,10 @@ export class DialogSelectMembersComponent {
     event.stopPropagation();
     const index = this.selectedUserNames.indexOf(userName);
     if (index === -1) {
-      this.selectedUserNames.push(userName); 
+      this.selectedUserNames.push(userName);
     } else {
-      this.selectedUserNames.splice(index, 1); 
+      this.selectedUserNames.splice(index, 1);
     }
-
     if (this.data && Array.isArray(this.data.members)) {
       this.selectedUserNames.forEach(name => {
         if (!this.data.members.includes(name)) {
@@ -66,47 +55,14 @@ export class DialogSelectMembersComponent {
         }
       });
     }
-    console.log(this.data);
   }
-  
-
-  closeMenu() {
-    
-  }
-
 
   getMembers() {
-    console.log(this.data)
     this.usersCollection$ = collectionData(this.usersCollection$, { idField: 'id' });
     this.usersCollection$.subscribe((user) => {
     });
   }
 
-  // async addMember(user) {
-  //   this.isAlreadyMember = false;
-  //   const documentReference = doc(this.firebase, 'channels', this.filteredChannel[0].id);
-  //   try {
-  //     const docSnapshot = await getDoc(documentReference);
-  //     if (docSnapshot.exists()) {
-  //       const currentData = docSnapshot.data();
-  //       const currentMembers = currentData['members'];
-  //       const userExists = currentMembers.some(member => member.id === user.id);
-  //       if (!userExists) {
-  //         const updatedMembers = [...currentMembers, user];
-  //         await updateDoc(documentReference, { members: updatedMembers });
-  //         console.log('Benutzer wurde zum Kanal hinzugefügt.');
-  //       } else {
-  //         this.isAlreadyMember = true;
-  //         this.userName = user.name;
-  //         console.log('Der Benutzer ist bereits ein Mitglied des Kanals.', user.name);
-  //       }
-  //     } else {
-  //       console.error('Der Kanal existiert nicht in Firebase:', documentReference);
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler beim Hinzufügen des Benutzers zum Kanal:', error);
-  //   }
-  // }
 
   getFilteredChannel() {
     this.channels$ = collectionData(this.channelCollection$, { idField: 'id' });
@@ -119,11 +75,8 @@ export class DialogSelectMembersComponent {
     });
   }
 
-  closeDialogAddMembers(){
+  closeDialogAddMembers() {
     this.dialogRef.close();
   }
 
-  selectedMembers(){
-
-  }
 }

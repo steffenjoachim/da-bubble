@@ -104,6 +104,7 @@
       </div>
     </form>
     <div class="member-container" *ngIf="addMembers">
+      <span class="wrong-text" *ngIf="shwoWrongText">{{wrongText}}</span>
       <form action></form>
       <label>
         <input type="radio" name="option" [(ngModel)]="isAllChecked"
@@ -116,7 +117,7 @@
         hinzufügen
       </label>
       <div>
-        <button class="create" (click)="addChannelToFirebase()">Erstellen</button>
+        <button class="create" (click)="selectMembersForChannel()">Erstellen</button>
       </div>
     </div>
   </div>
