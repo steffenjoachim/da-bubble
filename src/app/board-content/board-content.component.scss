@@ -229,6 +229,27 @@
     font-weight: 700;
     margin-right: 8px;
   }
+
+  .name-and-date {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.sent{
+  display: flex;
+  justify-content: flex-end;
+  b{
+    margin-right: 8px;
+  }
+}
+.recieved{
+  display: flex;
+  justify-content: flex-start;
+  .date{
+    margin-left: 8px;
+  }
 }
 
 .sent-name-avatar {
@@ -278,10 +299,6 @@
 
 .sent-container {
   margin-bottom: 16px;
-}
-
-.name-and-date {
-  width: 100%;
 }
 
 .recieved-name-avatar {
