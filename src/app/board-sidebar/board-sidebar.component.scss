@@ -129,7 +129,7 @@
   margin-left: 32px;
   img {
     height: 48px;
-    width: 48px;
+    width: 48px
   }
 
   span {
@@ -137,6 +137,13 @@
     font-weight: 400;
     margin-left: 8px;
   }
+
+
+  .show-new-message {
+    color: rgb(84, 163, 137);
+    font-size: 14px;
+  }
+
   .you,
   .others {
     margin-top: 16px;

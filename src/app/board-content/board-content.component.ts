@@ -45,7 +45,7 @@ export class BoardContentComponent implements OnInit {
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
-  channelCollection: any = collection(this.firestore, 'channels')
+  channelCollection: any = collection(this.firestore, 'channels');
   users: any[] = [];
   chatsChannel$ !: Observable<any>;
   chats$ !: Observable<any>;
@@ -65,7 +65,7 @@ export class BoardContentComponent implements OnInit {
   message: any = '';
   selectedReaction: any;
   selectedRecipient: string;
-  chats: any;
+  // chats: any;
   hoveredIndex: number = -1;
   hoveredReactionIndex: number = -1;
   answersAmount: number;
@@ -75,13 +75,13 @@ export class BoardContentComponent implements OnInit {
   endIndex: number = 10;
   showReactionOpendedIndex: number;
   dialogRef: MatDialogRef<any>;
-  groupedChats: any[] = [];
+  // groupedChats: any[] = [];
   directMessageDates: number[] = [];
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
   private chatCount = 0;
-  public selectedChannelChat: any = null;
+  // public selectedChannelChat: any = null;
   channelAdmin: string
   displayedEmojis: string[] = [];
   reactionSender: string[] = [];
@@ -229,7 +229,7 @@ export class BoardContentComponent implements OnInit {
   async deleteChat(selectedChat) {
     const channelId = this.selectedChannel.id;
     const chatToRemove = selectedChat;
-    if (this.loggedUser.name === chatToRemove.sender) {
+    if (this.loggedUser.name == chatToRemove.sender) {
       const channelDocRef = doc(this.firestore, 'channels', channelId);
       const channelDocSnapshot = await getDoc(channelDocRef);
       if (channelDocSnapshot.exists()) {
@@ -237,7 +237,6 @@ export class BoardContentComponent implements OnInit {
         if (chatsArray) {
           const updatedChatsArray = chatsArray.filter(chat => chat.id !== chatToRemove.id);
           await setDoc(channelDocRef, { chats: updatedChatsArray }, { merge: true });
-          return
         }
       }
       await deleteDoc(doc(this.chatCollection, selectedChat.id));

@@ -93,11 +93,20 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public OnAnotherEvent(selectedData): void {
-    this.showChat(selectedData)
+    this.showChat(selectedData);
     this.anotherEvent.emit();
   }
 
+  checkNewMessages(){
+    console.log(this.chatCollection)
+    for (let i = 0; i < this.users.length; i++) {
+      const user = this.allUsers[i].name;
+      console.log('checking new messages for', user)
+    }
+  }
+
   addChannel() {
+
     this.channelsData.name = this.channelName
     this.channelsData.admin = this.loggedUser.name
     this.channelsData.description = this.channelDescription
@@ -258,6 +267,7 @@ export class BoardSidebarComponent implements OnInit {
     usersObservable.subscribe((usersArray) => {
       this.allUsers = usersArray;
       this.users = usersArray.filter((user: any) => user.name !== this.loggedUser.name);
+      this.checkNewMessages();
     });
   }
 

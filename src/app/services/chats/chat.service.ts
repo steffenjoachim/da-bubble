@@ -14,7 +14,8 @@ export class ChatService {
     receiver: '',
     message: '',
     timeStamp: 0,
-    avatar: ''
+    avatar: '',
+    read: false,
   }
 
   loggedUser: any = {
@@ -48,6 +49,7 @@ export class ChatService {
     this.chats.sender = sender.name;
     this.chats.receiver = recipient;
     this.chats.avatar = sender.avatar
+    this.chats.read = true;
     addDoc(this.chatCollection, this.chats);
   }
 

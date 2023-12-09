@@ -15,7 +15,6 @@ export class ChannelService {
   };
 
   uniqueId = uuidv4();
-  // chatCollection: any = collection(this.channelChat, 'channelChats');
   channelsCollection: any = collection(this.channelChat, 'channels');
   chats$: Observable<any>
   private chatData$: Observable<any>;
