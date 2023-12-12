@@ -153,10 +153,10 @@
           <div class="line-right"></div>
         </div>
       </ng-container>
-      <div [class.sent-container]="chat.sender === loggedUser.name"
-        [class.recieved-container]="chat.sender !== loggedUser.name">
-        <div [class.sent-name-avatar]="chat.sender === loggedUser.name"
-          [class.recieved-name-avatar]="chat.sender !== loggedUser.name">
+      <div [class.sent-container]="chat.sender.name === loggedUser.name"
+        [class.recieved-container]="chat.sender.name !== loggedUser.name">
+        <div [class.sent-name-avatar]="chat.sender.name === loggedUser.name"
+          [class.recieved-name-avatar]="chat.sender.name !== loggedUser.name">
           <div class="emoji-reaction-outer" id="emoji-outer" (click)="closeShowReaction(i)">
             <div class="emojis-reaction-container" id="emojis-container-chat{{i}}">
               <div *ngFor="let emoji of displayedEmojis" (click)="emojiLikeChat(emoji, chat)">
@@ -165,17 +165,17 @@
             </div>
           </div>
           <div class="name-and-date">
-            <div [class.sent]="chat.sender === loggedUser.name"
-            [class.recieved]="chat.sender !== loggedUser.name">
-              <span><b>{{ chat.sender }}</b></span>
+            <div [class.sent]="chat.sender.name === loggedUser.name"
+            [class.recieved]="chat.sender.name !== loggedUser.name">
+              <span><b>{{ chat.sender.name }}</b></span>
               <span class="date"> {{ chat.timeStamp * 1000 | date: 'HH:mm '}}Uhr</span>
             </div>
-            <div [class.sent-message]="chat.sender === loggedUser.name"
-              [class.recieved-message]="chat.sender !== loggedUser.name">
+            <div [class.sent-message]="chat.sender.name === loggedUser.name"
+              [class.recieved-message]="chat.sender.name !== loggedUser.name">
               <span class="message-channel-frame">{{ chat.message }}</span>
             </div>
-            <div [class.reaction-emojis-sender]="chat.sender === loggedUser.name"
-              [class.reaction-emojis-recieved]="chat.sender !== loggedUser.name">
+            <div [class.reaction-emojis-sender]="chat.sender.name === loggedUser.name"
+              [class.reaction-emojis-recieved]="chat.sender.name !== loggedUser.name">
               <div *ngFor="let reaction of chat.reactions">
                 <div *ngIf="reaction.counter" class="emoji" (click)="emojiLikeChat(reaction.emoji, chat)">
                   {{reaction.emoji}}

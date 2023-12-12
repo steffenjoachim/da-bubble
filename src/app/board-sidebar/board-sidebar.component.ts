@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -97,13 +97,26 @@ export class BoardSidebarComponent implements OnInit {
     this.anotherEvent.emit();
   }
 
-  checkNewMessages(){
-    console.log(this.chatCollection)
+  checkNewMessages() {
     for (let i = 0; i < this.users.length; i++) {
       const user = this.allUsers[i].name;
-      console.log('checking new messages for', user)
+      console.log('Checking new messages for', user);
+  
+      const chatRef = collection(this.firestore, 'chats');
+      const messageQuery = query(chatRef, where('receiver', '==', '@ '+ user));
+      console.log('@ '+ user)
+  
+      getDocs(messageQuery).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data()['receiver'], doc.data()['read']);
+        });
+      }).catch((error) => {
+        console.error('Error getting documents:', error);
+      });
     }
   }
+  
+
 
   addChannel() {
 

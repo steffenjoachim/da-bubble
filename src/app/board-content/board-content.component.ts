@@ -297,7 +297,7 @@ export class BoardContentComponent implements OnInit {
     this.chat = localStorage.getItem('selected-recipient');
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$ = this.chats$.pipe(
-      map(chats => chats.filter(chat => (chat.sender == this.loggedUser.name && chat.receiver == this.chat) || (chat.receiver == '@ ' + this.loggedUser.name && '@ ' + chat.sender == this.chat))),
+      map(chats => chats.filter(chat => (chat.sender.name == this.loggedUser.name && chat.receiver.name == this.chat) || (chat.receiver.name == '@ ' + this.loggedUser.name && '@ ' + chat.sender.name == this.chat))),
       map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chats$.subscribe(() => {

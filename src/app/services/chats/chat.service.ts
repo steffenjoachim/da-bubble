@@ -10,12 +10,17 @@ export class ChatService {
   private interlocutorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   chats: any = {
-    sender: '',
-    receiver: '',
+    sender: {
+      name:'',
+      read: false,   
+  },
+    receiver: {
+      name:'',
+      read: false,   
+  },
     message: '',
     timeStamp: 0,
     avatar: '',
-    read: false,
   }
 
   loggedUser: any = {
@@ -46,10 +51,10 @@ export class ChatService {
     const timeStamp = Timestamp.fromDate(chatDate)
     this.chats.timeStamp = timeStamp.seconds;
     this.chats.message = message;
-    this.chats.sender = sender.name;
-    this.chats.receiver = recipient;
+    this.chats.sender.name = sender.name;
+    this.chats.receiver.name = recipient;
     this.chats.avatar = sender.avatar
-    this.chats.read = true;
+    this.chats.sender.read = true;
     addDoc(this.chatCollection, this.chats);
   }
 
