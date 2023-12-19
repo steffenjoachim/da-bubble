@@ -1,6 +1,7 @@
+import { get } from '@angular/fire/database';
 import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { DocumentData, Firestore, Timestamp, addDoc, collection, collectionData, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, Timestamp, addDoc, collection, collectionData, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -39,7 +40,7 @@ export class BoardSidebarComponent implements OnInit {
   allUsers: any[] = [];
   channel$: Observable<any>;
   chats$ !: Observable<any>;
-  userReadLastMeassage$: Observable<any>;
+  userReadLastMessage$: Observable<any>;
   members: any;
   addChannelPopup: boolean = false;
   popupContainer: boolean = true;
@@ -53,6 +54,7 @@ export class BoardSidebarComponent implements OnInit {
   channel;
   channelChatsMessageLength: number;
   channelMembers: any[] = [];
+  dataArray: any[] = [];
   allChannels: any;
   indexLastMessage: number;
   newMessage: number;
@@ -87,39 +89,48 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public onSidebarLinkClick(selectedData): void {
-
     this.showChannel(selectedData);
     this.sidebarLinkClicked.emit(selectedData);
   }
 
   public OnAnotherEvent(selectedData): void {
+
+    this.getAllChats();
     this.showChat(selectedData);
     this.anotherEvent.emit();
   }
 
-  checkNewMessages() {
-    for (let i = 0; i < this.users.length; i++) {
-      const user = this.allUsers[i].name;
-      console.log('Checking new messages for', user);
-  
-      const chatRef = collection(this.firestore, 'chats');
-      const messageQuery = query(chatRef, where('receiver', '==', '@ '+ user));
-      console.log('@ '+ user)
-  
-      getDocs(messageQuery).then((querySnapshot) => {
+  getAllChats() {
+    this.dataArray = []
+    getDocs(this.chatCollection)
+      .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log(doc.data()['receiver'], doc.data()['read']);
+          console.log(doc.data(), doc.id)
+          this.selectRelevantChats(doc)
         });
-      }).catch((error) => {
-        console.error('Error getting documents:', error);
+      })
+      .catch((error) => {
+        console.error('Fehler beim Abrufen der Nachrichten: ', error);
       });
-    }
   }
-  
+
+  selectRelevantChats(doc) {
+    this.dataArray.push(doc.data());
+    const relevantChat = this.dataArray.filter((chat) => {
+      return (chat.receiver.name === '@ ' + this.loggedUser.name &&
+        ('@ ' + chat.sender.name) == this.selectedRecipient) ||
+        chat.sender.name === this.loggedUser.name &&
+        chat.receiver.name == this.selectedRecipient;
+    });
+
+    const sortedChat = [...relevantChat].sort((a, b) => b.timeStamp - a.timeStamp);
+    const newestMessage = sortedChat[0];
+    console.log(newestMessage);
+
+  }
 
 
   addChannel() {
-
     this.channelsData.name = this.channelName
     this.channelsData.admin = this.loggedUser.name
     this.channelsData.description = this.channelDescription
@@ -280,7 +291,7 @@ export class BoardSidebarComponent implements OnInit {
     usersObservable.subscribe((usersArray) => {
       this.allUsers = usersArray;
       this.users = usersArray.filter((user: any) => user.name !== this.loggedUser.name);
-      this.checkNewMessages();
+      this.getAllChats();
     });
   }
 

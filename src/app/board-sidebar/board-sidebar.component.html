@@ -59,11 +59,11 @@
           <div class="you">
             <img id="current-user-img" src="{{ loggedUser.avatar }}"
               alt="image of user">
-            <span class="current-user-name" 
+            <span class="current-user-name"
                   id="current-user-name">
                   {{loggedUser.name }} (Du)</span>
           </div>
-          <div class="others" 
+          <div class="others"
               *ngFor="let user of users; let i = index"
               [ngClass]="{'active': user.name == selectedRecipient}"
               (click)="OnAnotherEvent(user.name)">
