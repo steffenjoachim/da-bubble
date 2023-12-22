@@ -12,6 +12,9 @@ import { getDatabase, ref } from '@angular/fire/database';
   providedIn: 'root'
 })
 export class FirebaseService implements OnDestroy {
+  firestore() {
+    throw new Error('Method not implemented.');
+  }
   private logoVisibility = new BehaviorSubject<boolean>(false);
   logoVisible$ = this.logoVisibility.asObservable();
   usersCollection: any = collection(this.firebase, 'users');

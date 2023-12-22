@@ -1,7 +1,7 @@
 import { get } from '@angular/fire/database';
 import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { DocumentData, Firestore, QuerySnapshot, Timestamp, addDoc, collection, collectionData, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, Timestamp, addDoc, collection, collectionData, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -94,20 +94,21 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public OnAnotherEvent(selectedData): void {
-
     this.getAllChats();
     this.showChat(selectedData);
     this.anotherEvent.emit();
   }
 
   getAllChats() {
-    this.dataArray = []
+    this.dataArray = [];
     getDocs(this.chatCollection)
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log(doc.data(), doc.id)
-          this.selectRelevantChats(doc)
+          this.selectRelevantChats(doc);
         });
+
+        // Nachdem this.dataArray aktualisiert wurde, rufe die Funktion auf, um die Sammlung zu ersetzen
+        this.updateChatsInFirebase();
       })
       .catch((error) => {
         console.error('Fehler beim Abrufen der Nachrichten: ', error);
@@ -115,18 +116,39 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   selectRelevantChats(doc) {
+    this.selectedRecipient = localStorage.getItem('selected-recipient');
     this.dataArray.push(doc.data());
     const relevantChat = this.dataArray.filter((chat) => {
       return (chat.receiver.name === '@ ' + this.loggedUser.name &&
-        ('@ ' + chat.sender.name) == this.selectedRecipient) ||
-        chat.sender.name === this.loggedUser.name &&
-        chat.receiver.name == this.selectedRecipient;
+        ('@ ' + chat.sender.name) === this.selectedRecipient) ||
+        (chat.sender.name === this.loggedUser.name &&
+        chat.receiver.name === this.selectedRecipient);
     });
+    const sortedChat = [...relevantChat].sort((a, b) => a.timeStamp - b.timeStamp);
+    sortedChat.forEach(element => {
+      element.receiver.read = true;
+    });
+    console.log(this.dataArray);
+  }
 
-    const sortedChat = [...relevantChat].sort((a, b) => b.timeStamp - a.timeStamp);
-    const newestMessage = sortedChat[0];
-    console.log(newestMessage);
+  updateChatsInFirebase() {
+    getDocs(this.chatCollection)
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          // Lösche die vorhandenen Dokumente in der Sammlung
+          const docRef = doc.ref;
+          deleteDoc(docRef); // Hier wird deleteDoc verwendet, um den Typ sicherzustellen
+        });
 
+        // Füge die neuen Dokumente aus this.dataArray hinzu
+        const collectionRef = collection(this.firestore, 'chats');
+        this.dataArray.forEach(async data => {
+          await addDoc(collectionRef, data);
+        });
+      })
+      .catch(error => {
+        console.error('Fehler beim Aktualisieren der Daten: ', error);
+      });
   }
 
 
