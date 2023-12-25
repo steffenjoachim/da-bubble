@@ -3,7 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter }
 import { FirebaseService } from '../services/firebase.service';
 import { DocumentData, Firestore, QuerySnapshot, Timestamp, addDoc, collection, collectionData, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where, writeBatch } from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogSelectMembersComponent } from '../dialog-select-members/dialog-select-members.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -56,13 +56,15 @@ export class BoardSidebarComponent implements OnInit {
   channelMembers: any[] = [];
   dataArray: any[] = [];
   allChannels: any;
+  allChats;
+  sortedChats;
   indexLastMessage: number;
-  newMessage: number;
+  newMessage: number = 0;
   indexLastChat: number;
   isSelectChecked: boolean;
   isAllChecked: boolean;
   channelState: boolean[] = [];
-  newMessages$: Observable<any>
+  newMessages$: Observable<any>;
   event: any;
 
   constructor(
@@ -74,7 +76,7 @@ export class BoardSidebarComponent implements OnInit {
     private dialog: MatDialog) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.channel = localStorage.getItem('channel')
     this.selectedRecipient = localStorage.getItem('selected-recipient')
     this.firebase.setLogoVisible(true);
@@ -83,6 +85,7 @@ export class BoardSidebarComponent implements OnInit {
     this.getChannels();
     this.loadChannels();
     this.calculateNewMessages();
+    await this.getAllChats();
   }
 
   ngAfterViewInit() {
@@ -95,71 +98,90 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public OnAnotherEvent(selectedData): void {
-    this.getAllChats();
     this.showChat(selectedData);
     this.anotherEvent.emit();
+    this.selectRelevantChats();
   }
 
-  getAllChats() {
+  async getAllChats() {
     this.dataArray = [];
-    getDocs(this.chatCollection)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.selectRelevantChats(doc);
-        });
-      })
-      .catch((error) => {
-        console.error('Fehler beim Abrufen der Nachrichten: ', error);
+    this.sortedChats = [];
+
+    try {
+      const querySnapshot = await getDocs(this.chatCollection);
+      querySnapshot.forEach((doc) => {
+        this.dataArray.push(doc.data());
       });
-    this.updateChatsInFirebase();
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Nachrichten: ', error);
+    }
   }
 
-  selectRelevantChats(doc) {
+  async selectRelevantChats() {
+    await this.getAllChats();
     this.selectedRecipient = localStorage.getItem('selected-recipient');
-    this.dataArray.push(doc.data());
     const relevantChat = this.dataArray.filter((chat) => {
-      return (chat.receiver.name === '@ ' + this.loggedUser.name &&
-        ('@ ' + chat.sender.name) === this.selectedRecipient) ||
+      return (
+        (chat.receiver.name === '@ ' + this.loggedUser.name &&
+          ('@ ' + chat.sender.name) === this.selectedRecipient) ||
         (chat.sender.name === this.loggedUser.name &&
-          chat.receiver.name === this.selectedRecipient);
+          chat.receiver.name === this.selectedRecipient)
+      );
     });
     const sortedChat = [...relevantChat].sort((a, b) => a.timeStamp - b.timeStamp);
+    await this.checkIfAlreadyHasTrue(sortedChat);
+  }
+
+  async checkIfAlreadyHasTrue(sortedChat) {
     sortedChat.forEach(element => {
-      element.receiver.read = true;
+      if (element.receiver.name === '@ ' + this.loggedUser.name && element.receiver.read !== true) {
+        element.receiver.read = true;
+        this.updateChatsInFirebase();
+      }
     });
   }
 
-  updateChatsInFirebase() {
-    const batch = writeBatch(this.firestore);
-    getDocs(this.chatCollection)
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-        this.dataArray.forEach(data => {
-          const newDocRef = doc(collection(this.firestore, 'chats'));
-          batch.set(newDocRef, data);
-        });
-        return batch.commit();
-      })
-      .then(() => {
-        console.log('Chats erfolgreich aktualisiert');
-      })
-      .catch(error => {
-        console.error('Fehler beim Aktualisieren der Daten: ', error);
+
+  isUpdating = false;
+
+  async updateChatsInFirebase() {
+    if (this.isUpdating) {
+      return;
+    }
+    console.log('testupdate');
+    try {
+      this.isUpdating = true;
+
+      const snapshot = await getDocs(this.chatCollection);
+
+      snapshot.forEach(async (doc) => {
+        const docRef = doc.ref;
+        await deleteDoc(docRef);
       });
+
+      const collectionRef = collection(this.firestore, 'chats');
+      await Promise.all(this.dataArray.map(async (data) => {
+        await addDoc(collectionRef, data);
+      }));
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der Daten: ', error);
+    } finally {
+      this.isUpdating = false;
+    }
   }
 
+
+
   calculateNewMessages() {
-    getDocs(this.chatCollection)
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log('testcalculat')
-        });
-      })
-      .catch((error) => {
-        console.error('Fehler beim Abrufen der Nachrichten: ', error);
+    this.newMessages$ = collectionData(this.chatCollection)
+    this.newMessages$.subscribe((chats) => {
+      this.newMessage = 0
+      chats.forEach(chat => {
+        if (chat.receiver.name === '@ ' + this.loggedUser.name && chat.receiver.read === false) {
+          this.newMessage++;
+        }
       });
+    });
   }
 
   addChannel() {
@@ -256,7 +278,6 @@ export class BoardSidebarComponent implements OnInit {
     }
   }
 
-
   loadChannels() {
     this.channel$ = collectionData(this.channelCollection);
     this.channel$.subscribe((channels: any[]) => {
@@ -337,7 +358,6 @@ export class BoardSidebarComponent implements OnInit {
   isUserInChannel(channel: any): boolean {
     return channel.members.some(member => member.name === this.loggedUser.name);
   }
-
 
   ngOnDestroy(): void {
     this.firebase.setLogoVisible(false);
