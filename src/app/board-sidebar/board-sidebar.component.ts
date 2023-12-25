@@ -82,7 +82,7 @@ export class BoardSidebarComponent implements OnInit {
     this.getUsers();
     this.getChannels();
     this.loadChannels();
-    this.calculateNewMessages();
+    // this.calculateNewMessages();
   }
 
   ngAfterViewInit() {
@@ -111,7 +111,7 @@ export class BoardSidebarComponent implements OnInit {
       .catch((error) => {
         console.error('Fehler beim Abrufen der Nachrichten: ', error);
       });
-    this.updateChatsInFirebase();
+    // this.updateChatsInFirebase();
   }
 
   selectRelevantChats(doc) {
