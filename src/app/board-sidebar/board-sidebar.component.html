@@ -77,10 +77,9 @@
               user.name}}
             </span>
             <div>
-              <span class="show-new-message">
-                {{ newMessage }}
+              <span *ngIf="newMessagesPerUser[i]?.number > 0" class="show-new-message">
+                {{ newMessagesPerUser[i]?.number }}
               </span>
-
 
             </div>
           </div>
