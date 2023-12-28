@@ -47,6 +47,7 @@ export class BoardSidebarComponent implements OnInit {
   addMembers: boolean = false;
   checkIfUserHasRead: boolean;
   shwoWrongText: boolean = false;
+  isUpdating = false;
   popupheadline: string;
   message: string;
   wrongText: string;
@@ -55,6 +56,7 @@ export class BoardSidebarComponent implements OnInit {
   channelChatsMessageLength: number;
   channelMembers: any[] = [];
   dataArray: any[] = [];
+  newMessagesPerUser = [];
   allChannels: any;
   allChats;
   sortedChats;
@@ -98,6 +100,7 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public OnAnotherEvent(selectedData): void {
+
     this.showChat(selectedData);
     this.anotherEvent.emit();
     this.selectRelevantChats();
@@ -141,9 +144,6 @@ export class BoardSidebarComponent implements OnInit {
     });
   }
 
-
-  isUpdating = false;
-
   async updateChatsInFirebase() {
     if (this.isUpdating) {
       return;
@@ -151,14 +151,11 @@ export class BoardSidebarComponent implements OnInit {
     console.log('testupdate');
     try {
       this.isUpdating = true;
-
       const snapshot = await getDocs(this.chatCollection);
-
       snapshot.forEach(async (doc) => {
         const docRef = doc.ref;
         await deleteDoc(docRef);
       });
-
       const collectionRef = collection(this.firestore, 'chats');
       await Promise.all(this.dataArray.map(async (data) => {
         await addDoc(collectionRef, data);
@@ -170,15 +167,16 @@ export class BoardSidebarComponent implements OnInit {
     }
   }
 
-
-
   calculateNewMessages() {
-    this.newMessages$ = collectionData(this.chatCollection)
+    this.newMessages$ = collectionData(this.chatCollection);
     this.newMessages$.subscribe((chats) => {
-      this.newMessage = 0
+      this.newMessagesPerUser = [];
+      this.newMessagesPerUser = this.users.map(user => ({ name: user.name, number: 0 }));
       chats.forEach(chat => {
-        if (chat.receiver.name === '@ ' + this.loggedUser.name && chat.receiver.read === false) {
-          this.newMessage++;
+        const username = chat.sender.name;
+        const userIndex = this.newMessagesPerUser.findIndex(user => user.name === username);
+        if (userIndex !== -1 && !chat.receiver.read) {
+          this.newMessagesPerUser[userIndex].number++;
         }
       });
     });
