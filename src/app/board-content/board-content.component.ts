@@ -576,7 +576,7 @@ export class BoardContentComponent implements OnInit {
       const newEmojis = this.emojis.slice(startIndex, this.endIndex);
       this.displayedEmojis = this.displayedEmojis.concat(newEmojis);
     }
-    event.stopPropagation();
+    // event.stopPropagation();
   }
 
   isToday(timestamp: number): boolean {

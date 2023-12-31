@@ -179,6 +179,7 @@ export class BoardSidebarComponent implements OnInit {
           this.newMessagesPerUser[userIndex].number++;
         }
       });
+      console.log(this.newMessagesPerUser)
     });
   }
 
