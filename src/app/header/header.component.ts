@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
     signOut(auth).then(() => {
       onAuthStateChanged(auth, (user) => {
         if (!user) {
-          this.router.navigate(['login']);
+          this.router.navigate(['/login']);
           localStorage.removeItem('userData');
           localStorage.removeItem('selected-recipient');
           localStorage.removeItem('channel');
