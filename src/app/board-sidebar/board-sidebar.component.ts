@@ -174,12 +174,12 @@ export class BoardSidebarComponent implements OnInit {
       this.newMessagesPerUser = this.users.map(user => ({ name: user.name, number: 0 }));
       chats.forEach(chat => {
         const username = chat.sender.name;
+        const loggedUser = '@ ' + this.loggedUser.name;
         const userIndex = this.newMessagesPerUser.findIndex(user => user.name === username);
-        if (userIndex !== -1 && !chat.receiver.read && username != this.loggedUser.name) {
+        if (userIndex !== -1 && !chat.receiver.read && chat.receiver.name == loggedUser && username != this.loggedUser.name) {
           this.newMessagesPerUser[userIndex].number++;
         }
       });
-      console.log(this.newMessagesPerUser);
     });
   }
 

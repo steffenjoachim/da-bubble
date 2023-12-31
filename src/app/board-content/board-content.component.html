@@ -187,7 +187,7 @@
           <img class="avatar" src={{chat.avatar}}>
           <div>
             <div id="chat-icon-frame{{i}}">
-              <mat-icon *ngIf="loggedUser.name == chat.sender" class="mat-icons" fontIcon="delete"
+              <mat-icon *ngIf="loggedUser.name == chat.sender.name" class="mat-icons" fontIcon="delete"
                 (click)="deleteChat(chat)"></mat-icon>
               <mat-icon (click)="openShowReaction(i)" class="mat-icons" fontIcon="sentiment_satisfied"></mat-icon>
             </div>

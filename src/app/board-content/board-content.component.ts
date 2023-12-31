@@ -238,7 +238,8 @@ export class BoardContentComponent implements OnInit {
           const updatedChatsArray = chatsArray.filter(chat => chat.id !== chatToRemove.id);
           await setDoc(channelDocRef, { chats: updatedChatsArray }, { merge: true });
         }
-      }
+      } 
+    } else {
       await deleteDoc(doc(this.chatCollection, selectedChat.id));
       return
     }
