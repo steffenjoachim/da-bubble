@@ -526,7 +526,17 @@
   position: relative;
 }
 
+.chat-icon-frame2{
+  visibility: hidden;
+}
 
+@media (max-height: 850px) {
+
+  .message-container{
+    bottom: 0;
+  }
+  
+}
 
 @media (max-height: 800px) {
   .message-frame {

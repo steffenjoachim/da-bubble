@@ -47,6 +47,7 @@ export class ChatService {
   }
 
   postChat(message, sender, recipient) {
+    if (message.trim() !== '') {
     const chatDate = new Date();
     const timeStamp = Timestamp.fromDate(chatDate)
     this.chats.timeStamp = timeStamp.seconds;
@@ -56,6 +57,7 @@ export class ChatService {
     this.chats.avatar = sender.avatar
     this.chats.sender.read = true;
     addDoc(this.chatCollection, this.chats);
+    }
   }
 
   async postReaction(reaction, chat) {
