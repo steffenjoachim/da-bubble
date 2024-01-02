@@ -4,9 +4,9 @@
   font-family: Nunito, sans-serif;
 }
 
-.side-bar {
+.sidebar {
   width: 25%;
-  height: 90vh;
+  height: 86vh;
   background: white;
   border-radius: 25px;
   margin-left: 16px;
@@ -329,5 +329,12 @@
   cursor: pointer;
   &:hover {
     opacity: 0.8;
+  }
+}
+
+@media (max-height: 850px) {
+
+  .sidebar {
+    height: 82vh;
   }
 }

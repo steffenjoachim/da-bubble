@@ -248,7 +248,9 @@ export class BoardContentComponent implements OnInit {
 
   setSelectedRecipient() {
     const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
-    chatField.placeholder = 'Nachricht an ' + this.channel;
+    if (chatField) {
+      chatField.placeholder = 'Nachricht an ' + this.channel;
+    }
   }
 
   postChat() {
@@ -389,6 +391,14 @@ export class BoardContentComponent implements OnInit {
 
   hideChatIcons(i: number) {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
+  }
+
+  showChatIcons2(i: number) {
+    document.getElementById(`chat-icon-frame2${i}`).style.visibility = 'visible';
+  }
+
+  hideChatIcons2(i: number) {
+    document.getElementById(`chat-icon-frame2${i}`).style.visibility = 'hidden';
   }
 
   emojiSelectedReactionChat(emoji, chat) {
