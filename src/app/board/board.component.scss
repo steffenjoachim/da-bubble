@@ -6,7 +6,7 @@
 
 .sidebar {
   width: 25%;
-  height: 86vh;
+  height: 87vh;
   background: white;
   border-radius: 25px;
   margin-left: 16px;
@@ -242,26 +242,25 @@
 }
 
 .content-frame {
-    padding: 0 32px;
-    height: 560px; /* Hier sollte die Höhe definiert sein, damit der Inhalt scrollbar wird */
-    overflow-y: scroll;
-    /* Die folgenden CSS-Stile sind für die Scrollleiste */
-    scrollbar-width: thin; /* Für Firefox */
-    scrollbar-color: rgb(68, 77, 242) transparent; /* Für Firefox */
-  }
-  
-  .content-frame::-webkit-scrollbar {
-    width: 8px;
-    background-color: transparent; /* Hintergrundfarbe der Scrollleiste */
-  }
-  
-  .content-frame::-webkit-scrollbar-thumb {
-    background-color: rgb(68, 77, 242); /* Farbe des Scrollbalken-Thumb */
-    border-radius: 5px; /* Abrundung des Scrollbalken-Thumb */
-  }
-  
-.thread-frame{ 
-    width: 25%;
+  padding: 0 32px;
+  height: 560px;
+  overflow-y: scroll;
+  scrollbar-width: thin; /* Für Firefox */
+  scrollbar-color: rgb(68, 77, 242) transparent;
+}
+
+.content-frame::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+}
+
+.content-frame::-webkit-scrollbar-thumb {
+  background-color: rgb(68, 77, 242);
+  border-radius: 5px;
+}
+
+.thread-frame {
+  width: 25%;
 }
 
 .close-workshop-menu {
@@ -336,5 +335,11 @@
 
   .sidebar {
     height: 82vh;
+  }
+}
+@media (min-height: 1200px) {
+
+  .sidebar {
+    height: 90vh;
   }
 }
