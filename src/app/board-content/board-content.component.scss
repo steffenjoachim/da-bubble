@@ -548,3 +548,12 @@
     height:50vh;
   }
 }
+
+@media (max-width: 1060px) {
+
+  .recieved-message, .sent-message {
+    min-width: 125px;
+    width: max-content;
+  }
+  
+}
