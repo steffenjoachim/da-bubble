@@ -1,13 +1,43 @@
 import { user } from '@angular/fire/auth';
-import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  Output,
+  EventEmitter,
+  Input,
+} from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Firestore, collection, collectionData, Timestamp, deleteDoc, doc, getDoc, updateDoc, setDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  Timestamp,
+  deleteDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
-import { Observable, map, BehaviorSubject, of, take, filter, mergeMap } from 'rxjs';
+import {
+  Observable,
+  map,
+  BehaviorSubject,
+  of,
+  take,
+  filter,
+  mergeMap,
+} from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
 import { DialogAddMembersComponent } from '../dialog-add-members/dialog-add-members.component';
 import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { BoardThreadComponent } from '../board-thread/board-thread.component';
 import { DialogChannelInfoComponent } from '../dialog-channel-info/dialog-channel-info.component';
 import { DialogShowEmojisComponent } from '../dialog-show-emojis/dialog-show-emojis.component';
@@ -17,20 +47,20 @@ import { Emojis } from '../emojis';
 @Component({
   selector: 'app-board-content',
   templateUrl: './board-content.component.html',
-  styleUrls: ['./board-content.component.scss']
+  styleUrls: ['./board-content.component.scss'],
 })
 export class BoardContentComponent implements OnInit {
   @Output() contentClicked = new EventEmitter<string>();
   @ViewChild('boardThread', { static: true }) boardThread: BoardThreadComponent;
 
-  @Input() chat: any
+  @Input() chat: any;
   @ViewChild('recieved') recievedElement: ElementRef;
 
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
-    name: 'Gast'
-  }
+    name: 'Gast',
+  };
 
   reaction: any = {
     counter: 1,
@@ -38,24 +68,24 @@ export class BoardContentComponent implements OnInit {
     userReaction: [
       {
         sender: '',
-        timeStamp: 0
-      }
-    ]
-  }
+        timeStamp: 0,
+      },
+    ],
+  };
 
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
   channelCollection: any = collection(this.firestore, 'channels');
   users: any[] = [];
-  chatsChannel$ !: Observable<any>;
-  chats$ !: Observable<any>;
+  chatsChannel$!: Observable<any>;
+  chats$!: Observable<any>;
   channelMembers$: Observable<any>;
   filteredChannelMembers$: Observable<any[]>;
   membersOfSelectedChannel$: Observable<any>;
   emojis$: Observable<any>;
   emojis: string[] = Emojis;
-  channel;//localStorage
-  showChannelChat: boolean = false
+  channel; //localStorage
+  showChannelChat: boolean = false;
   showChat: boolean = false;
   emojisContainerVisible: boolean = false;
   emojisReactionContainerVisible: boolean = false;
@@ -82,7 +112,7 @@ export class BoardContentComponent implements OnInit {
   prevChat: any;
   private chatCount = 0;
   // public selectedChannelChat: any = null;
-  channelAdmin: string
+  channelAdmin: string;
   displayedEmojis: string[] = [];
   reactionSender: string[] = [];
 
@@ -91,7 +121,8 @@ export class BoardContentComponent implements OnInit {
     private firebase: FirebaseService,
     private chatService: ChatService,
     private channelService: ChannelService,
-    private dialog: MatDialog,) {
+    private dialog: MatDialog
+  ) {
     this.loadMoreEmojis();
     this.directMessageDates = [];
   }
@@ -105,7 +136,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   generateUniqueId(length: number): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let uniqueId = '';
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
@@ -115,24 +147,27 @@ export class BoardContentComponent implements OnInit {
   }
 
   async getMembers() {
-    this.channelMembers$ = collectionData(this.channelCollection, { idField: 'id' });
-    if(this.channel == undefined) {
-      this.channel = '# Entwicklerteam'
+    this.channelMembers$ = collectionData(this.channelCollection, {
+      idField: 'id',
+    });
+    if (this.channel == undefined) {
+      this.channel = '# Entwicklerteam';
     }
     this.filteredChannelMembers$ = this.channelMembers$.pipe(
-      map(channels => channels.filter(channel => '# ' + channel.name == this.channel))
+      map((channels) =>
+        channels.filter((channel) => '# ' + channel.name == this.channel)
+      )
     );
-    this.filteredChannelMembers$.subscribe(data => {
-      this.length = data[0].members.length
+    this.filteredChannelMembers$.subscribe((data) => {
+      this.length = data[0].members.length;
     });
-    return
+    return;
   }
 
   openDialogAddMembers() {
     const dialogConfig = new MatDialogConfig();
     const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   openDialogShowEmojis() {
@@ -188,7 +223,12 @@ export class BoardContentComponent implements OnInit {
     if (index == 0) {
       const chatDate = new Date(chat.chats[index].timeStamp * 1000);
       return chatDate;
-    } else if (index > 0 && chat.chats && chat.chats[index] && chat.chats[index - 1]) {
+    } else if (
+      index > 0 &&
+      chat.chats &&
+      chat.chats[index] &&
+      chat.chats[index - 1]
+    ) {
       const chatDate = new Date(chat.chats[index].timeStamp * 1000);
       const prevChatDate = new Date(chat.chats[index - 1].timeStamp * 1000);
       const differentDate =
@@ -214,12 +254,20 @@ export class BoardContentComponent implements OnInit {
     } else {
       const day = chatDate.getDate();
       const monthNames = [
-        'Jan', 'Feb', 'März', 'Apr', 'Mai', 'Jun',
-        'Jul', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez'
+        'Jan',
+        'Feb',
+        'März',
+        'Apr',
+        'Mai',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sept',
+        'Okt',
+        'Nov',
+        'Dez',
       ];
-      const dayNames = [
-        'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'
-      ];
+      const dayNames = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
       const month = monthNames[chatDate.getMonth()];
       const dayName = dayNames[chatDate.getDay()];
       return `${dayName}, ${day} ${month}`;
@@ -235,29 +283,37 @@ export class BoardContentComponent implements OnInit {
       if (channelDocSnapshot.exists()) {
         const chatsArray = channelDocSnapshot.data()['chats'];
         if (chatsArray) {
-          const updatedChatsArray = chatsArray.filter(chat => chat.id !== chatToRemove.id);
-          await setDoc(channelDocRef, { chats: updatedChatsArray }, { merge: true });
+          const updatedChatsArray = chatsArray.filter(
+            (chat) => chat.id !== chatToRemove.id
+          );
+          await setDoc(
+            channelDocRef,
+            { chats: updatedChatsArray },
+            { merge: true }
+          );
         }
-      } 
+      }
     } else {
       await deleteDoc(doc(this.chatCollection, selectedChat.id));
-      return
+      return;
     }
     document.getElementById('thread')?.classList.add('d-none');
   }
 
   setSelectedRecipient() {
-    const chatField = document.getElementById('textarea') as HTMLTextAreaElement;
+    const chatField = document.getElementById(
+      'textarea'
+    ) as HTMLTextAreaElement;
     if (chatField) {
       chatField.placeholder = 'Nachricht an ' + this.channel;
     }
   }
 
   postChat() {
-    const channel = localStorage.getItem('channel')
+    const channel = localStorage.getItem('channel');
     const recipient = localStorage.getItem('selected-recipient');
     if (channel == recipient) {
-      this.channelService.postChat(this.message, this.selectedChannel)
+      this.channelService.postChat(this.message, this.selectedChannel);
     } else {
       this.chatService.postChat(this.message, this.loggedUser, recipient);
     }
@@ -265,7 +321,9 @@ export class BoardContentComponent implements OnInit {
   }
 
   getUsers() {
-    const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
+    const usersObservable = collectionData(this.usersCollection, {
+      idField: 'id',
+    });
     usersObservable.subscribe((usersArray) => {
       this.users = usersArray;
     });
@@ -285,13 +343,13 @@ export class BoardContentComponent implements OnInit {
   }
 
   startChat() {
-    this.getChats()
+    this.getChats();
   }
 
   async showFunction(channel) {
-    this.selectedChannel = channel
-    await this.getChannelChats()
-    return
+    this.selectedChannel = channel;
+    await this.getChannelChats();
+    return;
   }
 
   getChats() {
@@ -300,19 +358,29 @@ export class BoardContentComponent implements OnInit {
     this.chat = localStorage.getItem('selected-recipient');
     this.chats$ = collectionData(this.chatCollection, { idField: 'id' });
     this.chats$ = this.chats$.pipe(
-      map(chats => chats.filter(chat => (chat.sender.name == this.loggedUser.name && chat.receiver.name == this.chat) || (chat.receiver.name == '@ ' + this.loggedUser.name && '@ ' + chat.sender.name == this.chat))),
-      map(chats => chats.sort((a, b) => a.timeStamp - b.timeStamp))
+      map((chats) =>
+        chats.filter(
+          (chat) =>
+            (chat.sender.name == this.loggedUser.name &&
+              chat.receiver.name == this.chat) ||
+            (chat.receiver.name == '@ ' + this.loggedUser.name &&
+              '@ ' + chat.sender.name == this.chat)
+        )
+      ),
+      map((chats) => chats.sort((a, b) => a.timeStamp - b.timeStamp))
     );
     this.chats$.subscribe(() => {
       setTimeout(() => {
-        this.scrollToBottom()
+        this.scrollToBottom();
       }, 200);
     });
   }
 
   getFirstChannelIndexForUser(chats: any[]): number | null {
     for (let i = 0; i < chats.length; i++) {
-      const isUserMember = chats[i].members.some(member => member.name === this.loggedUser.name);
+      const isUserMember = chats[i].members.some(
+        (member) => member.name === this.loggedUser.name
+      );
       if (isUserMember) {
         return i;
       }
@@ -323,12 +391,12 @@ export class BoardContentComponent implements OnInit {
   async showNotification() {
     await Notification.requestPermission().then((premission) => {
       if (premission !== 'granted') {
-        return
+        return;
       }
       const notifications = new Notification('Neue Nachricht', {
-        body: 'Neue Nachricht'
-      })
-    })
+        body: 'Neue Nachricht',
+      });
+    });
   }
 
   async getChannelChats() {
@@ -338,7 +406,9 @@ export class BoardContentComponent implements OnInit {
     this.showChat = false;
     this.showChannelChat = true;
     this.channel = localStorage.getItem('channel');
-    this.chatsChannel$ = collectionData(this.channelCollection, { idField: 'id' });
+    this.chatsChannel$ = collectionData(this.channelCollection, {
+      idField: 'id',
+    });
     await new Promise<void>((resolve) => {
       this.chatsChannel$.subscribe((chats) => {
         const firstUserChannelIndex = this.getFirstChannelIndexForUser(chats);
@@ -367,13 +437,14 @@ export class BoardContentComponent implements OnInit {
     await this.showNotification();
   }
 
-
   async selectChannel(chats, selectedChannel) {
     localStorage.setItem('channel', selectedChannel);
     this.selectedRecipient = selectedChannel;
     await new Promise<void>((resolve) => {
       this.chatsChannel$ = this.chatsChannel$.pipe(
-        map(chats => chats.filter(chat => '# ' + chat.name == selectedChannel)),
+        map((chats) =>
+          chats.filter((chat) => '# ' + chat.name == selectedChannel)
+        )
       );
       this.chatsChannel$.subscribe((chats) => {
         this.channelAdmin = chats[0].admin;
@@ -382,7 +453,7 @@ export class BoardContentComponent implements OnInit {
         resolve();
       });
     });
-    return
+    return;
   }
 
   showChatIcons(i: number) {
@@ -394,7 +465,8 @@ export class BoardContentComponent implements OnInit {
   }
 
   showChatIcons2(i: number) {
-    document.getElementById(`chat-icon-frame2${i}`).style.visibility = 'visible';
+    document.getElementById(`chat-icon-frame2${i}`).style.visibility =
+      'visible';
   }
 
   hideChatIcons2(i: number) {
@@ -413,36 +485,49 @@ export class BoardContentComponent implements OnInit {
     const selectedUserReaction = this.loggedUser.name;
     this.emojis$ = collectionData(this.chatCollection, { idField: 'id' });
     this.emojis$ = this.emojis$.pipe(
-      map(emojis => emojis.map(chat => {
-        if (!chat.reactions || chat.reactions.length === 0) {
-          return null;
-        }
-        const matchingReactions = chat.reactions.filter(reaction => reaction.emoji === emoji);
-        if (matchingReactions.length === 0 || chat.message !== messageToFind.message) {
-          return null;
-        }
-        matchingReactions.forEach(reaction => {
-          const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
-          if (userReactionIndex !== -1) {
-            reaction.counter -= 1;
-            reaction.userReaction.splice(userReactionIndex, 1);
-          }
-          else {
-            reaction.counter += 1;
-            reaction.userReaction.push({
-              sender: selectedUserReaction,
-              timeStamp: new Date().getTime()
+      map((emojis) =>
+        emojis
+          .map((chat) => {
+            if (!chat.reactions || chat.reactions.length === 0) {
+              return null;
+            }
+            const matchingReactions = chat.reactions.filter(
+              (reaction) => reaction.emoji === emoji
+            );
+            if (
+              matchingReactions.length === 0 ||
+              chat.message !== messageToFind.message
+            ) {
+              return null;
+            }
+            matchingReactions.forEach((reaction) => {
+              const userReactionIndex = reaction.userReaction.findIndex(
+                (reactionItem) => reactionItem.sender === selectedUserReaction
+              );
+              if (userReactionIndex !== -1) {
+                reaction.counter -= 1;
+                reaction.userReaction.splice(userReactionIndex, 1);
+              } else {
+                reaction.counter += 1;
+                reaction.userReaction.push({
+                  sender: selectedUserReaction,
+                  timeStamp: new Date().getTime(),
+                });
+              }
             });
-          }
-        });
-        return chat;
-      }).filter(chat => chat !== null))
+            return chat;
+          })
+          .filter((chat) => chat !== null)
+      )
     );
-    this.emojis$.pipe(take(1)).subscribe(filteredReactions => {
+    this.emojis$.pipe(take(1)).subscribe((filteredReactions) => {
       if (filteredReactions.length > 0) {
-        this.updateReactionsInFirebase(filteredReactions[0].id, filteredReactions[0].reactions);
+        this.updateReactionsInFirebase(
+          filteredReactions[0].id,
+          filteredReactions[0].reactions
+        );
       } else {
-        this.emojiSelectedReactionChat(emoji, messageToFind)
+        this.emojiSelectedReactionChat(emoji, messageToFind);
       }
     });
   }
@@ -458,46 +543,63 @@ export class BoardContentComponent implements OnInit {
     const subscription = this.emojis$
       .pipe(
         take(1),
-        mergeMap(emojis => {
-          const filteredChannel = emojis.find(channel => channel.id === channelId);
+        mergeMap((emojis) => {
+          const filteredChannel = emojis.find(
+            (channel) => channel.id === channelId
+          );
           if (!filteredChannel) {
             return of(null);
           }
-          const filteredMessage = filteredChannel.chats.find(message => message.id === messageToFind.id);
-          if (!filteredMessage || !filteredMessage.reactions || filteredMessage.reactions.length === 0) {
+          const filteredMessage = filteredChannel.chats.find(
+            (message) => message.id === messageToFind.id
+          );
+          if (
+            !filteredMessage ||
+            !filteredMessage.reactions ||
+            filteredMessage.reactions.length === 0
+          ) {
             this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
             return of(null);
           }
-          const matchingReactions = filteredMessage.reactions.filter(reaction => reaction.emoji === emoji);
+          const matchingReactions = filteredMessage.reactions.filter(
+            (reaction) => reaction.emoji === emoji
+          );
           if (matchingReactions.length === 0) {
             this.emojiSelectedReactionChannel(emoji, messageToFind, channelId);
             return of(null);
           }
-          matchingReactions.forEach(reaction => {
-            const userReactionIndex = reaction.userReaction.findIndex(reactionItem => reactionItem.sender === selectedUserReaction);
-            const reactionIndex = filteredMessage.reactions.findIndex(reactionItem => reactionItem.emoji === emoji);
+          matchingReactions.forEach((reaction) => {
+            const userReactionIndex = reaction.userReaction.findIndex(
+              (reactionItem) => reactionItem.sender === selectedUserReaction
+            );
+            const reactionIndex = filteredMessage.reactions.findIndex(
+              (reactionItem) => reactionItem.emoji === emoji
+            );
 
             if (userReactionIndex !== -1) {
               reaction.counter -= 1;
               if (reaction.counter == 0) {
-                filteredMessage.reactions.splice(reactionIndex, 1)
+                filteredMessage.reactions.splice(reactionIndex, 1);
               }
               reaction.userReaction.splice(userReactionIndex, 1);
             } else {
               reaction.counter += 1;
               reaction.userReaction.push({
                 sender: selectedUserReaction,
-                timeStamp: new Date().getTime()
+                timeStamp: new Date().getTime(),
               });
             }
           });
           return of(filteredChannel);
         }),
-        filter(chat => chat !== null)
+        filter((chat) => chat !== null)
       )
-      .subscribe(filteredReactions => {
+      .subscribe((filteredReactions) => {
         if (filteredReactions !== null) {
-          this.updateChannelReactionsInFirebase(filteredReactions.id, filteredReactions.chats);
+          this.updateChannelReactionsInFirebase(
+            filteredReactions.id,
+            filteredReactions.chats
+          );
           subscription.unsubscribe();
         }
       });
@@ -530,35 +632,39 @@ export class BoardContentComponent implements OnInit {
   openThread(chat: any) {
     const data = {
       chat: chat,
-      selectedChannel: this.selectedChannel
-    }
+      selectedChannel: this.selectedChannel,
+    };
     if (!this.selectedChannel) {
-      data.selectedChannel = this.selectedChannel
+      data.selectedChannel = this.selectedChannel;
     }
     this.contentClicked.emit(JSON.stringify(data));
     document.getElementById('thread')?.classList.remove('d-none');
-    event.stopPropagation()
+    event.stopPropagation();
   }
 
   openDialogchannelInfo() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-    }
-    const dialogRef = this.dialog.open(DialogChannelInfoComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(
+      DialogChannelInfoComponent,
+      dialogConfig
+    );
+    dialogRef.afterClosed().subscribe((result) => {});
   }
-
 
   openShowReaction(i) {
     this.closeShowReaction(this.showReactionOpendedIndex);
     this.showReactionOpendedIndex = i;
     this.displayedEmojis = [];
     if (this.displayedEmojis.length === 0) {
-      this.loadMoreEmojis()
+      this.loadMoreEmojis();
     }
-    const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
-    const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
+    const emojiContainerChat = document.getElementById(
+      `emojis-container-chat${i}`
+    );
+    const emojiContainerChannel = document.getElementById(
+      `emojis-container-channel${i}`
+    );
     if (emojiContainerChat) {
       emojiContainerChat.style.visibility = 'visible';
     }
@@ -568,8 +674,12 @@ export class BoardContentComponent implements OnInit {
   }
 
   closeShowReaction(i) {
-    const emojiContainerChat = document.getElementById(`emojis-container-chat${i}`);
-    const emojiContainerChannel = document.getElementById(`emojis-container-channel${i}`);
+    const emojiContainerChat = document.getElementById(
+      `emojis-container-chat${i}`
+    );
+    const emojiContainerChannel = document.getElementById(
+      `emojis-container-channel${i}`
+    );
     if (emojiContainerChat) {
       emojiContainerChat.style.visibility = 'hidden';
     }
@@ -613,7 +723,11 @@ export class BoardContentComponent implements OnInit {
 
   showWhoReacted(emoji, channelChats, chatId, i, j) {
     this.reactionSender = [];
-    for (let index = 0; index < channelChats.reactions[j].userReaction.length; index++) {
+    for (
+      let index = 0;
+      index < channelChats.reactions[j].userReaction.length;
+      index++
+    ) {
       const sender = channelChats.reactions[j];
       if (sender.emoji == emoji) {
         this.selectedReaction = sender;
@@ -626,6 +740,4 @@ export class BoardContentComponent implements OnInit {
   hideWhoReacted(i) {
     this.hoveredIndex = -1;
   }
-
 }
-
