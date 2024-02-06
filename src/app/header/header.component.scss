@@ -235,3 +235,20 @@ scroll-behavior: smooth;
     font-size: 28px;
   }
 }
+
+
+@media (max-width: 1200px) {
+
+  .search-frame {
+
+  width: 40%;
+  }
+
+  .user-frame {
+    width: 40%;
+    justify-content: flex-end;
+  }
+  
+  
+}
+

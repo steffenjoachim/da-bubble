@@ -548,3 +548,18 @@
     height:79vh;
   }
 }
+
+@media (max-width: 1060px) {
+
+  .recieved-message, .sent-message {
+    width: max-content;
+    .message-channel-frame{
+      max-width: 40%;
+    }
+  }
+
+  .content-frame {
+    overflow-x: hidden;
+  }
+  
+}
