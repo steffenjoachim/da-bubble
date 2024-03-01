@@ -1,7 +1,32 @@
 import { get } from '@angular/fire/database';
-import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { DocumentData, Firestore, QuerySnapshot, Timestamp, addDoc, collection, collectionData, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where, writeBatch } from '@angular/fire/firestore';
+import {
+  DocumentData,
+  Firestore,
+  QuerySnapshot,
+  Timestamp,
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+  writeBatch,
+} from '@angular/fire/firestore';
 import { ChatService } from '../services/chats/chat.service';
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import { ChannelService } from '../services/channels/channel.service';
@@ -11,7 +36,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 @Component({
   selector: 'app-board-sidebar',
   templateUrl: './board-sidebar.component.html',
-  styleUrls: ['./board-sidebar.component.scss']
+  styleUrls: ['./board-sidebar.component.scss'],
 })
 export class BoardSidebarComponent implements OnInit {
   @Output() sidebarLinkClicked: EventEmitter<void> = new EventEmitter<void>();
@@ -20,26 +45,26 @@ export class BoardSidebarComponent implements OnInit {
   open: boolean = true;
   loggedUser: any = {
     avatar: './assets/img/Profile.png',
-    name: 'Gast'
-  }
+    name: 'Gast',
+  };
 
   channelsData: any = {
     admin: '',
     members: [],
     name: '',
     description: '',
-    chats: []
-  }
+    chats: [],
+  };
 
   channelName: any;
   channelDescription: string;
   chatCollection: any = collection(this.firestore, 'chats');
   usersCollection: any = collection(this.firestore, 'users');
-  channelCollection: any = collection(this.channels, 'channels')
+  channelCollection: any = collection(this.channels, 'channels');
   users: any[] = [];
   allUsers: any[] = [];
   channel$: Observable<any>;
-  chats$ !: Observable<any>;
+  chats$!: Observable<any>;
   userReadLastMessage$: Observable<any>;
   members: any;
   addChannelPopup: boolean = false;
@@ -75,12 +100,12 @@ export class BoardSidebarComponent implements OnInit {
     private chats: ChatService,
     private channelChat: ChannelService,
     private channels: Firestore,
-    private dialog: MatDialog) {
-  }
+    private dialog: MatDialog
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.channel = localStorage.getItem('channel')
-    this.selectedRecipient = localStorage.getItem('selected-recipient')
+    this.channel = localStorage.getItem('channel');
+    this.selectedRecipient = localStorage.getItem('selected-recipient');
     this.firebase.setLogoVisible(true);
     this.loadLoggedUserData();
     this.getUsers();
@@ -100,7 +125,6 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   public OnAnotherEvent(selectedData): void {
-
     this.showChat(selectedData);
     this.anotherEvent.emit();
     this.selectRelevantChats();
@@ -126,18 +150,23 @@ export class BoardSidebarComponent implements OnInit {
     const relevantChat = this.dataArray.filter((chat) => {
       return (
         (chat.receiver.name === '@ ' + this.loggedUser.name &&
-          ('@ ' + chat.sender.name) === this.selectedRecipient) ||
+          '@ ' + chat.sender.name === this.selectedRecipient) ||
         (chat.sender.name === this.loggedUser.name &&
           chat.receiver.name === this.selectedRecipient)
       );
     });
-    const sortedChat = [...relevantChat].sort((a, b) => a.timeStamp - b.timeStamp);
+    const sortedChat = [...relevantChat].sort(
+      (a, b) => a.timeStamp - b.timeStamp
+    );
     await this.checkIfAlreadyHasTrue(sortedChat);
   }
 
   async checkIfAlreadyHasTrue(sortedChat) {
-    sortedChat.forEach(element => {
-      if (element.receiver.name === '@ ' + this.loggedUser.name && element.receiver.read !== true) {
+    sortedChat.forEach((element) => {
+      if (
+        element.receiver.name === '@ ' + this.loggedUser.name &&
+        element.receiver.read !== true
+      ) {
         element.receiver.read = true;
         this.updateChatsInFirebase();
       }
@@ -157,9 +186,11 @@ export class BoardSidebarComponent implements OnInit {
         await deleteDoc(docRef);
       });
       const collectionRef = collection(this.firestore, 'chats');
-      await Promise.all(this.dataArray.map(async (data) => {
-        await addDoc(collectionRef, data);
-      }));
+      await Promise.all(
+        this.dataArray.map(async (data) => {
+          await addDoc(collectionRef, data);
+        })
+      );
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten: ', error);
     } finally {
@@ -171,12 +202,22 @@ export class BoardSidebarComponent implements OnInit {
     this.newMessages$ = collectionData(this.chatCollection);
     this.newMessages$.subscribe((chats) => {
       this.newMessagesPerUser = [];
-      this.newMessagesPerUser = this.users.map(user => ({ name: user.name, number: 0 }));
-      chats.forEach(chat => {
+      this.newMessagesPerUser = this.users.map((user) => ({
+        name: user.name,
+        number: 0,
+      }));
+      chats.forEach((chat) => {
         const username = chat.sender.name;
         const loggedUser = '@ ' + this.loggedUser.name;
-        const userIndex = this.newMessagesPerUser.findIndex(user => user.name === username);
-        if (userIndex !== -1 && !chat.receiver.read && chat.receiver.name == loggedUser && username != this.loggedUser.name) {
+        const userIndex = this.newMessagesPerUser.findIndex(
+          (user) => user.name === username
+        );
+        if (
+          userIndex !== -1 &&
+          !chat.receiver.read &&
+          chat.receiver.name == loggedUser &&
+          username != this.loggedUser.name
+        ) {
           this.newMessagesPerUser[userIndex].number++;
         }
       });
@@ -184,16 +225,16 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   addChannel() {
-    this.channelsData.name = this.channelName
-    this.channelsData.admin = this.loggedUser.name
-    this.channelsData.description = this.channelDescription
-    this.chooseMember()
+    this.channelsData.name = this.channelName;
+    this.channelsData.admin = this.loggedUser.name;
+    this.channelsData.description = this.channelDescription;
+    this.chooseMember();
   }
 
   chooseMember() {
-    this.popupContainer = false
-    this.addMembers = true
-    this.popupheadline = 'Leute hinzufügen'
+    this.popupContainer = false;
+    this.addMembers = true;
+    this.popupheadline = 'Leute hinzufügen';
   }
 
   pushAllMembers() {
@@ -210,34 +251,32 @@ export class BoardSidebarComponent implements OnInit {
       this.addChannelToFirebase();
     } else if (this.isSelectChecked) {
       this.addChannelToFirebase();
-    }
-    else {
+    } else {
       this.shwoWrongText = true;
-      this.wrongText = 'Bitte ein Checkbox auswählen'
+      this.wrongText = 'Bitte ein Checkbox auswählen';
     }
   }
 
   addChannelToFirebase() {
     if (this.channelsData.members.length > 0) {
-      addDoc(this.channelCollection, this.channelsData)
+      addDoc(this.channelCollection, this.channelsData);
       this.shwoWrongText = false;
       this.addChannelPopup = false;
       this.popupContainer = false;
       this.addMembers = false;
       this.clearChannelsData();
       this.closeAddChannelPopup();
-    }
-    else {
+    } else {
       this.shwoWrongText = true;
-      this.wrongText = 'Bitte mindestens einen Mitglied auswählen'
+      this.wrongText = 'Bitte mindestens einen Mitglied auswählen';
     }
     this.isSelectChecked = false;
     this.isAllChecked = false;
   }
 
   openAddChanelPopup() {
-    this.addChannelPopup = true
-    this.popupheadline = 'Channel erstellen'
+    this.addChannelPopup = true;
+    this.popupheadline = 'Channel erstellen';
   }
 
   closeAddChannelPopup() {
@@ -249,7 +288,9 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   closeChannelCreate(event: Event) {
-    const isInsidePopup = (event.target as HTMLElement).closest('.popup-container');
+    const isInsidePopup = (event.target as HTMLElement).closest(
+      '.popup-container'
+    );
     if (isInsidePopup) {
       return;
     }
@@ -263,16 +304,18 @@ export class BoardSidebarComponent implements OnInit {
 
     if (chatsSnapshot.exists()) {
       const chatsData = chatsSnapshot.data();
-      const updatedChats = chatsData['chats'].map(chat => {
+      const updatedChats = chatsData['chats'].map((chat) => {
         const notifications = chat.notification || [];
-        const userAlreadyExists = notifications.some(notification => notification.name === userRead.name);
+        const userAlreadyExists = notifications.some(
+          (notification) => notification.name === userRead.name
+        );
         if (!userAlreadyExists) {
           notifications.push(userRead);
         }
         return { ...chat, notification: notifications };
       });
       await updateDoc(chatsRef, {
-        chats: updatedChats
+        chats: updatedChats,
       });
     }
   }
@@ -287,23 +330,40 @@ export class BoardSidebarComponent implements OnInit {
   }
 
   messageBeenRead(index) {
-    collectionData(this.channelCollection).pipe(
-      map(channel => {
-        const lastChatIndex = channel[index]['chats'].length - 1;
-        const lastChat = channel[index]['chats'][lastChatIndex];
-        if (lastChat && lastChat.notification && Array.isArray(lastChat.notification)) {
-          const userInLastMessage = lastChat.notification.some(notification => notification.name === this.loggedUser.name);
-          if (!userInLastMessage) {
-            const unreadMessagesCount = channel[index]['chats']
-              .reduce((count, chat) => count + (chat.notification && Array.isArray(chat.notification) ? chat.notification.every(notification => notification.name !== this.loggedUser.name) : 0), 0);
-            return unreadMessagesCount;
+    collectionData(this.channelCollection)
+      .pipe(
+        map((channel) => {
+          const lastChatIndex = channel[index]['chats'].length - 1;
+          const lastChat = channel[index]['chats'][lastChatIndex];
+          if (
+            lastChat &&
+            lastChat.notification &&
+            Array.isArray(lastChat.notification)
+          ) {
+            const userInLastMessage = lastChat.notification.some(
+              (notification) => notification.name === this.loggedUser.name
+            );
+            if (!userInLastMessage) {
+              const unreadMessagesCount = channel[index]['chats'].reduce(
+                (count, chat) =>
+                  count +
+                  (chat.notification && Array.isArray(chat.notification)
+                    ? chat.notification.every(
+                        (notification) =>
+                          notification.name !== this.loggedUser.name
+                      )
+                    : 0),
+                0
+              );
+              return unreadMessagesCount;
+            }
           }
-        }
-        return 0;
-      })
-    ).subscribe(unreadMessagesCount => {
-      this.channelState[index] = unreadMessagesCount;
-    });
+          return 0;
+        })
+      )
+      .subscribe((unreadMessagesCount) => {
+        this.channelState[index] = unreadMessagesCount;
+      });
   }
 
   userHasRead(channel) {
@@ -312,8 +372,8 @@ export class BoardSidebarComponent implements OnInit {
     const userRead = {
       name: this.loggedUser.name,
       timeStamp: timeStamp.seconds,
-      isOnChannel: true
-    }
+      isOnChannel: true,
+    };
     this.pushUserRead(userRead, channel);
   }
 
@@ -321,7 +381,7 @@ export class BoardSidebarComponent implements OnInit {
     this.userHasRead(channel);
     localStorage.setItem('selected-recipient', '# ' + channel.name);
     localStorage.setItem('channel', '# ' + channel.name);
-    this.selectedRecipient = '# ' + channel.name
+    this.selectedRecipient = '# ' + channel.name;
     this.channelChat.showChannelChat(channel);
     document.getElementById('channel-members').classList.remove('d-none');
   }
@@ -331,31 +391,37 @@ export class BoardSidebarComponent implements OnInit {
     if (this.loggedUser.name == 'Gast') {
       alert('Alls Gast kannst du leider keine Direktnachrichten senden');
     } else {
-      localStorage.setItem('selected-recipient', '@ ' + name)
-      this.channelChat.showChannelChat(name)
+      localStorage.setItem('selected-recipient', '@ ' + name);
+      this.channelChat.showChannelChat(name);
     }
     document.getElementById('channel-members').classList.add('d-none');
     document.getElementById('thread')?.classList.add('d-none');
   }
 
   getUsers() {
-    const usersObservable = collectionData(this.usersCollection, { idField: 'id' });
+    const usersObservable = collectionData(this.usersCollection, {
+      idField: 'id',
+    });
     usersObservable.subscribe((usersArray) => {
       this.allUsers = usersArray;
-      this.users = usersArray.filter((user: any) => user.name !== this.loggedUser.name);
+      this.users = usersArray.filter(
+        (user: any) => user.name !== this.loggedUser.name
+      );
       this.getAllChats();
     });
   }
 
   getChannels() {
     this.channel$ = collectionData(this.channelCollection, { idField: 'id' });
-    this.channel$.subscribe((channels => {
+    this.channel$.subscribe((channels) => {
       this.allChannels = channels;
-    }));
+    });
   }
 
   isUserInChannel(channel: any): boolean {
-    return channel.members.some(member => member.name === this.loggedUser.name);
+    return channel.members.some(
+      (member) => member.name === this.loggedUser.name
+    );
   }
 
   ngOnDestroy(): void {
@@ -418,18 +484,19 @@ export class BoardSidebarComponent implements OnInit {
       admin: '',
       members: [],
       name: '',
-      description: ''
-    }
+      description: '',
+    };
   }
 
   openDialogSelectMembers() {
     this.isAllChecked = false;
     const dialogConfig = {
-      data: this.channelsData
+      data: this.channelsData,
     };
-    const dialogRef = this.dialog.open(DialogSelectMembersComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    const dialogRef = this.dialog.open(
+      DialogSelectMembersComponent,
+      dialogConfig
+    );
+    dialogRef.afterClosed().subscribe((result) => {});
   }
-
 }
