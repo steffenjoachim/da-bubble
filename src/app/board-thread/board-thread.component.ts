@@ -124,6 +124,9 @@ export class BoardThreadComponent implements OnInit {
   }
 
   closeThread() {
+    if (window.innerWidth < 600) {
+      document.getElementById('content-box').style.display = 'flex';
+    }
     document.getElementById('thread')?.classList.add('d-none');
     this.threadOpened = false;
   }

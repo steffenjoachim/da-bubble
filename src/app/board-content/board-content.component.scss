@@ -54,8 +54,8 @@
     img {
       margin-left: -15px;
       border-radius: 100%;
-    object-fit: contain;
-    height: 50px;
+      object-fit: contain;
+      height: 50px;
     }
   }
   mat-icon {
@@ -237,17 +237,17 @@
   }
 }
 
-.sent{
+.sent {
   display: flex;
   justify-content: flex-end;
-  b{
+  b {
     margin-right: 8px;
   }
 }
-.recieved{
+.recieved {
   display: flex;
   justify-content: flex-start;
-  .date{
+  .date {
     margin-left: 8px;
   }
 }
@@ -447,7 +447,7 @@
   bottom: 0;
 }
 
-.emoji-reaction-outer{
+.emoji-reaction-outer {
   display: flex;
   justify-content: center;
 }
@@ -462,7 +462,7 @@
     border: solid 1px black;
     border-radius: 25px;
     padding: 6px 8px;
-    .popup-who-reacted-container{
+    .popup-who-reacted-container {
       position: absolute;
       bottom: 32px;
       right: 40px;
@@ -475,11 +475,11 @@
       flex-direction: column;
       align-items: center;
       width: 150px;
-      .reaction-emoji{
+      .reaction-emoji {
         font-size: 24px;
         padding-bottom: 8px;
       }
-      .has-reacted{
+      .has-reacted {
         font-size: 12px;
       }
     }
@@ -497,7 +497,7 @@
     border: solid 1px black;
     border-radius: 25px;
     padding: 6px 8px;
-    .popup-who-reacted-container{
+    .popup-who-reacted-container {
       position: absolute;
       bottom: 32px;
       right: 0;
@@ -511,11 +511,11 @@
       flex-direction: column;
       align-items: center;
       width: 150px;
-      .reaction-emoji{
+      .reaction-emoji {
         font-size: 24px;
         padding-bottom: 8px;
       }
-      .has-reacted{
+      .has-reacted {
         font-size: 12px;
       }
     }
@@ -526,10 +526,14 @@
   position: relative;
 }
 
-.chat-icon-frame2{
+.chat-icon-frame2 {
   visibility: hidden;
 }
 
+.mobile-arrow-left {
+  display: none;
+  cursor: pointer;
+}
 
 @media (max-height: 800px) {
   .message-frame {
@@ -537,23 +541,22 @@
       height: 120px;
     }
   }
-  .content-frame{
+  .content-frame {
     height: 40vh;
   }
 }
 
-
 @media (min-height: 400px) {
-  .content-frame{
-    height:71vh;
+  .content-frame {
+    height: 71vh;
   }
 }
 
 @media (max-width: 1060px) {
-
-  .recieved-message, .sent-message {
+  .recieved-message,
+  .sent-message {
     width: max-content;
-    .message-channel-frame{
+    .message-channel-frame {
       max-width: 40%;
     }
   }
@@ -561,5 +564,34 @@
   .content-frame {
     overflow-x: hidden;
   }
-  
+}
+
+@media (max-width: 600px) {
+  .mobile-arrow-left {
+    display: block;
+  }
+
+  .content-head {
+    .mat-icon {
+      margin-left: 8px;
+    }
+    button {
+      margin-left: 0;
+    }
+    span {
+      font-size: 12px;
+    }
+  }
+  .channel-members {
+    .members {
+      img {
+        height: 40px;
+        margin-left: -25px;
+      }
+    }
+  }
+
+  .chat-icon-frame {
+    visibility: visible;
+  }
 }

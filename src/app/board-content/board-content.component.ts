@@ -7,6 +7,7 @@ import {
   Output,
   EventEmitter,
   Input,
+  HostListener,
 } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import {
@@ -95,7 +96,6 @@ export class BoardContentComponent implements OnInit {
   message: any = '';
   selectedReaction: any;
   selectedRecipient: string;
-  // chats: any;
   hoveredIndex: number = -1;
   hoveredReactionIndex: number = -1;
   answersAmount: number;
@@ -105,13 +105,11 @@ export class BoardContentComponent implements OnInit {
   endIndex: number = 10;
   showReactionOpendedIndex: number;
   dialogRef: MatDialogRef<any>;
-  // groupedChats: any[] = [];
   directMessageDates: number[] = [];
   lastDisplayedDate: Date | null = null;
   selectedChannel: any;
   prevChat: any;
   private chatCount = 0;
-  // public selectedChannelChat: any = null;
   channelAdmin: string;
   displayedEmojis: string[] = [];
   reactionSender: string[] = [];
@@ -134,6 +132,7 @@ export class BoardContentComponent implements OnInit {
     await this.getChannelChats();
     this.lastDisplayedDate = null;
   }
+
 
   generateUniqueId(length: number): string {
     const characters =
@@ -167,7 +166,7 @@ export class BoardContentComponent implements OnInit {
   openDialogAddMembers() {
     const dialogConfig = new MatDialogConfig();
     const dialogRef = this.dialog.open(DialogAddMembersComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   openDialogShowEmojis() {
@@ -461,7 +460,9 @@ export class BoardContentComponent implements OnInit {
   }
 
   hideChatIcons(i: number) {
+    if (window.innerWidth > 600) {
     document.getElementById(`chat-icon-frame${i}`).style.visibility = 'hidden';
+    }
   }
 
   showChatIcons2(i: number) {
@@ -630,6 +631,10 @@ export class BoardContentComponent implements OnInit {
   }
 
   openThread(chat: any) {
+    if (window.innerWidth < 600) {
+      document.getElementById('content-box').style.display = 'none';
+      document.getElementById('thread').style.width = '100%';
+    }
     const data = {
       chat: chat,
       selectedChannel: this.selectedChannel,
@@ -649,7 +654,7 @@ export class BoardContentComponent implements OnInit {
       DialogChannelInfoComponent,
       dialogConfig
     );
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 
   openShowReaction(i) {
@@ -739,5 +744,10 @@ export class BoardContentComponent implements OnInit {
 
   hideWhoReacted(i) {
     this.hoveredIndex = -1;
+  }
+
+  mobileReturnChannelAndUsers() {
+    document.getElementById('content-box').style.display = ('none')
+    document.getElementById('side-bar').style.display = 'block';
   }
 }

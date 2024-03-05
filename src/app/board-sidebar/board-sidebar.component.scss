@@ -123,7 +123,7 @@
   margin-left: 32px;
   img {
     height: 48px;
-    width: 48px
+    width: 48px;
   }
 
   span {
@@ -131,7 +131,6 @@
     font-weight: 400;
     margin-left: 8px;
   }
-
 
   .show-new-message {
     color: rgb(84, 163, 137);
@@ -316,9 +315,19 @@ h3 {
 }
 
 @media (max-height: 850px) {
-
   .channels-frame {
     height: 64.5vh;
   }
+}
 
+@media (max-width: 600px) {
+  .sidebar-head {
+    span {
+      font-size: 18px;
+    }
+
+    img {
+      height: 40px;
+    }
+  }
 }

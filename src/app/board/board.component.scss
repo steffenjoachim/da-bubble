@@ -349,5 +349,16 @@
   .sidebar {
     width: 36%;
   }
-  
+
+  @media (max-width: 600px) {
+
+    .content-box, .close-workshop-menu {
+      display: none;
+    }
+
+    .sidebar {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
 }

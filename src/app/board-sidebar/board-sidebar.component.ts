@@ -7,6 +7,8 @@ import {
   Input,
   Output,
   EventEmitter,
+  HostBinding,
+  HostListener,
 } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import {
@@ -72,6 +74,7 @@ export class BoardSidebarComponent implements OnInit {
   addMembers: boolean = false;
   checkIfUserHasRead: boolean;
   shwoWrongText: boolean = false;
+  showMobile: boolean = true;
   isUpdating = false;
   popupheadline: string;
   message: string;
@@ -101,7 +104,7 @@ export class BoardSidebarComponent implements OnInit {
     private channelChat: ChannelService,
     private channels: Firestore,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.channel = localStorage.getItem('channel');
@@ -119,12 +122,23 @@ export class BoardSidebarComponent implements OnInit {
     this.getChannels();
   }
 
+  mobileShowContent() {
+    if (window.innerWidth < 600) {
+      document.getElementById('side-bar').style.display = 'none';
+      document.getElementById('content-box').style.display = 'flex'
+    } else {
+      this.showMobile = true
+    }
+  }
+
   public onSidebarLinkClick(selectedData): void {
+    this.mobileShowContent();
     this.showChannel(selectedData);
     this.sidebarLinkClicked.emit(selectedData);
   }
 
   public OnAnotherEvent(selectedData): void {
+    this.mobileShowContent();
     this.showChat(selectedData);
     this.anotherEvent.emit();
     this.selectRelevantChats();
@@ -349,9 +363,9 @@ export class BoardSidebarComponent implements OnInit {
                   count +
                   (chat.notification && Array.isArray(chat.notification)
                     ? chat.notification.every(
-                        (notification) =>
-                          notification.name !== this.loggedUser.name
-                      )
+                      (notification) =>
+                        notification.name !== this.loggedUser.name
+                    )
                     : 0),
                 0
               );
@@ -497,6 +511,6 @@ export class BoardSidebarComponent implements OnInit {
       DialogSelectMembersComponent,
       dialogConfig
     );
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => { });
   }
 }

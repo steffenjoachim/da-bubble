@@ -1,5 +1,5 @@
 * {
-scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 .header-frame {
@@ -122,7 +122,7 @@ scroll-behavior: smooth;
   width: 350px;
   border-radius: 25px 0 25px 25px;
   padding: 24px;
-  animation : slideIn 0.3s ease-in-out;
+  animation: slideIn 0.3s ease-in-out;
   .profile-header {
     display: flex;
     justify-content: space-between;
@@ -199,7 +199,7 @@ scroll-behavior: smooth;
   width: 250px;
   border-radius: 25px 0 25px 25px;
   z-index: 99;
-  animation : slideIn 0.3s ease-in-out;
+  animation: slideIn 0.3s ease-in-out;
   h2 {
     color: black;
     cursor: pointer;
@@ -236,19 +236,24 @@ scroll-behavior: smooth;
   }
 }
 
-
 @media (max-width: 1200px) {
-
   .search-frame {
-
-  width: 40%;
+    width: 40%;
   }
 
   .user-frame {
     width: 40%;
     justify-content: flex-end;
   }
-  
-  
 }
 
+@media (max-width: 600px) {
+  .header-frame {
+    .logo-frame,
+    .user-frame {
+      img {
+        height: 40px;
+      }
+    }
+  }
+}
