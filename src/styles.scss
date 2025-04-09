@@ -4,6 +4,13 @@ body {
   background: rgb(236, 238, 254);
 }
 
+:root {
+  --color-black: #000;
+  --color-white: #fff;
+  --color-blue: rgb(68, 77, 242);
+  --color-light-green: #92c83e;
+}
+
 @font-face {
   font-family: Nunito;
   src: url("./assets/fonts/Nunito-Regular.ttf");
@@ -15,11 +22,11 @@ body {
 }
 
 .bg-blue {
-  background: rgb(68, 77, 242);
+  background: var(--color-blue);
 }
 
 .c-blue {
-  color: rgb(68, 77, 242);
+  color: var(--color-blue);
 }
 
 .fz-16-fw-700 {
@@ -52,7 +59,7 @@ a {
     flex-direction: column;
     border: none;
     background: rgb(121, 126, 243);
-    color: white;
+    color: var(--color-white);
     border-radius: 25px 0px 25px 25px;
     padding: 16px;
     margin-top: 8px;
@@ -89,6 +96,6 @@ a {
   }
   .element-sender{
     font-weight: 700;
-    color: #92c83e;
+    color: var(--color-light-green);
   }
 }
